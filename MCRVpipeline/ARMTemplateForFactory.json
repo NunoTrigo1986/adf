@@ -18,6 +18,10 @@
 		"ls_mcrvpip_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mcrvpip.dfs.core.windows.net/"
+		},
+		"Each time_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/automatiske_utløpslister_SO/providers/Microsoft.Storage/storageAccounts/souttrekk"
 		}
 	},
 	"variables": {
@@ -31,11 +35,33 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy Eikon Data",
-						"type": "Copy",
+						"name": "check if the file exists",
+						"type": "Validation",
 						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_eikon1_xlsx",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"timeout": "0.00:00:30",
+							"sleep": 10
+						}
+					},
+					{
+						"name": "Get file metadata",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "check if the file exists",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
-							"timeout": "0.00:05:00",
+							"timeout": "0.12:00:00",
 							"retry": 0,
 							"retryIntervalInSeconds": 30,
 							"secureOutput": false,
@@ -43,147 +69,250 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "ExcelSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "Dates",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Dates",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "OINOK3MD=",
-											"type": "Decimal",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "OINOK3MD=",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "NOKAB6O5Y=",
-											"type": "Decimal",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "NOKAB6O5Y=",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "NOKAB6O10Y=",
-											"type": "Decimal",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "NOKAB6O10Y=",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "NOKAB6O5YF1Y=",
-											"type": "Decimal",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "NOKAB6O5YF1Y=",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "NOKAB6O5YF2Y=",
-											"type": "Decimal",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "NOKAB6O5YF2Y=",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "NOKAB6O5YF3Y=",
-											"type": "Decimal",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "NOKAB6O5YF3Y=",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "NOKAB6O5YF5Y=",
-											"type": "Decimal",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "NOKAB6O5YF5Y=",
-											"type": "String",
-											"physicalType": "String"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
+							"dataset": {
 								"referenceName": "ds_eikon1_xlsx",
 								"type": "DatasetReference",
 								"parameters": {}
+							},
+							"fieldList": [
+								"columnCount"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Get file metadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
 							}
 						],
-						"outputs": [
-							{
-								"referenceName": "ds_SWAPS",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(activity('Get file metadata').output.columnCount, 8)",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Web1",
+									"type": "WebActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": "www.sapo.pt",
+										"method": "POST",
+										"headers": {},
+										"body": "bdfr"
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "Copy Eikon Data_copy1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.00:05:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ExcelSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "Dates",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "Dates",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "OINOK3MD=",
+														"type": "Decimal",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "OINOK3MD=",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NOKAB6O5Y=",
+														"type": "Decimal",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "NOKAB6O5Y=",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NOKAB6O10Y=",
+														"type": "Decimal",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "NOKAB6O10Y=",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NOKAB6O5YF1Y=",
+														"type": "Decimal",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "NOKAB6O5YF1Y=",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NOKAB6O5YF2Y=",
+														"type": "Decimal",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "NOKAB6O5YF2Y=",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NOKAB6O5YF3Y=",
+														"type": "Decimal",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "NOKAB6O5YF3Y=",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NOKAB6O5YF5Y=",
+														"type": "Decimal",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "NOKAB6O5YF5Y=",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_eikon1_xlsx",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_SWAPS",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "Delet Source",
+									"type": "Delete",
+									"dependsOn": [
+										{
+											"activity": "Copy Eikon Data_copy1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "ds_eikon1_xlsx",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"enableLogging": false,
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										}
+									}
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -194,7 +323,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_eikon1_xlsx')]",
-				"[concat(variables('factoryId'), '/datasets/ds_SWAPS')]"
+				"[concat(variables('factoryId'), '/datasets/ds_SWAPS')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
 			]
 		},
 		{
@@ -280,6 +410,37 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Each time')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_ingest_Eikon",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/eikon/blobs/",
+					"blobPathEndsWith": "eikon1.xlsx",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('Each time_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_ingest_Eikon')]"
+			]
 		}
 	]
 }

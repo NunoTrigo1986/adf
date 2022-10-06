@@ -19,6 +19,10 @@
 			"type": "string",
 			"defaultValue": "https://mcrvpip.dfs.core.windows.net/"
 		},
+		"Each time_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/automatiske_utløpslister_SO/providers/Microsoft.Storage/storageAccounts/souttrekk"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -54,6 +58,9 @@
 					},
 					"ls_mcrvpip_properties_typeProperties_url": {
 						"value": "[parameters('ls_mcrvpip_properties_typeProperties_url')]"
+					},
+					"Each time_properties_typeProperties_scope": {
+						"value": "[parameters('Each time_properties_typeProperties_scope')]"
 					}
 				}
 			},
