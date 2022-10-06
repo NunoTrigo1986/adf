@@ -107,6 +107,179 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_ingest_Eikon')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Eikon Data",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:05:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Dates",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Dates",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "OINOK3MD=",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "OINOK3MD=",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "NOKAB6O5Y=",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NOKAB6O5Y=",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "NOKAB6O10Y=",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NOKAB6O10Y=",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "NOKAB6O5YF1Y=",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NOKAB6O5YF1Y=",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "NOKAB6O5YF2Y=",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NOKAB6O5YF2Y=",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "NOKAB6O5YF3Y=",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NOKAB6O5YF3Y=",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "NOKAB6O5YF5Y=",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NOKAB6O5YF5Y=",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_eikon1_xlsx",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_SWAPS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_eikon1_xlsx')]",
+				"[concat(variables('factoryId'), '/datasets/ds_SWAPS')]"
+			]
 		}
 	]
 }
