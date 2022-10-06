@@ -1,0 +1,24 @@
+{
+	"name": "bolybygging",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_mcrvpip",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "boligbygging.csv",
+				"folderPath": "ssb",
+				"fileSystem": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
