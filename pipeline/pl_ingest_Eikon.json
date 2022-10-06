@@ -45,6 +45,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					}
 				}
@@ -78,7 +79,12 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"url": "www.sapo.pt",
+								"method": "POST",
+								"body": "bdfr"
+							}
 						}
 					],
 					"ifTrueActivities": [
