@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://data.ssb.no/api/",
+			"url": "https://data.ssb.no/api",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
