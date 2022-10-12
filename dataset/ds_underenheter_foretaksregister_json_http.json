@@ -13,7 +13,8 @@
 				"relativeUrl": "underenheter/lastned"
 			},
 			"compression": {
-				"type": "gzip"
+				"type": "gzip",
+				"level": "Optimal"
 			}
 		},
 		"schema": {}
