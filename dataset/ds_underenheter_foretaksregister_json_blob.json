@@ -1,5 +1,5 @@
 {
-	"name": "ds_enheter_foretakregister__json",
+	"name": "ds_underenheter_foretaksregister_json_blob",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_blob_eikon",
@@ -10,7 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "enheter.json",
+				"fileName": {
+					"value": "@concat('underenheter',formatDatetime(utcnow(),'dd-MM-yyy'),'.json')",
+					"type": "Expression"
+				},
 				"container": "foretaksregister"
 			}
 		},

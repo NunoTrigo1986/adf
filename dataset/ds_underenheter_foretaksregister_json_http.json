@@ -1,17 +1,16 @@
 {
-	"name": "ds_enheter_foretakregister__json",
+	"name": "ds_underenheter_foretaksregister_json_http",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_blob_eikon",
+			"referenceName": "ls_foretaksregister",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"fileName": "enheter.json",
-				"container": "foretaksregister"
+				"type": "HttpServerLocation",
+				"relativeUrl": "underenheter/lastned"
 			}
 		},
 		"schema": {}
