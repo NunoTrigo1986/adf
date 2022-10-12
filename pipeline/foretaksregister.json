@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Copy enheter from foretaksregister",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -44,13 +44,13 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_enheter_foretakregister__json",
+						"referenceName": "ds_enheter_foretakregister__json_blob",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "Copy data2",
+				"name": "Copy underenheter fra fr",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
