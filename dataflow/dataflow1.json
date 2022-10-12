@@ -1,0 +1,67 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_foretaks_enheter_df",
+						"type": "DatasetReference"
+					},
+					"name": "EnheterSelectColumns"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "SelectColumns"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          organisasjonsnummer as string,",
+				"          navn as string,",
+				"          organisasjonsform as (kode as string, beskrivelse as string, links as string[]),",
+				"          postadresse as (land as string, landkode as string, postnummer as string, poststed as string, adresse as string[], kommune as string, kommunenummer as string),",
+				"          registreringsdatoEnhetsregisteret as string,",
+				"          registrertIMvaregisteret as boolean,",
+				"          naeringskode1 as (beskrivelse as string, kode as string),",
+				"          naeringskode2 as (beskrivelse as string, kode as string, hjelpeenhetskode as boolean),",
+				"          naeringskode3 as (beskrivelse as string, kode as string),",
+				"          antallAnsatte as integer,",
+				"          forretningsadresse as (land as string, landkode as string, postnummer as string, poststed as string, adresse as string[], kommune as string, kommunenummer as string),",
+				"          stiftelsesdato as string,",
+				"          institusjonellSektorkode as (kode as string, beskrivelse as string),",
+				"          registrertIForetaksregisteret as boolean,",
+				"          registrertIStiftelsesregisteret as boolean,",
+				"          registrertIFrivillighetsregisteret as boolean,",
+				"          sisteInnsendteAarsregnskap as string,",
+				"          konkurs as boolean,",
+				"          underAvvikling as boolean,",
+				"          underTvangsavviklingEllerTvangsopplosning as boolean,",
+				"          maalform as string,",
+				"          links as string[],",
+				"          frivilligMvaRegistrertBeskrivelser as string[]",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> EnheterSelectColumns",
+				"EnheterSelectColumns derive(Navn = navn,",
+				"          {Org.nr} = organisasjonsnummer,",
+				"          {Org.form} = organisasjonsform.kode,",
+				"          Adresse = postadresse.adresse,",
+				"          {Kommune.nr.} = postadresse.kommunenummer,",
+				"          NACE1 = naeringskode1.kode,",
+				"          NACE2 = naeringskode2.kode,",
+				"          NACE3 = naeringskode3.kode,",
+				"          MVA = registrertIMvaregisteret,",
+				"          {Antall Ansatte} = antallAnsatte,",
+				"          Stiftelsesdato = stiftelsesdato,",
+				"          {Sektor kode} = institusjonellSektorkode.kode,",
+				"          {Siste årsregnskap} = sisteInnsendteAarsregnskap) ~> SelectColumns"
+			]
+		}
+	}
+}

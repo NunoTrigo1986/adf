@@ -1,5 +1,5 @@
 {
-	"name": "ds_foretaks_register_df",
+	"name": "ds_foretaks_enheter_df",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_blob_eikon",
