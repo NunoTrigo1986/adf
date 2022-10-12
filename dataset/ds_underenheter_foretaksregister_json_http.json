@@ -11,6 +11,9 @@
 			"location": {
 				"type": "HttpServerLocation",
 				"relativeUrl": "underenheter/lastned"
+			},
+			"compression": {
+				"type": "gzip"
 			}
 		},
 		"schema": {}
