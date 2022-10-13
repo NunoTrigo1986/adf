@@ -1,0 +1,91 @@
+{
+	"name": "fr_enheter_json_csv_copy1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_foretaks_enheter_df",
+						"type": "DatasetReference"
+					},
+					"name": "EnheterSelectColumns"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_enheter_csv",
+						"type": "DatasetReference"
+					},
+					"name": "EnheterCsv"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          organisasjonsnummer as string,",
+				"          navn as string,",
+				"          organisasjonsform as (kode as string, beskrivelse as string, links as string[]),",
+				"          postadresse as (land as string, landkode as string, postnummer as string, poststed as string, adresse as string[], kommune as string, kommunenummer as string),",
+				"          registreringsdatoEnhetsregisteret as string,",
+				"          registrertIMvaregisteret as boolean,",
+				"          naeringskode1 as (beskrivelse as string, kode as string),",
+				"          naeringskode2 as (beskrivelse as string, kode as string, hjelpeenhetskode as boolean),",
+				"          naeringskode3 as (beskrivelse as string, kode as string),",
+				"          antallAnsatte as integer,",
+				"          forretningsadresse as (land as string, landkode as string, postnummer as string, poststed as string, adresse as string[], kommune as string, kommunenummer as string),",
+				"          stiftelsesdato as string,",
+				"          institusjonellSektorkode as (kode as string, beskrivelse as string),",
+				"          registrertIForetaksregisteret as boolean,",
+				"          registrertIStiftelsesregisteret as boolean,",
+				"          registrertIFrivillighetsregisteret as boolean,",
+				"          sisteInnsendteAarsregnskap as string,",
+				"          konkurs as boolean,",
+				"          underAvvikling as boolean,",
+				"          underTvangsavviklingEllerTvangsopplosning as boolean,",
+				"          maalform as string,",
+				"          links as string[],",
+				"          frivilligMvaRegistrertBeskrivelser as string[]",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> EnheterSelectColumns",
+				"EnheterSelectColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          organisasjonsnummer,",
+				"          navn,",
+				"          organisasjonsform = organisasjonsform.kode,",
+				"          postadresse = registreringsdatoEnhetsregisteret,",
+				"          registreringsdatoEnhetsregisteret,",
+				"          registrertIMvaregisteret,",
+				"          naeringskode1 = naeringskode1.kode,",
+				"          naeringskode2 = naeringskode2.kode,",
+				"          naeringskode3 = naeringskode3.kode,",
+				"          antallAnsatte,",
+				"          forretningsadresse = forretningsadresse.adresse,",
+				"          stiftelsesdato,",
+				"          institusjonellSektorkode,",
+				"          registrertIForetaksregisteret,",
+				"          registrertIStiftelsesregisteret,",
+				"          registrertIFrivillighetsregisteret,",
+				"          sisteInnsendteAarsregnskap,",
+				"          konkurs,",
+				"          underAvvikling,",
+				"          underTvangsavviklingEllerTvangsopplosning,",
+				"          maalform,",
+				"          links,",
+				"          frivilligMvaRegistrertBeskrivelser",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> EnheterCsv"
+			]
+		}
+	}
+}
