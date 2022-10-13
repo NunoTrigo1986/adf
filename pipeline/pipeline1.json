@@ -64,7 +64,7 @@
 								},
 								"sink": {
 									"name": "organisasjonsform_kode",
-									"type": "Double"
+									"type": "String"
 								}
 							},
 							{
