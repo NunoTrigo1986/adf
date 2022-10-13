@@ -2,7 +2,7 @@
 	"name": "ds_enheter_csv",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_mcrvpip",
+			"referenceName": "ls_blob_eikon",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
@@ -12,12 +12,8 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@concat('enheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
-					"type": "Expression"
-				},
-				"fileSystem": "foretaksregister"
+				"type": "AzureBlobStorageLocation",
+				"container": "foretaksregister"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
