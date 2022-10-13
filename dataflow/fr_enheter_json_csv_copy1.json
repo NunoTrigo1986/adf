@@ -72,17 +72,7 @@
 				"          antallAnsatte,",
 				"          forretningsadresse = forretningsadresse.adresse,",
 				"          stiftelsesdato,",
-				"          institusjonellSektorkode,",
-				"          registrertIForetaksregisteret,",
-				"          registrertIStiftelsesregisteret,",
-				"          registrertIFrivillighetsregisteret,",
-				"          sisteInnsendteAarsregnskap,",
-				"          konkurs,",
-				"          underAvvikling,",
-				"          underTvangsavviklingEllerTvangsopplosning,",
-				"          maalform,",
-				"          links,",
-				"          frivilligMvaRegistrertBeskrivelser",
+				"          sisteInnsendteAarsregnskap",
 				"     ),",
 				"     partitionBy('hash', 1)) ~> EnheterCsv"
 			]
