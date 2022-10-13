@@ -26,6 +26,61 @@
 						}
 					},
 					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_enheter_foretakregister_json_http",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_enheter_foretakregister__json_blob",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy enheter from foretaksregister",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
 						"type": "ParquetSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
@@ -43,7 +98,7 @@
 									"path": "$['organisasjonsnummer']"
 								},
 								"sink": {
-									"name": "organisasjonsnummer",
+									"name": "Organisasjonsnummer",
 									"type": "Int32"
 								}
 							},
@@ -61,7 +116,26 @@
 									"path": "$['organisasjonsform']['kode']"
 								},
 								"sink": {
-									"name": "organisasjonsform"
+									"name": "organisasjonsform",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['registreringsdatoEnhetsregisteret']"
+								},
+								"sink": {
+									"name": "registreringsdatoEnhetsregisteret",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['registrertIMvaregisteret']"
+								},
+								"sink": {
+									"name": "registrertIMvaregisteret",
+									"type": "Boolean"
 								}
 							},
 							{
@@ -69,16 +143,16 @@
 									"path": "$['naeringskode1']['kode']"
 								},
 								"sink": {
-									"name": "NACE1",
+									"name": "naeringskode1",
 									"type": "Double"
 								}
 							},
 							{
 								"source": {
-									"path": "$['naeringskode2']['kode']"
+									"path": "$['naeringskode2']['beskrivelse']"
 								},
 								"sink": {
-									"name": "NACE2",
+									"name": "naeringskode2_beskrivelse",
 									"type": "Double"
 								}
 							},
@@ -87,7 +161,7 @@
 									"path": "$['naeringskode3']['kode']"
 								},
 								"sink": {
-									"name": "NACE3",
+									"name": "naeringskode3_kode",
 									"type": "Double"
 								}
 							},
@@ -98,6 +172,14 @@
 								"sink": {
 									"name": "antallAnsatte",
 									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['forretningsadresse']['postnummer']"
+								},
+								"sink": {
+									"name": "postnummer"
 								}
 							},
 							{
@@ -133,7 +215,7 @@
 								},
 								"sink": {
 									"name": "sisteInnsendteAarsregnskap",
-									"type": "Int32"
+									"type": "DateTime"
 								}
 							}
 						]
@@ -141,7 +223,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_enheter_foretakregister_json_http",
+						"referenceName": "ds_enheter_foretakregister__json_blob",
 						"type": "DatasetReference"
 					}
 				],
