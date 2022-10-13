@@ -1,6 +1,10 @@
 {
 	"name": "ds_enheter_csv",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_mcrvpip",
+			"type": "LinkedServiceReference"
+		},
 		"folder": {
 			"name": "Foretaksregister/enheter"
 		},
