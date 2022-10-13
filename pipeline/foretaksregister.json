@@ -154,8 +154,7 @@
 									"path": "$['beliggenhetsadresse']['kommunenummer']"
 								},
 								"sink": {
-									"name": "Kommunenr.",
-									"type": "Int32"
+									"name": "Kommunenr"
 								}
 							},
 							{
