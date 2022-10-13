@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.json')",
 				"container": "foretaksregister"
 			},
 			"compressionCodec": "snappy"
