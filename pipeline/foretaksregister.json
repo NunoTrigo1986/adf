@@ -149,10 +149,10 @@
 							},
 							{
 								"source": {
-									"path": "$['naeringskode2']['beskrivelse']"
+									"path": "$['naeringskode2']['kode']"
 								},
 								"sink": {
-									"name": "naeringskode2_beskrivelse",
+									"name": "naeringskode2",
 									"type": "Double"
 								}
 							},
