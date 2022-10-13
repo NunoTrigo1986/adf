@@ -1,17 +1,24 @@
 {
-	"name": "Parquet1",
+	"name": "ds_underenhenter_parquet",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_blob_eikon",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Foretaksregister/underenheter"
 		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "1.parquet",
-				"container": "eikon"
+				"fileName": {
+					"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.parquet')",
+					"type": "Expression"
+				},
+				"folderPath": "underenheter",
+				"container": "foretaksregister"
 			},
 			"compressionCodec": "none"
 		},
