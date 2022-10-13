@@ -13,7 +13,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "fr_enheter.csv",
+				"fileName": {
+					"value": "@concat('enheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
+					"type": "Expression"
+				},
 				"fileSystem": "foretaksregister"
 			},
 			"columnDelimiter": ",",
