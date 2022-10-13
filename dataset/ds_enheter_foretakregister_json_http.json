@@ -5,6 +5,9 @@
 			"referenceName": "ls_foretaksregister",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Foretaksregister"
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {

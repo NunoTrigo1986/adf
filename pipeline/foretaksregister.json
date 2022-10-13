@@ -73,15 +73,111 @@
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "ParquetSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings"
+							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['organisasjonsnummer']"
+								},
+								"sink": {
+									"name": "Organisasjonsnummer",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['navn']"
+								},
+								"sink": {
+									"name": "Navn",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['registreringsdatoEnhetsregisteret']"
+								},
+								"sink": {
+									"name": "Registreringsdato",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['registrertIMvaregisteret']"
+								},
+								"sink": {
+									"name": "MVA",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['antallAnsatte']"
+								},
+								"sink": {
+									"name": "Antall Ansatte",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['overordnetEnhet']"
+								},
+								"sink": {
+									"name": "Overordnet Enhet",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['oppstartsdato']"
+								},
+								"sink": {
+									"name": "Oppstartsdato",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['beliggenhetsadresse']['kommunenummer']"
+								},
+								"sink": {
+									"name": "Kommunenr.",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['beliggenhetsadresse']['adresse'][0]"
+								},
+								"sink": {
+									"name": "Adresse",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['naeringskode2']['kode']"
+								},
+								"sink": {
+									"name": "NACE2",
+									"type": "Int32"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
@@ -91,7 +187,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_underenheter_foretaksregister_json_blob",
+						"referenceName": "Parquet1",
 						"type": "DatasetReference"
 					}
 				]
