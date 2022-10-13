@@ -1,0 +1,203 @@
+{
+	"name": "ds_underenheter_foretaksregister_df",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_eikon",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Foretaksregister"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.json')",
+					"type": "Expression"
+				},
+				"container": "foretaksregister"
+			},
+			"compression": {
+				"type": "gzip",
+				"level": "Optimal"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"organisasjonsnummer": {
+					"type": "string"
+				},
+				"navn": {
+					"type": "string"
+				},
+				"organisasjonsform": {
+					"type": "object",
+					"properties": {
+						"kode": {
+							"type": "string"
+						},
+						"beskrivelse": {
+							"type": "string"
+						},
+						"links": {
+							"type": "array"
+						}
+					}
+				},
+				"postadresse": {
+					"type": "object",
+					"properties": {
+						"land": {
+							"type": "string"
+						},
+						"landkode": {
+							"type": "string"
+						},
+						"postnummer": {
+							"type": "string"
+						},
+						"poststed": {
+							"type": "string"
+						},
+						"adresse": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"kommune": {
+							"type": "string"
+						},
+						"kommunenummer": {
+							"type": "string"
+						}
+					}
+				},
+				"registreringsdatoEnhetsregisteret": {
+					"type": "string"
+				},
+				"registrertIMvaregisteret": {
+					"type": "boolean"
+				},
+				"naeringskode1": {
+					"type": "object",
+					"properties": {
+						"beskrivelse": {
+							"type": "string"
+						},
+						"kode": {
+							"type": "string"
+						}
+					}
+				},
+				"naeringskode2": {
+					"type": "object",
+					"properties": {
+						"beskrivelse": {
+							"type": "string"
+						},
+						"kode": {
+							"type": "string"
+						},
+						"hjelpeenhetskode": {
+							"type": "boolean"
+						}
+					}
+				},
+				"naeringskode3": {
+					"type": "object",
+					"properties": {
+						"beskrivelse": {
+							"type": "string"
+						},
+						"kode": {
+							"type": "string"
+						}
+					}
+				},
+				"antallAnsatte": {
+					"type": "integer"
+				},
+				"forretningsadresse": {
+					"type": "object",
+					"properties": {
+						"land": {
+							"type": "string"
+						},
+						"landkode": {
+							"type": "string"
+						},
+						"postnummer": {
+							"type": "string"
+						},
+						"poststed": {
+							"type": "string"
+						},
+						"adresse": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"kommune": {
+							"type": "string"
+						},
+						"kommunenummer": {
+							"type": "string"
+						}
+					}
+				},
+				"stiftelsesdato": {
+					"type": "string"
+				},
+				"institusjonellSektorkode": {
+					"type": "object",
+					"properties": {
+						"kode": {
+							"type": "string"
+						},
+						"beskrivelse": {
+							"type": "string"
+						}
+					}
+				},
+				"registrertIForetaksregisteret": {
+					"type": "boolean"
+				},
+				"registrertIStiftelsesregisteret": {
+					"type": "boolean"
+				},
+				"registrertIFrivillighetsregisteret": {
+					"type": "boolean"
+				},
+				"sisteInnsendteAarsregnskap": {
+					"type": "string"
+				},
+				"konkurs": {
+					"type": "boolean"
+				},
+				"underAvvikling": {
+					"type": "boolean"
+				},
+				"underTvangsavviklingEllerTvangsopplosning": {
+					"type": "boolean"
+				},
+				"maalform": {
+					"type": "string"
+				},
+				"links": {
+					"type": "array"
+				},
+				"frivilligMvaRegistrertBeskrivelser": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}
