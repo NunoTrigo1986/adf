@@ -51,12 +51,10 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'arrayOfDocuments') ~> EnheterSelectColumns",
+				"     documentForm: 'arrayOfDocuments',",
+				"     partitionBy('hash', 1)) ~> EnheterSelectColumns",
 				"EnheterSelectColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
@@ -74,7 +72,9 @@
 				"          stiftelsesdato,",
 				"          sisteInnsendteAarsregnskap",
 				"     ),",
-				"     partitionBy('hash', 1)) ~> EnheterCsv"
+				"     partitionBy('hash', 1),",
+				"     preCommands: [],",
+				"     postCommands: []) ~> EnheterCsv"
 			]
 		}
 	}

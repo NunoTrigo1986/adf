@@ -1,12 +1,8 @@
 {
 	"name": "ds_enheter_csv",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ls_dl_enheter",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
-			"name": "Foretaksregister"
+			"name": "Foretaksregister/enheter"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
