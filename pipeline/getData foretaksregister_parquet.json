@@ -346,7 +346,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"functionName": "TimerTrigger1",
+					"functionName": "HttpTrigger1",
 					"method": "GET"
 				},
 				"linkedServiceName": {
