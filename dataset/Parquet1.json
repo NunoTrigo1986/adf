@@ -10,7 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "test.parquet"
+				"fileName": "1.parquet",
+				"container": "eikon"
 			},
 			"compressionCodec": "snappy"
 		},
