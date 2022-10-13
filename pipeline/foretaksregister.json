@@ -173,7 +173,7 @@
 								},
 								"sink": {
 									"name": "NACE2",
-									"type": "Int32"
+									"type": "Double"
 								}
 							}
 						]
