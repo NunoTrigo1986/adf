@@ -13,7 +13,7 @@
 				"fileName": "1.parquet",
 				"container": "eikon"
 			},
-			"compressionCodec": "snappy"
+			"compressionCodec": "none"
 		},
 		"schema": []
 	}
