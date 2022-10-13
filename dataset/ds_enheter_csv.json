@@ -13,6 +13,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('enheter-',formatDatetime(utcnow(),'MM-yyy'),'.json')",
+					"type": "Expression"
+				},
+				"folderPath": "enheter",
 				"container": "foretaksregister"
 			},
 			"columnDelimiter": ",",

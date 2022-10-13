@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Foretaksregister"
+			"name": "Foretaksregister/underenheter"
 		},
 		"annotations": [],
 		"type": "Json",
