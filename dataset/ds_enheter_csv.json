@@ -1,9 +1,12 @@
 {
-	"name": "DelimitedText1",
+	"name": "ds_enheter_csv",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_dl_enheter",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Foretaksregister"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
