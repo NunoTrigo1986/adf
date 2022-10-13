@@ -127,7 +127,7 @@
 									"path": "$['antallAnsatte']"
 								},
 								"sink": {
-									"name": "Antall Ansatte",
+									"name": "AntallAnsatte",
 									"type": "Int32"
 								}
 							},
@@ -136,7 +136,7 @@
 									"path": "$['overordnetEnhet']"
 								},
 								"sink": {
-									"name": "Overordnet Enhet",
+									"name": "OverordnetEnhet",
 									"type": "Int32"
 								}
 							},
