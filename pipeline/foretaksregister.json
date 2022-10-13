@@ -26,15 +26,128 @@
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "ParquetSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings"
+							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['organisasjonsnummer']"
+								},
+								"sink": {
+									"name": "organisasjonsnummer",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['navn']"
+								},
+								"sink": {
+									"name": "navn",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['organisasjonsform']['kode']"
+								},
+								"sink": {
+									"name": "organisasjonsform"
+								}
+							},
+							{
+								"source": {
+									"path": "$['naeringskode1']['kode']"
+								},
+								"sink": {
+									"name": "NACE1",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['naeringskode2']['kode']"
+								},
+								"sink": {
+									"name": "NACE2",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['naeringskode2']['hjelpeenhetskode']"
+								},
+								"sink": {
+									"name": "hjelpeenhetskode",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['naeringskode3']['kode']"
+								},
+								"sink": {
+									"name": "NACE3",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['antallAnsatte']"
+								},
+								"sink": {
+									"name": "antallAnsatte",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['forretningsadresse']['kommunenummer']"
+								},
+								"sink": {
+									"name": "kommunenummer",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['forretningsadresse']['adresse'][0]"
+								},
+								"sink": {
+									"name": "adresse",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['stiftelsesdato']"
+								},
+								"sink": {
+									"name": "stiftelsesdato",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['sisteInnsendteAarsregnskap']"
+								},
+								"sink": {
+									"name": "sisteInnsendteAarsregnskap",
+									"type": "Int32"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
@@ -44,7 +157,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_enheter_foretakregister__json_blob",
+						"referenceName": "enheter_parquet",
 						"type": "DatasetReference"
 					}
 				]
