@@ -196,14 +196,12 @@
 						}
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
+						"type": "ParquetSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
+							"type": "ParquetWriteSettings"
 						}
 					},
 					"enableStaging": false,
@@ -330,7 +328,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_underenheter_csv",
+						"referenceName": "ds_underenhenter_parquet",
 						"type": "DatasetReference"
 					}
 				]
