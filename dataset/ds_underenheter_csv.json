@@ -2,22 +2,19 @@
 	"name": "ds_underenheter_csv",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_mcrvpip",
+			"referenceName": "ls_blob_eikon",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Foretaksregister"
+			"name": "Foretaksregister/underenheter"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
-					"type": "Expression"
-				},
-				"fileSystem": "foretaksregister"
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "underenheter",
+				"container": "foretaksregister"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
