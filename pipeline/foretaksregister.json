@@ -50,8 +50,8 @@
 				]
 			},
 			{
-				"name": "Copy data1",
-				"type": "Copy",
+				"name": "fr_enheter_json_csv",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
 						"activity": "Copy enheter from foretaksregister",
@@ -69,170 +69,16 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "JsonSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "JsonReadSettings"
-						}
+					"dataflow": {
+						"referenceName": "fr_enheter_json_csv",
+						"type": "DataFlowReference"
 					},
-					"sink": {
-						"type": "ParquetSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "ParquetWriteSettings"
-						}
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['organisasjonsnummer']"
-								},
-								"sink": {
-									"name": "Organisasjonsnummer",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"path": "$['navn']"
-								},
-								"sink": {
-									"name": "navn",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['organisasjonsform']['kode']"
-								},
-								"sink": {
-									"name": "organisasjonsform",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['registreringsdatoEnhetsregisteret']"
-								},
-								"sink": {
-									"name": "registreringsdatoEnhetsregisteret",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"path": "$['registrertIMvaregisteret']"
-								},
-								"sink": {
-									"name": "registrertIMvaregisteret",
-									"type": "Boolean"
-								}
-							},
-							{
-								"source": {
-									"path": "$['naeringskode1']['kode']"
-								},
-								"sink": {
-									"name": "naeringskode1",
-									"type": "Double"
-								}
-							},
-							{
-								"source": {
-									"path": "$['naeringskode2']['kode']"
-								},
-								"sink": {
-									"name": "naeringskode2",
-									"type": "Double"
-								}
-							},
-							{
-								"source": {
-									"path": "$['naeringskode3']['kode']"
-								},
-								"sink": {
-									"name": "naeringskode3_kode",
-									"type": "Double"
-								}
-							},
-							{
-								"source": {
-									"path": "$['antallAnsatte']"
-								},
-								"sink": {
-									"name": "antallAnsatte",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"path": "$['forretningsadresse']['postnummer']"
-								},
-								"sink": {
-									"name": "postnummer"
-								}
-							},
-							{
-								"source": {
-									"path": "$['forretningsadresse']['kommunenummer']"
-								},
-								"sink": {
-									"name": "kommunenummer",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"path": "$['forretningsadresse']['adresse'][0]"
-								},
-								"sink": {
-									"name": "adresse",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['stiftelsesdato']"
-								},
-								"sink": {
-									"name": "stiftelsesdato",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"path": "$['sisteInnsendteAarsregnskap']"
-								},
-								"sink": {
-									"name": "sisteInnsendteAarsregnskap",
-									"type": "Int32"
-								}
-							}
-						]
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_enheter_foretakregister__json_blob",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "enheter_parquet",
-						"type": "DatasetReference"
-					}
-				]
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"annotations": []
