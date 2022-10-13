@@ -85,15 +85,6 @@
 							},
 							{
 								"source": {
-									"path": "$['naeringskode2']['hjelpeenhetskode']"
-								},
-								"sink": {
-									"name": "hjelpeenhetskode",
-									"type": "Double"
-								}
-							},
-							{
-								"source": {
 									"path": "$['naeringskode3']['kode']"
 								},
 								"sink": {
