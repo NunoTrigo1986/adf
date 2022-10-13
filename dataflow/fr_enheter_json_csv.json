@@ -1,5 +1,5 @@
 {
-	"name": "fr_enheter_json_csv_copy1",
+	"name": "fr_enheter_json_csv",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
