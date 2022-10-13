@@ -215,7 +215,7 @@
 								},
 								"sink": {
 									"name": "sisteInnsendteAarsregnskap",
-									"type": "DateTime"
+									"type": "Int32"
 								}
 							}
 						]
