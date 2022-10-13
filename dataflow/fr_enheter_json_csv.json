@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DelimitedText1",
+						"referenceName": "ds_enheter_csv",
 						"type": "DatasetReference"
 					},
 					"name": "EnheterCsv"
@@ -59,7 +59,7 @@
 				"EnheterSelectColumns derive(Navn = navn,",
 				"          {Org.nr} = organisasjonsnummer,",
 				"          {Org.form} = organisasjonsform.kode,",
-				"          Adresse = postadresse.adresse,",
+				"          Adresse = postadresse.adresse[0],",
 				"          {Kommune.nr.} = postadresse.kommunenummer,",
 				"          NACE1 = naeringskode1.kode,",
 				"          NACE2 = naeringskode2.kode,",
