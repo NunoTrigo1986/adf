@@ -26,12 +26,11 @@
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
+						"type": "DelimitedTextSink",
 						"formatSettings": {
-							"type": "JsonWriteSettings"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false
@@ -44,41 +43,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_enheter_foretakregister__json_blob",
+						"referenceName": "ds_enheter_csv",
 						"type": "DatasetReference"
 					}
 				]
-			},
-			{
-				"name": "fr_enheter_json_csv_copy1",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Copy enheter from foretaksregister",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "fr_enheter_json_csv",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
-				}
 			},
 			{
 				"name": "Copy underenheter from fr",
