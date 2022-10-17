@@ -1,0 +1,1868 @@
+{
+	"name": "GetData_SSB",
+	"properties": {
+		"activities": [
+			{
+				"name": "SSB_blob",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "POST",
+						"requestBody": "{\"query\":[{\"code\":\"Region\",\"selection\":{\"filter\":\"agg:KommSummer\",\"values\":[\"K-0301\"]}},{\"code\":\"ContentsCode\",\"selection\":{\"filter\":\"item\",\"values\":[\"Fodselsoverskudd4\",\"Nettoinnflytting9\"]}}],\"response\":{\"format\":\"json-stat2\"}}",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['class']"
+								},
+								"sink": {
+									"name": "class"
+								}
+							},
+							{
+								"source": {
+									"path": "$['label']"
+								},
+								"sink": {
+									"name": "label"
+								}
+							},
+							{
+								"source": {
+									"path": "$['source']"
+								},
+								"sink": {
+									"name": "source"
+								}
+							},
+							{
+								"source": {
+									"path": "$['updated']"
+								},
+								"sink": {
+									"name": "updated"
+								}
+							},
+							{
+								"source": {
+									"path": "$['id'][0]"
+								},
+								"sink": {
+									"name": "id']["
+								}
+							},
+							{
+								"source": {
+									"path": "$['size'][0]"
+								},
+								"sink": {
+									"name": "size']["
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Region']['label']"
+								},
+								"sink": {
+									"name": "dimension_Region_label"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Region']['category']['index']['K-0301']"
+								},
+								"sink": {
+									"name": "dimension_Region_category_index_K-0301"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Region']['category']['label']['K-0301']"
+								},
+								"sink": {
+									"name": "dimension_Region_category_label_K-0301"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Region']['link']['describedby'][0]['extension']['Region']"
+								},
+								"sink": {
+									"name": "Region"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['label']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_label"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['category']['index']['Fodselsoverskudd4']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_category_index_Fodselsoverskudd4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['category']['index']['Nettoinnflytting9']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_category_index_Nettoinnflytting9"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['category']['label']['Fodselsoverskudd4']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_category_label_Fodselsoverskudd4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['category']['label']['Nettoinnflytting9']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_category_label_Nettoinnflytting9"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['category']['unit']['Fodselsoverskudd4']['base']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_category_unit_Fodselsoverskudd4_base"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['category']['unit']['Fodselsoverskudd4']['decimals']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_category_unit_Fodselsoverskudd4_decimals"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['category']['unit']['Nettoinnflytting9']['base']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_category_unit_Nettoinnflytting9_base"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['ContentsCode']['category']['unit']['Nettoinnflytting9']['decimals']"
+								},
+								"sink": {
+									"name": "dimension_ContentsCode_category_unit_Nettoinnflytting9_decimals"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['label']"
+								},
+								"sink": {
+									"name": "dimension_Tid_label"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1997K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1997K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1998K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1998K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1998K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1998K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1998K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1998K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1998K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1998K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1999K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1999K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1999K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1999K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1999K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1999K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['1999K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_1999K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2000K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2000K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2000K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2000K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2000K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2000K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2000K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2000K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2001K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2001K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2001K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2001K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2001K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2001K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2001K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2001K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2002K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2002K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2002K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2002K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2002K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2002K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2002K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2002K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2003K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2003K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2003K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2003K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2003K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2003K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2003K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2003K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2004K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2004K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2004K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2004K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2004K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2004K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2004K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2004K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2005K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2005K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2005K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2005K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2005K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2005K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2005K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2005K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2006K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2006K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2006K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2006K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2006K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2006K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2006K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2006K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2007K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2007K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2007K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2007K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2007K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2007K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2007K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2007K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2008K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2008K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2008K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2008K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2008K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2008K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2008K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2008K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2009K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2009K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2009K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2009K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2009K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2009K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2009K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2009K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2010K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2010K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2010K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2010K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2010K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2010K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2010K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2010K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2011K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2011K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2011K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2011K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2011K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2011K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2011K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2011K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2012K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2012K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2012K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2012K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2012K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2012K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2012K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2012K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2013K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2013K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2013K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2013K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2013K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2013K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2013K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2013K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2014K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2014K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2014K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2014K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2014K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2014K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2014K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2014K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2015K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2015K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2015K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2015K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2015K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2015K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2015K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2015K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2016K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2016K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2016K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2016K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2016K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2016K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2016K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2016K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2017K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2017K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2017K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2017K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2017K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2017K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2017K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2017K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2018K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2018K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2018K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2018K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2018K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2018K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2018K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2018K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2019K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2019K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2019K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2019K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2019K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2019K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2019K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2019K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2020K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2020K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2020K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2020K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2020K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2020K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2020K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2020K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2021K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2021K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2021K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2021K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2021K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2021K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2021K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2021K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2022K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2022K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['index']['2022K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_index_2022K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1997K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1997K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1998K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1998K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1998K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1998K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1998K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1998K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1998K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1998K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1999K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1999K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1999K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1999K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1999K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1999K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['1999K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_1999K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2000K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2000K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2000K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2000K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2000K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2000K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2000K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2000K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2001K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2001K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2001K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2001K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2001K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2001K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2001K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2001K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2002K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2002K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2002K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2002K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2002K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2002K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2002K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2002K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2003K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2003K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2003K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2003K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2003K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2003K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2003K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2003K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2004K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2004K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2004K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2004K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2004K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2004K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2004K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2004K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2005K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2005K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2005K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2005K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2005K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2005K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2005K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2005K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2006K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2006K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2006K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2006K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2006K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2006K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2006K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2006K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2007K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2007K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2007K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2007K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2007K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2007K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2007K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2007K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2008K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2008K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2008K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2008K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2008K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2008K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2008K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2008K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2009K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2009K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2009K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2009K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2009K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2009K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2009K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2009K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2010K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2010K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2010K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2010K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2010K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2010K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2010K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2010K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2011K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2011K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2011K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2011K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2011K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2011K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2011K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2011K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2012K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2012K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2012K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2012K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2012K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2012K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2012K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2012K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2013K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2013K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2013K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2013K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2013K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2013K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2013K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2013K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2014K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2014K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2014K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2014K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2014K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2014K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2014K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2014K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2015K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2015K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2015K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2015K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2015K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2015K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2015K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2015K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2016K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2016K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2016K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2016K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2016K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2016K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2016K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2016K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2017K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2017K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2017K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2017K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2017K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2017K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2017K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2017K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2018K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2018K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2018K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2018K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2018K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2018K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2018K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2018K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2019K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2019K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2019K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2019K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2019K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2019K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2019K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2019K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2020K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2020K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2020K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2020K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2020K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2020K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2020K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2020K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2021K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2021K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2021K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2021K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2021K3']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2021K3"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2021K4']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2021K4"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2022K1']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2022K1"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dimension']['Tid']['category']['label']['2022K2']"
+								},
+								"sink": {
+									"name": "dimension_Tid_category_label_2022K2"
+								}
+							},
+							{
+								"source": {
+									"path": "$['value'][0]"
+								},
+								"sink": {
+									"name": "value']["
+								}
+							},
+							{
+								"source": {
+									"path": "$['role']['time'][0]"
+								},
+								"sink": {
+									"name": "role_time']["
+								}
+							},
+							{
+								"source": {
+									"path": "$['role']['metric'][0]"
+								},
+								"sink": {
+									"name": "role_metric']["
+								}
+							},
+							{
+								"source": {
+									"path": "$['role']['geo'][0]"
+								},
+								"sink": {
+									"name": "role_geo']["
+								}
+							},
+							{
+								"source": {
+									"path": "$['version']"
+								},
+								"sink": {
+									"name": "version"
+								}
+							},
+							{
+								"source": {
+									"path": "$['extension']['px']['infofile']"
+								},
+								"sink": {
+									"name": "infofile"
+								}
+							},
+							{
+								"source": {
+									"path": "$['extension']['px']['tableid']"
+								},
+								"sink": {
+									"name": "tableid"
+								}
+							},
+							{
+								"source": {
+									"path": "$['extension']['px']['decimals']"
+								},
+								"sink": {
+									"name": "extension_px_decimals"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "dt_rest_ssb",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_ssb_parquet",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
