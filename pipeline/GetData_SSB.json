@@ -26,12 +26,12 @@
 						}
 					},
 					"sink": {
-						"type": "ParquetSink",
+						"type": "JsonSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "ParquetWriteSettings"
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false,
@@ -1857,7 +1857,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_ssb_parquet",
+						"referenceName": "ds_ssb_json",
 						"type": "DatasetReference"
 					}
 				]
