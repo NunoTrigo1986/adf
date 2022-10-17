@@ -10,6 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "json.json",
+				"folderPath": "json",
 				"container": "ssb"
 			}
 		},
