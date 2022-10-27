@@ -12,7 +12,7 @@
 				"type": "AzureBlobStorageLocation",
 				"container": "finish"
 			},
-			"compressionCodec": "none"
+			"compressionCodec": "snappy"
 		},
 		"schema": []
 	}
