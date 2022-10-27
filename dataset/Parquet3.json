@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "finish.parquet",
 				"container": "finish"
 			},
 			"compressionCodec": "snappy"
