@@ -10,35 +10,30 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "ny.parquet",
 				"container": "start-test"
 			},
 			"compressionCodec": "snappy"
 		},
 		"schema": [
 			{
-				"name": "Date",
+				"name": "Dates",
 				"type": "TIMESTAMP_MICROS"
 			},
 			{
-				"name": "USFOMC=ECIX",
+				"name": "a",
 				"type": "DOUBLE"
 			},
 			{
-				"name": "SERATE=ECIX",
+				"name": "b",
 				"type": "DOUBLE"
 			},
 			{
-				"name": "NOINTR=ECIX",
+				"name": "c",
 				"type": "DOUBLE"
 			},
 			{
-				"name": "DKLENR=ECIX",
+				"name": "d",
 				"type": "DOUBLE"
-			},
-			{
-				"name": "__index_level_0__",
-				"type": "INT64"
 			}
 		]
 	}
