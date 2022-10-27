@@ -1,5 +1,5 @@
 {
-	"name": "Parquet2",
+	"name": "ny",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "mcrvpiraw",
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "rate_day.parquet",
-				"container": "test"
+				"fileName": "ny.parquet",
+				"container": "start-test"
 			},
 			"compressionCodec": "snappy"
 		},
