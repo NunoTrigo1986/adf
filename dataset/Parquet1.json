@@ -10,10 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "rate_day.parquet",
-				"container": "start-test"
+				"fileName": "original.parquet",
+				"container": "test"
 			},
-			"compressionCodec": "snappy"
+			"compressionCodec": "none"
 		},
 		"schema": [
 			{
