@@ -19,7 +19,15 @@
 					"name": "basefile"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Parquet3",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "union1"
@@ -50,7 +58,20 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> basefile",
-				"landingsource, basefile union(byName: true)~> union1"
+				"landingsource, basefile union(byName: true)~> union1",
+				"union1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          Date,",
+				"          us = {USFOMC=ECIX},",
+				"          se = {SERATE=ECIX},",
+				"          no = {NOINTR=ECIX},",
+				"          dk = {DKLENR=ECIX},",
+				"          {__index_level_0__}",
+				"     )) ~> sink1"
 			]
 		}
 	}
