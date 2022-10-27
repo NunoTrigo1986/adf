@@ -39,6 +39,9 @@
 				},
 				{
 					"name": "exists1"
+				},
+				{
+					"name": "samle"
 				}
 			],
 			"scriptLines": [
@@ -69,7 +72,8 @@
 				"signaturenew, signatureexisting exists(signaturenew@fingerprint == signatureexisting@fingerprint,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> exists1",
-				"exists1 sink(allowSchemaDrift: true,",
+				"exists1, existingparquet union(byName: true)~> samle",
+				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
 				"     skipDuplicateMapInputs: true,",
