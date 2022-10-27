@@ -1,0 +1,45 @@
+{
+	"name": "Parquet2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "mcrvpiraw",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "rate_day.parquet",
+				"container": "test"
+			},
+			"compressionCodec": "none"
+		},
+		"schema": [
+			{
+				"name": "Date",
+				"type": "TIMESTAMP_MICROS"
+			},
+			{
+				"name": "USFOMC=ECIX",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "SERATE=ECIX",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "NOINTR=ECIX",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "DKLENR=ECIX",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "__index_level_0__",
+				"type": "INT64"
+			}
+		]
+	}
+}
