@@ -1,0 +1,57 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Parquet1",
+						"type": "DatasetReference"
+					},
+					"name": "landingsource"
+				},
+				{
+					"dataset": {
+						"referenceName": "Parquet2",
+						"type": "DatasetReference"
+					},
+					"name": "basefile"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "union1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Date as timestamp,",
+				"          {USFOMC=ECIX} as double,",
+				"          {SERATE=ECIX} as double,",
+				"          {NOINTR=ECIX} as double,",
+				"          {DKLENR=ECIX} as double,",
+				"          {__index_level_0__} as long",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> landingsource",
+				"source(output(",
+				"          Date as timestamp,",
+				"          {USFOMC=ECIX} as double,",
+				"          {SERATE=ECIX} as double,",
+				"          {NOINTR=ECIX} as double,",
+				"          {DKLENR=ECIX} as double,",
+				"          {__index_level_0__} as long",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> basefile",
+				"landingsource, basefile union(byName: true)~> union1"
+			]
+		}
+	}
+}
