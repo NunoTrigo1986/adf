@@ -13,7 +13,7 @@
 				"fileName": "original.parquet",
 				"container": "test"
 			},
-			"compressionCodec": "none"
+			"compressionCodec": "snappy"
 		},
 		"schema": [
 			{
