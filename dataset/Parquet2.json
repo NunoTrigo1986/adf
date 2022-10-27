@@ -13,7 +13,7 @@
 				"fileName": "rate_day.parquet",
 				"container": "test"
 			},
-			"compressionCodec": "none"
+			"compressionCodec": "snappy"
 		},
 		"schema": [
 			{
