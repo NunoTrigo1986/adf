@@ -6,14 +6,14 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "original",
+						"referenceName": "ny",
 						"type": "DatasetReference"
 					},
 					"name": "newparquet"
 				},
 				{
 					"dataset": {
-						"referenceName": "ny",
+						"referenceName": "original",
 						"type": "DatasetReference"
 					},
 					"name": "existingparquet"
@@ -43,24 +43,22 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          Date as timestamp,",
-				"          {USFOMC=ECIX} as double,",
-				"          {SERATE=ECIX} as double,",
-				"          {NOINTR=ECIX} as double,",
-				"          {DKLENR=ECIX} as double,",
-				"          {__index_level_0__} as long",
+				"          Dates as timestamp,",
+				"          a as double,",
+				"          b as double,",
+				"          c as double,",
+				"          d as double",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> newparquet",
 				"source(output(",
-				"          Date as timestamp,",
-				"          {USFOMC=ECIX} as double,",
-				"          {SERATE=ECIX} as double,",
-				"          {NOINTR=ECIX} as double,",
-				"          {DKLENR=ECIX} as double,",
-				"          {__index_level_0__} as long",
+				"          Dates as timestamp,",
+				"          a as double,",
+				"          b as double,",
+				"          c as double,",
+				"          d as double",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -77,13 +75,11 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
-				"          Date,",
-				"          us = {USFOMC=ECIX},",
-				"          se = {SERATE=ECIX},",
-				"          no = {NOINTR=ECIX},",
-				"          dk = {DKLENR=ECIX},",
-				"          {__index_level_0__},",
-				"          fingerprint",
+				"          Dates,",
+				"          a,",
+				"          b,",
+				"          c,",
+				"          d",
 				"     )) ~> sink1"
 			]
 		}
