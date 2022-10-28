@@ -1,10 +1,10 @@
 {
-	"name": "pipeline1",
+	"name": "etl_eikon",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow11",
-				"type": "ExecuteDataFlow",
+				"name": "etl_eikon",
+				"type": "AzureFunctionActivity",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -15,15 +15,12 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "dataflow1",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
+					"functionName": "eikon-raw-etl-dm",
+					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_eikon_func",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
