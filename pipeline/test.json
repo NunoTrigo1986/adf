@@ -34,8 +34,8 @@
 				}
 			},
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
+				"name": "Set variable1",
+				"type": "SetVariable",
 				"dependsOn": [
 					{
 						"activity": "Lookup1",
@@ -46,40 +46,11 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"items": {
+					"variableName": "filename_ny",
+					"value": {
 						"value": "@activity('Lookup1').output.value",
 						"type": "Expression"
-					},
-					"isSequential": false,
-					"batchCount": 10,
-					"activities": [
-						{
-							"name": "filename_ny",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "filename_ny",
-								"value": {
-									"value": "@item().filename_ny",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "filename_original",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "filename_original",
-								"value": {
-									"value": "@item().filename_original",
-									"type": "Expression"
-								}
-							}
-						}
-					]
+					}
 				}
 			}
 		],
