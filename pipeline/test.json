@@ -29,7 +29,8 @@
 					"dataset": {
 						"referenceName": "ds_parameters_eikon",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],
