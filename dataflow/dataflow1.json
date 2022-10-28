@@ -88,11 +88,14 @@
 				"          {__index_level_0__} as long",
 				"     ),",
 				"     format: 'parquet',",
+				"     partitionFileNames:['CPI_mon_fact.parquet'],",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
