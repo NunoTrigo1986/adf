@@ -55,10 +55,6 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
 		},
-		"tr_eikon_stage1_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -119,8 +115,8 @@
 					"ls_ssb_properties_typeProperties_url": {
 						"value": "[parameters('ls_ssb_properties_typeProperties_url')]"
 					},
-					"tr_eikon_stage1_properties_typeProperties_scope": {
-						"value": "[parameters('tr_eikon_stage1_properties_typeProperties_scope')]"
+					"tr_eikon_etl_properties_typeProperties_scope": {
+						"value": "[parameters('tr_eikon_etl_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -139,9 +135,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"tr_eikon_etl_properties_typeProperties_scope": {
-						"value": "[parameters('tr_eikon_etl_properties_typeProperties_scope')]"
 					}
 				}
 			},

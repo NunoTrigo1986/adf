@@ -54,10 +54,6 @@
 		"tr_eikon_etl_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
-		},
-		"tr_eikon_stage1_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
 		}
 	},
 	"variables": {
@@ -956,8 +952,8 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Lookup1",
-						"type": "Lookup",
+						"name": "etl_eikon",
+						"type": "AzureFunctionActivity",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -968,90 +964,13 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "ds_parameters_eikon",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Lookup1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup1').output.value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "df_append_eikon",
-									"type": "ExecuteDataFlow",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataflow": {
-											"referenceName": "df_append_eikon",
-											"type": "DataFlowReference",
-											"parameters": {},
-											"datasetParameters": {
-												"newparquet": {
-													"ds_filename_ny": {
-														"value": "@item().filename_ny",
-														"type": "Expression"
-													}
-												},
-												"existingparquet": {
-													"ds_filename_original": {
-														"value": "@item().filename_original",
-														"type": "Expression"
-													}
-												},
-												"sink1": {
-													"ds_filename_original": {
-														"value": "@item().filename_original",
-														"type": "Expression"
-													}
-												}
-											}
-										},
-										"staging": {},
-										"compute": {
-											"coreCount": 8,
-											"computeType": "General"
-										},
-										"traceLevel": "Fine"
-									}
-								}
-							]
+							"functionName": "eikon-raw-etl-dm",
+							"method": "GET",
+							"headers": {}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_eikon_func",
+							"type": "LinkedServiceReference"
 						}
 					}
 				],
@@ -1062,8 +981,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_parameters_eikon')]",
-				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_eikon_func')]"
 			]
 		},
 		{
@@ -1521,45 +1439,14 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pl_etl_eikon",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
+				"runtimeState": "Stopped",
+				"pipelines": [],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/eikon/blobs/",
 					"blobPathEndsWith": "CPI_mon.parquet",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('tr_eikon_etl_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_etl_eikon')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tr_eikon_stage1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/eikon/blobs/",
-					"blobPathEndsWith": "GDP_1.parqet",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('tr_eikon_stage1_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
