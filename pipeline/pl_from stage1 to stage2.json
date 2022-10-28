@@ -1,5 +1,5 @@
 {
-	"name": "from stage1 to stage2",
+	"name": "pl_from stage1 to stage2",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "df_append_eikon",
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"newparquet": {
