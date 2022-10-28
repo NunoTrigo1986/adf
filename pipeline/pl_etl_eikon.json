@@ -107,6 +107,12 @@
 												"value": "@item().filename_original",
 												"type": "Expression"
 											}
+										},
+										"sink1": {
+											"finish": {
+												"value": "@item().filename_original",
+												"type": "Expression"
+											}
 										}
 									}
 								},
