@@ -7,21 +7,53 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "MCRVpipeline"
 		},
+		"ls_azure_functions_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ls_azure_functions'"
+		},
 		"ls_blob_eikon_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_blob_eikon'"
+		},
+		"ls_blob_ssb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_blob_ssb'"
+		},
+		"ls_eikon_func_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ls_eikon_func'"
 		},
 		"ls_mcrvpip_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_mcrvpip'"
 		},
+		"mcrvpiraw_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'mcrvpiraw'"
+		},
+		"ls_azure_functions_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://getssb.azurewebsites.net"
+		},
+		"ls_eikon_func_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://mcrvdatabase.azurewebsites.net"
+		},
+		"ls_foretaksregister_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.brreg.no/enhetsregisteret/oppslag/"
+		},
 		"ls_mcrvpip_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mcrvpip.dfs.core.windows.net/"
 		},
-		"Each time_properties_typeProperties_scope": {
+		"ls_ssb_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/automatiske_utløpslister_SO/providers/Microsoft.Storage/storageAccounts/souttrekk"
+			"defaultValue": "https://data.ssb.no/api/v0/"
+		},
+		"tr_eikon_etl_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
 		},
 		"containerUri": {
 			"type": "string",
@@ -50,21 +82,65 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"ls_azure_functions_functionKey": {
+						"value": "[parameters('ls_azure_functions_functionKey')]"
+					},
 					"ls_blob_eikon_connectionString": {
 						"value": "[parameters('ls_blob_eikon_connectionString')]"
+					},
+					"ls_blob_ssb_connectionString": {
+						"value": "[parameters('ls_blob_ssb_connectionString')]"
+					},
+					"ls_eikon_func_functionKey": {
+						"value": "[parameters('ls_eikon_func_functionKey')]"
 					},
 					"ls_mcrvpip_accountKey": {
 						"value": "[parameters('ls_mcrvpip_accountKey')]"
 					},
+					"mcrvpiraw_connectionString": {
+						"value": "[parameters('mcrvpiraw_connectionString')]"
+					},
+					"ls_azure_functions_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ls_azure_functions_properties_typeProperties_functionAppUrl')]"
+					},
+					"ls_eikon_func_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ls_eikon_func_properties_typeProperties_functionAppUrl')]"
+					},
+					"ls_foretaksregister_properties_typeProperties_url": {
+						"value": "[parameters('ls_foretaksregister_properties_typeProperties_url')]"
+					},
 					"ls_mcrvpip_properties_typeProperties_url": {
 						"value": "[parameters('ls_mcrvpip_properties_typeProperties_url')]"
 					},
-					"Each time_properties_typeProperties_scope": {
-						"value": "[parameters('Each time_properties_typeProperties_scope')]"
+					"ls_ssb_properties_typeProperties_url": {
+						"value": "[parameters('ls_ssb_properties_typeProperties_url')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "MCRVpipeline_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"tr_eikon_etl_properties_typeProperties_scope": {
+						"value": "[parameters('tr_eikon_etl_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'MCRVpipeline_ArmTemplate_0')]"
+			]
 		}
 	]
 }

@@ -7,27 +7,73 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "MCRVpipeline"
 		},
+		"ls_azure_functions_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ls_azure_functions'"
+		},
 		"ls_blob_eikon_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_blob_eikon'"
+		},
+		"ls_blob_ssb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_blob_ssb'"
+		},
+		"ls_eikon_func_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ls_eikon_func'"
 		},
 		"ls_mcrvpip_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_mcrvpip'"
 		},
+		"mcrvpiraw_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'mcrvpiraw'"
+		},
+		"ls_azure_functions_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://getssb.azurewebsites.net"
+		},
+		"ls_eikon_func_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://mcrvdatabase.azurewebsites.net"
+		},
+		"ls_foretaksregister_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.brreg.no/enhetsregisteret/oppslag/"
+		},
 		"ls_mcrvpip_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mcrvpip.dfs.core.windows.net/"
 		},
-		"Each time_properties_typeProperties_scope": {
+		"ls_ssb_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/automatiske_utløpslister_SO/providers/Microsoft.Storage/storageAccounts/souttrekk"
+			"defaultValue": "https://data.ssb.no/api/v0/"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_azure_functions')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ls_azure_functions_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_azure_functions_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_blob_eikon')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -37,6 +83,52 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('ls_blob_eikon_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_blob_ssb')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_blob_ssb_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_eikon_func')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('ls_eikon_func_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_eikon_func_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_foretaksregister')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('ls_foretaksregister_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -59,91 +151,63 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_SWAPS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/ls_ssb')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_mcrvpip",
-					"type": "LinkedServiceReference"
-				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "RestService",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "swaps.csv",
-						"fileSystem": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
+					"url": "[parameters('ls_ssb_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_mcrvpip')]"
-			]
+			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_eikon1_xlsx')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/mcrvpiraw')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_blob_eikon",
-					"type": "LinkedServiceReference"
-				},
 				"annotations": [],
-				"type": "Excel",
+				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"sheetName": "Sheet1",
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "eikon1.xlsx",
-						"container": "eikon"
-					},
-					"firstRowAsHeader": true
-				},
-				"schema": []
+					"connectionString": "[parameters('mcrvpiraw_connectionString')]"
+				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
-			]
+			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pl_ingest_Eikon')]",
+			"name": "[concat(parameters('factoryName'), '/ekstra-krefter')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 16,
+							"timeToLive": 10,
+							"cleanup": false
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/etl_eikon')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "check if the file exists",
-						"type": "Validation",
+						"name": "etl_eikon",
+						"type": "AzureFunctionActivity",
 						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "ds_eikon1_xlsx",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"timeout": "0.00:00:30",
-							"sleep": 10
-						}
-					},
-					{
-						"name": "Get file metadata",
-						"type": "GetMetadata",
-						"dependsOn": [
-							{
-								"activity": "check if the file exists",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -153,249 +217,13 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"dataset": {
-								"referenceName": "ds_eikon1_xlsx",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"columnCount"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							}
-						}
-					},
-					{
-						"name": "If Condition1",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "Get file metadata",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(activity('Get file metadata').output.columnCount, 8)",
-								"type": "Expression"
-							},
-							"ifFalseActivities": [
-								{
-									"name": "Web1",
-									"type": "WebActivity",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"url": "www.sapo.pt",
-										"method": "POST",
-										"headers": {},
-										"body": "bdfr"
-									}
-								}
-							],
-							"ifTrueActivities": [
-								{
-									"name": "Copy Eikon Data_copy1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.00:05:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "ExcelSource",
-											"storeSettings": {
-												"type": "AzureBlobStorageReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											}
-										},
-										"sink": {
-											"type": "DelimitedTextSink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											},
-											"formatSettings": {
-												"type": "DelimitedTextWriteSettings",
-												"quoteAllText": true,
-												"fileExtension": ".txt"
-											}
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"mappings": [
-												{
-													"source": {
-														"name": "Dates",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "Dates",
-														"type": "String",
-														"physicalType": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "OINOK3MD=",
-														"type": "Decimal",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "OINOK3MD=",
-														"type": "String",
-														"physicalType": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "NOKAB6O5Y=",
-														"type": "Decimal",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "NOKAB6O5Y=",
-														"type": "String",
-														"physicalType": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "NOKAB6O10Y=",
-														"type": "Decimal",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "NOKAB6O10Y=",
-														"type": "String",
-														"physicalType": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "NOKAB6O5YF1Y=",
-														"type": "Decimal",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "NOKAB6O5YF1Y=",
-														"type": "String",
-														"physicalType": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "NOKAB6O5YF2Y=",
-														"type": "Decimal",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "NOKAB6O5YF2Y=",
-														"type": "String",
-														"physicalType": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "NOKAB6O5YF3Y=",
-														"type": "Decimal",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "NOKAB6O5YF3Y=",
-														"type": "String",
-														"physicalType": "String"
-													}
-												},
-												{
-													"source": {
-														"name": "NOKAB6O5YF5Y=",
-														"type": "Decimal",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "NOKAB6O5YF5Y=",
-														"type": "String",
-														"physicalType": "String"
-													}
-												}
-											],
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ds_eikon1_xlsx",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "ds_SWAPS",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								},
-								{
-									"name": "Delet Source",
-									"type": "Delete",
-									"dependsOn": [
-										{
-											"activity": "Copy Eikon Data_copy1",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "ds_eikon1_xlsx",
-											"type": "DatasetReference",
-											"parameters": {}
-										},
-										"enableLogging": false,
-										"storeSettings": {
-											"type": "AzureBlobStorageReadSettings",
-											"recursive": true,
-											"enablePartitionDiscovery": false
-										}
-									}
-								}
-							]
+							"functionName": "eikon-raw-etl-dm",
+							"method": "GET",
+							"headers": {}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_eikon_func",
+							"type": "LinkedServiceReference"
 						}
 					}
 				],
@@ -406,40 +234,703 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_eikon1_xlsx')]",
-				"[concat(variables('factoryId'), '/datasets/ds_SWAPS')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_eikon_func')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "finish"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_enheter_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blob_eikon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/enheter"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('enheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "enheter",
+						"container": "foretaksregister"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Each time')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
+			"name": "[concat(parameters('factoryName'), '/ds_enheter_foretakregister_json_http')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_foretaksregister",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/enheter"
+				},
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pl_ingest_Eikon",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "BlobEventsTrigger",
+				"type": "Json",
 				"typeProperties": {
-					"blobPathBeginsWith": "/eikon/blobs/",
-					"blobPathEndsWith": "eikon1.xlsx",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('Each time_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "enheter/lastned"
+					},
+					"compression": {
+						"type": "gzip",
+						"level": "Optimal"
+					}
+				},
+				"schema": {}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pl_ingest_Eikon')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_foretaksregister')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_enheter_parquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blob_eikon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/enheter"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('enheter-',formatDatetime(utcnow(),'MM-yyy'),'.parquet')",
+							"type": "Expression"
+						},
+						"folderPath": "enheter",
+						"container": "foretaksregister"
+					},
+					"compressionCodec": "none"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_underenhenter_parquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blob_eikon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/underenheter"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.parquet')",
+							"type": "Expression"
+						},
+						"folderPath": "underenheter",
+						"container": "foretaksregister"
+					},
+					"compressionCodec": "none"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_underenheter_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blob_eikon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/underenheter"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "underenheter",
+						"container": "foretaksregister"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_underenheter_foretaksregister_json_http')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_foretaksregister",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/underenheter"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "underenheter/lastned"
+					},
+					"compression": {
+						"type": "gzip",
+						"level": "Optimal"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_foretaksregister')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ny')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "start-test"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Dates",
+						"type": "TIMESTAMP_MICROS"
+					},
+					{
+						"name": "a",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "b",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "c",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "d",
+						"type": "DOUBLE"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/original')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "original.parquet",
+						"container": "test"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Date",
+						"type": "TIMESTAMP_MICROS"
+					},
+					{
+						"name": "USFOMC=ECIX",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "SERATE=ECIX",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "NOINTR=ECIX",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "DKLENR=ECIX",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "__index_level_0__",
+						"type": "INT64"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/getData foretaksregister')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy enheter from foretaksregister",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['organisasjonsnummer']"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['navn']"
+										},
+										"sink": {
+											"name": "navn",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['organisasjonsform']['kode']"
+										},
+										"sink": {
+											"name": "organisasjonsform_kode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registreringsdatoEnhetsregisteret']"
+										},
+										"sink": {
+											"name": "registreringsdatoEnhetsregisteret",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registrertIMvaregisteret']"
+										},
+										"sink": {
+											"name": "registrertIMvaregisteret",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode1']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode1_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode2']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode2_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode3']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode3_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['antallAnsatte']"
+										},
+										"sink": {
+											"name": "antallAnsatte",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['forretningsadresse']['kommunenummer']"
+										},
+										"sink": {
+											"name": "kommunenummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['forretningsadresse']['adresse'][0]"
+										},
+										"sink": {
+											"name": "forretningsadresse_adresse'][",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['stiftelsesdato']"
+										},
+										"sink": {
+											"name": "stiftelsesdato",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sisteInnsendteAarsregnskap']"
+										},
+										"sink": {
+											"name": "sisteInnsendteAarsregnskap",
+											"type": "Int32"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_enheter_foretakregister_json_http",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_enheter_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy underenheter from fr",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['organisasjonsnummer']"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['navn']"
+										},
+										"sink": {
+											"name": "navn",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['organisasjonsform']['kode']"
+										},
+										"sink": {
+											"name": "organisasjonsform_kode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registreringsdatoEnhetsregisteret']"
+										},
+										"sink": {
+											"name": "registreringsdatoEnhetsregisteret",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registrertIMvaregisteret']"
+										},
+										"sink": {
+											"name": "registrertIMvaregisteret",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode1']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode1_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['antallAnsatte']"
+										},
+										"sink": {
+											"name": "antallAnsatte",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['overordnetEnhet']"
+										},
+										"sink": {
+											"name": "overordnetEnhet",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['oppstartsdato']"
+										},
+										"sink": {
+											"name": "oppstartsdato",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['beliggenhetsadresse']['kommunenummer']"
+										},
+										"sink": {
+											"name": "beliggenhetsadresse_kommunenummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['beliggenhetsadresse']['adresse'][0]"
+										},
+										"sink": {
+											"name": "beliggenhetsadresse_adresse'][",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode2']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode2_kode",
+											"type": "Double"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_underenheter_foretaksregister_json_http",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_underenheter_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "ssb",
+						"description": "hente data fra ssb",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": "HttpTrigger1",
+							"method": "GET",
+							"headers": {}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_azure_functions",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_enheter_foretakregister_json_http')]",
+				"[concat(variables('factoryId'), '/datasets/ds_enheter_csv')]",
+				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]",
+				"[concat(variables('factoryId'), '/datasets/ds_underenheter_csv')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_functions')]"
 			]
 		}
 	]

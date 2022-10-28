@@ -5,17 +5,41 @@
 		"factoryName": {
 			"value": "MCRVpipeline"
 		},
+		"ls_azure_functions_functionKey": {
+			"value": ""
+		},
 		"ls_blob_eikon_connectionString": {
+			"value": ""
+		},
+		"ls_blob_ssb_connectionString": {
+			"value": ""
+		},
+		"ls_eikon_func_functionKey": {
 			"value": ""
 		},
 		"ls_mcrvpip_accountKey": {
 			"value": ""
 		},
+		"mcrvpiraw_connectionString": {
+			"value": ""
+		},
+		"ls_azure_functions_properties_typeProperties_functionAppUrl": {
+			"value": "https://getssb.azurewebsites.net"
+		},
+		"ls_eikon_func_properties_typeProperties_functionAppUrl": {
+			"value": "https://mcrvdatabase.azurewebsites.net"
+		},
+		"ls_foretaksregister_properties_typeProperties_url": {
+			"value": "https://data.brreg.no/enhetsregisteret/oppslag/"
+		},
 		"ls_mcrvpip_properties_typeProperties_url": {
 			"value": "https://mcrvpip.dfs.core.windows.net/"
 		},
-		"Each time_properties_typeProperties_scope": {
-			"value": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/automatiske_utløpslister_SO/providers/Microsoft.Storage/storageAccounts/souttrekk"
+		"ls_ssb_properties_typeProperties_url": {
+			"value": "https://data.ssb.no/api/v0/"
+		},
+		"tr_eikon_etl_properties_typeProperties_scope": {
+			"value": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
 		}
 	}
 }
