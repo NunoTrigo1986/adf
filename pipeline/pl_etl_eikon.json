@@ -24,8 +24,8 @@
 				}
 			},
 			{
-				"name": "df_append_eikon",
-				"type": "ExecuteDataFlow",
+				"name": "Lookup1",
+				"type": "Lookup",
 				"dependsOn": [
 					{
 						"activity": "etl_eikon",
@@ -43,35 +43,114 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "df_append_eikon",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"newparquet": {
-								"filename_ny": {
-									"value": "@pipeline().parameters.filename_ny",
-									"type": "Expression"
-								}
-							},
-							"existingparquet": {
-								"filename_original": {
-									"value": "@pipeline().parameters.filename_original",
-									"type": "Expression"
-								}
-							},
-							"sink1": {
-								"filename_original": {
-									"value": "@pipeline().parameters.filename_original",
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_parameters_eikon",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "filename_ny",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "filename_original",
+								"value": {
+									"value": "@item().filename_original",
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "filename_original",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "filename_original",
+								"value": {
+									"value": "@item().filename_original",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "df_append_eikon",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "df_append_eikon",
+									"type": "DataFlowReference",
+									"datasetParameters": {
+										"newparquet": {
+											"filename_ny": {
+												"value": "@pipeline().parameters.filename_ny",
+												"type": "Expression"
+											}
+										},
+										"existingparquet": {
+											"filename_original": {
+												"value": "@pipeline().parameters.filename_original",
+												"type": "Expression"
+											}
+										},
+										"sink1": {
+											"filename_original": {
+												"value": "@pipeline().parameters.filename_original",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
 						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
+					]
 				}
 			}
 		],
