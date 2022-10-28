@@ -18,27 +18,35 @@
 		"schema": [
 			{
 				"name": "Date",
-				"type": "TIMESTAMP_MICROS"
+				"type": "INT96"
 			},
 			{
-				"name": "USFOMC=ECIX",
+				"name": "Policy_rate_daily",
 				"type": "DOUBLE"
 			},
 			{
-				"name": "SERATE=ECIX",
-				"type": "DOUBLE"
-			},
-			{
-				"name": "NOINTR=ECIX",
-				"type": "DOUBLE"
-			},
-			{
-				"name": "DKLENR=ECIX",
-				"type": "DOUBLE"
-			},
-			{
-				"name": "__index_level_0__",
+				"name": "country_key",
 				"type": "INT64"
+			},
+			{
+				"name": "indicator_key",
+				"type": "INT64"
+			},
+			{
+				"name": "periodicity_key",
+				"type": "INT64"
+			},
+			{
+				"name": "source_key",
+				"type": "INT64"
+			},
+			{
+				"name": "unit_key",
+				"type": "INT64"
+			},
+			{
+				"name": "fingerprint",
+				"type": "UTF8"
 			}
 		]
 	}

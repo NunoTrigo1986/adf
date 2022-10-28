@@ -17,24 +17,32 @@
 		},
 		"schema": [
 			{
-				"name": "Dates",
+				"name": "Date",
 				"type": "TIMESTAMP_MICROS"
 			},
 			{
-				"name": "a",
+				"name": "Policy_rate_daily",
 				"type": "DOUBLE"
 			},
 			{
-				"name": "b",
-				"type": "DOUBLE"
+				"name": "country_key",
+				"type": "INT64"
 			},
 			{
-				"name": "c",
-				"type": "DOUBLE"
+				"name": "indicator_key",
+				"type": "INT64"
 			},
 			{
-				"name": "d",
-				"type": "DOUBLE"
+				"name": "periodicity_key",
+				"type": "INT64"
+			},
+			{
+				"name": "source_key",
+				"type": "INT64"
+			},
+			{
+				"name": "unit_key",
+				"type": "INT64"
 			}
 		]
 	}
