@@ -82,10 +82,10 @@
 			}
 		],
 		"variables": {
-			"pip_filename_ny": {
+			"pip_filename_original": {
 				"type": "String"
 			},
-			"pip_filename_original": {
+			"pip_filename_ny": {
 				"type": "String"
 			}
 		},
