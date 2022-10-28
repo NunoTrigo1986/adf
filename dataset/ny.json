@@ -5,12 +5,20 @@
 			"referenceName": "mcrvpiraw",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"filename_ny": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "CPI_mon_fact.parquet",
+				"fileName": {
+					"value": "@dataset().filename_ny",
+					"type": "Expression"
+				},
 				"container": "stage1"
 			},
 			"compressionCodec": "snappy"

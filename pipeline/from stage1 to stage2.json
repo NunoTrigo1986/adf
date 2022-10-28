@@ -17,7 +17,53 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow1",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"newparquet": {
+								"filename_ny": {
+									"value": "@pipeline().parameters.filename_ny",
+									"type": "Expression"
+								}
+							},
+							"existingparquet": {
+								"filename_original": {
+									"value": "@pipeline().parameters.filename_original",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"filename_original": {
+									"value": "@pipeline().parameters.filename_original",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceParameters": {
+							"newparquet": {
+								"schemaLinkedService": {
+									"filename_ny": {
+										"value": "@pipeline().parameters.filename_ny",
+										"type": "Expression"
+									}
+								}
+							},
+							"existingparquet": {
+								"schemaLinkedService": {
+									"filename_original": {
+										"value": "@pipeline().parameters.filename_original",
+										"type": "Expression"
+									}
+								}
+							},
+							"sink1": {
+								"schemaLinkedService": {
+									"filename_original": {
+										"value": "@pipeline().parameters.filename_original",
+										"type": "Expression"
+									}
+								}
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
@@ -27,6 +73,14 @@
 				}
 			}
 		],
+		"parameters": {
+			"filename_ny": {
+				"type": "string"
+			},
+			"filename_original": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
