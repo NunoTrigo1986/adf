@@ -62,7 +62,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ETLeikon",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -78,7 +78,7 @@
 						"value": "@activity('Lookup1').output.value",
 						"type": "Expression"
 					},
-					"isSequential": true,
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "filename_ny",
@@ -125,19 +125,19 @@
 									"datasetParameters": {
 										"newparquet": {
 											"filename_ny": {
-												"value": "@pipeline().parameters.filename_ny",
+												"value": "@item().filename_ny",
 												"type": "Expression"
 											}
 										},
 										"existingparquet": {
 											"filename_original": {
-												"value": "@pipeline().parameters.filename_original",
+												"value": "@item().filename_original",
 												"type": "Expression"
 											}
 										},
 										"sink1": {
 											"filename_original": {
-												"value": "@pipeline().parameters.filename_original",
+												"value": "@item().filename_original",
 												"type": "Expression"
 											}
 										}
@@ -154,14 +154,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"filename_ny": {
-				"type": "string"
-			},
-			"filename_original": {
-				"type": "string"
-			}
-		},
 		"annotations": []
 	}
 }
