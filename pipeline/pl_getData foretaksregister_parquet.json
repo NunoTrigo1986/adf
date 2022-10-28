@@ -1,5 +1,5 @@
 {
-	"name": "getData foretaksregister_parquet",
+	"name": "pl_getData foretaksregister_parquet",
 	"properties": {
 		"activities": [
 			{
