@@ -479,6 +479,7 @@
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/eikon/blobs/",
+					"blobPathEndsWith": "CPI_mon.parquet",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('tr_eikon_etl_properties_typeProperties_scope')]",
 					"events": [
