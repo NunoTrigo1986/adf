@@ -107,9 +107,6 @@
 												"value": "@item().filename_original",
 												"type": "Expression"
 											}
-										},
-										"sink1": {
-											"ds_filename_original": "@item().filename_original"
 										}
 									}
 								},
