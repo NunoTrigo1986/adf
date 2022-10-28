@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "etl_eikon",
+					"referenceName": "pl_etl_eikon",
 					"type": "PipelineReference"
 				}
 			}
