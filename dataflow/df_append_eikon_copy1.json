@@ -42,10 +42,18 @@
 				},
 				{
 					"name": "samle"
+				},
+				{
+					"name": "MapDrifted1",
+					"description": "Creates an explicit mapping for each drifted column"
+				},
+				{
+					"name": "MapDrifted2",
+					"description": "Creates an explicit mapping for each drifted column"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(allowSchemaDrift: false,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> newparquet",
@@ -59,7 +67,7 @@
 				"          unit_key as long,",
 				"          fingerprint as string",
 				"     ),",
-				"     allowSchemaDrift: true,",
+				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> existingparquet",
@@ -69,6 +77,8 @@
 				"     negate:true,",
 				"     broadcast: 'auto')~> exists1",
 				"exists1, existingparquet union(byName: true)~> samle",
+				" derive() ~> MapDrifted1",
+				" derive() ~> MapDrifted2",
 				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
