@@ -58,7 +58,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "pip_filename_ny",
-								"value": ""
+								"value": {
+									"value": "@item().pip_filename_ny",
+									"type": "Expression"
+								}
 							}
 						},
 						{
@@ -68,7 +71,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "pip_filename_original",
-								"value": ""
+								"value": {
+									"value": "@item().pip_filename_original",
+									"type": "Expression"
+								}
 							}
 						}
 					]
