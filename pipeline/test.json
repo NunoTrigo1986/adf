@@ -34,8 +34,8 @@
 				}
 			},
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
+				"name": "ForEach1",
+				"type": "ForEach",
 				"dependsOn": [
 					{
 						"activity": "Lookup1",
@@ -46,22 +46,35 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "filename_ny",
-					"value": {
+					"items": {
 						"value": "@activity('Lookup1').output.value",
 						"type": "Expression"
-					}
+					},
+					"activities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "pip_filename_ny",
+								"value": ""
+							}
+						},
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "pip_filename_original",
+								"value": ""
+							}
+						}
+					]
 				}
 			}
 		],
-		"variables": {
-			"filename_ny": {
-				"type": "String"
-			},
-			"filename_original": {
-				"type": "String"
-			}
-		},
 		"annotations": []
 	}
 }
