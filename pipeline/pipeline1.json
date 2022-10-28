@@ -17,7 +17,18 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "df_append_eikon_copy1",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"newparquet": {
+								"ds_filename_ny": "CPI_mon_fact.parquet"
+							},
+							"existingparquet": {
+								"ds_filename_original": "CPI_mon_fact.parquet"
+							},
+							"sink1": {
+								"ds_filename_original": "CPI_mon_fact.parquet"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
