@@ -45,6 +45,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     name_output as string",
+				"}",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
@@ -62,7 +65,7 @@
 				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
-				"     partitionFileNames:['CPI_mon_fact.parquet'],",
+				"     partitionFileNames:[($name_output)],",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
