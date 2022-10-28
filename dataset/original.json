@@ -2,16 +2,16 @@
 	"name": "original",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "mcrvpiraw",
+			"referenceName": "ls_mcrvpip",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"fileName": "original.parquet",
-				"container": "test"
+				"type": "AzureBlobFSLocation",
+				"fileName": "CPI_mon_fact.parquet",
+				"fileSystem": "stage2"
 			},
 			"compressionCodec": "snappy"
 		},
