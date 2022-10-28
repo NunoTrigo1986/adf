@@ -59,7 +59,7 @@
 							"typeProperties": {
 								"variableName": "pip_filename_ny",
 								"value": {
-									"value": "@item().pip_filename_ny",
+									"value": "@item().filename_ny",
 									"type": "Expression"
 								}
 							}
@@ -72,7 +72,7 @@
 							"typeProperties": {
 								"variableName": "pip_filename_original",
 								"value": {
-									"value": "@item().pip_filename_original",
+									"value": "@item().filename_original",
 									"type": "Expression"
 								}
 							}
