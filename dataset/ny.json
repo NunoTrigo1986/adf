@@ -10,7 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "start-test"
+				"fileName": "CPI_mon_fact.parquet",
+				"container": "stage1"
 			},
 			"compressionCodec": "snappy"
 		},
