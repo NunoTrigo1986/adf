@@ -1,5 +1,5 @@
 {
-	"name": "ny",
+	"name": "ds_ny",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "mcrvpiraw",

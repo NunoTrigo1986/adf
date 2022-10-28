@@ -22,8 +22,67 @@
 					"referenceName": "ls_eikon_func",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "df_append_eikon",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "etl_eikon",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_append_eikon",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"newparquet": {
+								"filename_ny": {
+									"value": "@pipeline().parameters.filename_ny",
+									"type": "Expression"
+								}
+							},
+							"existingparquet": {
+								"filename_original": {
+									"value": "@pipeline().parameters.filename_original",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"filename_original": {
+									"value": "@pipeline().parameters.filename_original",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
+		"parameters": {
+			"filename_ny": {
+				"type": "string"
+			},
+			"filename_original": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
