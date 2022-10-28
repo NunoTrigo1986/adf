@@ -80,7 +80,7 @@
 					},
 					"activities": [
 						{
-							"name": "df_append_eikon",
+							"name": "df_append_eikon_ny",
 							"type": "ExecuteDataFlow",
 							"dependsOn": [],
 							"policy": {
@@ -93,7 +93,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataflow": {
-									"referenceName": "df_append_eikon",
+									"referenceName": "df_append_eikon_ny",
 									"type": "DataFlowReference",
 									"datasetParameters": {
 										"newparquet": {
@@ -109,10 +109,7 @@
 											}
 										},
 										"sink1": {
-											"ds_filename_original": {
-												"value": "@item().filename_original",
-												"type": "Expression"
-											}
+											"ds_filename_original": "@item().filename_original"
 										}
 									}
 								},

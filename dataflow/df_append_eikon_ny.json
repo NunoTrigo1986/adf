@@ -1,5 +1,5 @@
 {
-	"name": "df_append_eikon_copy1",
+	"name": "df_append_eikon_ny",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -79,15 +79,6 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
-				"     mapColumn(",
-				"          Date,",
-				"          Policy_rate_daily,",
-				"          country_key,",
-				"          indicator_key,",
-				"          periodicity_key,",
-				"          source_key,",
-				"          unit_key",
-				"     ),",
 				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
