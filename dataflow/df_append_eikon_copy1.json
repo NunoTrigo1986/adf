@@ -45,11 +45,11 @@
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: false,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> newparquet",
-				"source(allowSchemaDrift: false,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> existingparquet",
@@ -59,7 +59,7 @@
 				"     negate:true,",
 				"     broadcast: 'auto')~> exists1",
 				"exists1, existingparquet union(byName: true)~> samle",
-				"samle sink(allowSchemaDrift: false,",
+				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          Date as timestamp,",
