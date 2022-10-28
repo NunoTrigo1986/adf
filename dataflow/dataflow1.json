@@ -21,10 +21,6 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "Parquet3",
-						"type": "DatasetReference"
-					},
 					"name": "sink1"
 				}
 			],
@@ -35,7 +31,7 @@
 				},
 				{
 					"name": "signatureexisting",
-					"description": "__index_level_0__, fingerprint'"
+					"description": "__"
 				},
 				{
 					"name": "exists1"
@@ -46,22 +42,26 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          Dates as timestamp,",
-				"          a as double,",
-				"          b as double,",
-				"          c as double,",
-				"          d as double",
+				"          Date as timestamp,",
+				"          Policy_rate_daily as double,",
+				"          country_key as long,",
+				"          indicator_key as long,",
+				"          periodicity_key as long,",
+				"          source_key as long,",
+				"          unit_key as long",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> newparquet",
 				"source(output(",
-				"          Dates as timestamp,",
-				"          a as double,",
-				"          b as double,",
-				"          c as double,",
-				"          d as double",
+				"          Date as timestamp,",
+				"          Policy_rate_daily as double,",
+				"          country_key as long,",
+				"          indicator_key as long,",
+				"          periodicity_key as long,",
+				"          source_key as long,",
+				"          unit_key as long",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -75,7 +75,6 @@
 				"exists1, existingparquet union(byName: true)~> samle",
 				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'parquet',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
@@ -84,7 +83,8 @@
 				"          b,",
 				"          c,",
 				"          d",
-				"     )) ~> sink1"
+				"     ),",
+				"     format: 'parquet') ~> sink1"
 			]
 		}
 	}
