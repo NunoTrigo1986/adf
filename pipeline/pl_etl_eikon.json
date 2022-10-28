@@ -95,6 +95,12 @@
 								"dataflow": {
 									"referenceName": "df_append_eikon_ny",
 									"type": "DataFlowReference",
+									"parameters": {
+										"outputfile": {
+											"value": "'@{item().filename_ny}'",
+											"type": "Expression"
+										}
+									},
 									"datasetParameters": {
 										"newparquet": {
 											"ds_filename_ny": {
