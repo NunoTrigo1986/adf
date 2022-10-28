@@ -1,5 +1,5 @@
 {
-	"name": "original",
+	"name": "ds_original",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_mcrvpip",
