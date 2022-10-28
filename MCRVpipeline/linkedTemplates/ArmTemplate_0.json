@@ -50,6 +50,10 @@
 		"ls_ssb_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://data.ssb.no/api/v0/"
+		},
+		"tr_eikon_stage1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
 		}
 	},
 	"variables": {
@@ -179,6 +183,27 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/tr_eikon_stage1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/eikon/blobs/",
+					"blobPathEndsWith": "GDP_1.parqet",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('tr_eikon_stage1_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ekstra-krefter')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -199,7 +224,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/etl_eikon')]",
+			"name": "[concat(parameters('factoryName'), '/pl_etl_eikon')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -235,30 +260,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_eikon_func')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Parquet3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "mcrvpiraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "finish"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
 			]
 		},
 		{
@@ -359,6 +360,139 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_ny')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"ds_filename_ny": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().ds_filename_ny",
+							"type": "Expression"
+						},
+						"container": "stage1"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_original')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_mcrvpip",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"ds_filename_original": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().ds_filename_original",
+							"type": "Expression"
+						},
+						"fileSystem": "stage2"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Date",
+						"type": "INT96"
+					},
+					{
+						"name": "Policy_rate_daily",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "country_key",
+						"type": "INT64"
+					},
+					{
+						"name": "indicator_key",
+						"type": "INT64"
+					},
+					{
+						"name": "periodicity_key",
+						"type": "INT64"
+					},
+					{
+						"name": "source_key",
+						"type": "INT64"
+					},
+					{
+						"name": "unit_key",
+						"type": "INT64"
+					},
+					{
+						"name": "fingerprint",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mcrvpip')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_parameters_eikon')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "parameters_eikon_adf.json",
+						"container": "configs"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"filename_ny": {
+							"type": "string"
+						},
+						"filename_original": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_underenhenter_parquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -453,484 +587,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_foretaksregister')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ny')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "mcrvpiraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "start-test"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "Dates",
-						"type": "TIMESTAMP_MICROS"
-					},
-					{
-						"name": "a",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "b",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "c",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "d",
-						"type": "DOUBLE"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/original')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "mcrvpiraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "original.parquet",
-						"container": "test"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "Date",
-						"type": "TIMESTAMP_MICROS"
-					},
-					{
-						"name": "USFOMC=ECIX",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "SERATE=ECIX",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "NOINTR=ECIX",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "DKLENR=ECIX",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "__index_level_0__",
-						"type": "INT64"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/getData foretaksregister')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy enheter from foretaksregister",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['organisasjonsnummer']"
-										},
-										"sink": {
-											"name": "organisasjonsnummer",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['navn']"
-										},
-										"sink": {
-											"name": "navn",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['organisasjonsform']['kode']"
-										},
-										"sink": {
-											"name": "organisasjonsform_kode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['registreringsdatoEnhetsregisteret']"
-										},
-										"sink": {
-											"name": "registreringsdatoEnhetsregisteret",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['registrertIMvaregisteret']"
-										},
-										"sink": {
-											"name": "registrertIMvaregisteret",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"path": "$['naeringskode1']['kode']"
-										},
-										"sink": {
-											"name": "naeringskode1_kode",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"path": "$['naeringskode2']['kode']"
-										},
-										"sink": {
-											"name": "naeringskode2_kode",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"path": "$['naeringskode3']['kode']"
-										},
-										"sink": {
-											"name": "naeringskode3_kode",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"path": "$['antallAnsatte']"
-										},
-										"sink": {
-											"name": "antallAnsatte",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['forretningsadresse']['kommunenummer']"
-										},
-										"sink": {
-											"name": "kommunenummer",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['forretningsadresse']['adresse'][0]"
-										},
-										"sink": {
-											"name": "forretningsadresse_adresse'][",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['stiftelsesdato']"
-										},
-										"sink": {
-											"name": "stiftelsesdato",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['sisteInnsendteAarsregnskap']"
-										},
-										"sink": {
-											"name": "sisteInnsendteAarsregnskap",
-											"type": "Int32"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_enheter_foretakregister_json_http",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_enheter_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Copy underenheter from fr",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['organisasjonsnummer']"
-										},
-										"sink": {
-											"name": "organisasjonsnummer",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['navn']"
-										},
-										"sink": {
-											"name": "navn",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['organisasjonsform']['kode']"
-										},
-										"sink": {
-											"name": "organisasjonsform_kode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['registreringsdatoEnhetsregisteret']"
-										},
-										"sink": {
-											"name": "registreringsdatoEnhetsregisteret",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['registrertIMvaregisteret']"
-										},
-										"sink": {
-											"name": "registrertIMvaregisteret",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"path": "$['naeringskode1']['kode']"
-										},
-										"sink": {
-											"name": "naeringskode1_kode",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"path": "$['antallAnsatte']"
-										},
-										"sink": {
-											"name": "antallAnsatte",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['overordnetEnhet']"
-										},
-										"sink": {
-											"name": "overordnetEnhet",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['oppstartsdato']"
-										},
-										"sink": {
-											"name": "oppstartsdato",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['beliggenhetsadresse']['kommunenummer']"
-										},
-										"sink": {
-											"name": "beliggenhetsadresse_kommunenummer",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['beliggenhetsadresse']['adresse'][0]"
-										},
-										"sink": {
-											"name": "beliggenhetsadresse_adresse'][",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['naeringskode2']['kode']"
-										},
-										"sink": {
-											"name": "naeringskode2_kode",
-											"type": "Double"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_underenheter_foretaksregister_json_http",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_underenheter_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "ssb",
-						"description": "hente data fra ssb",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "HttpTrigger1",
-							"method": "GET",
-							"headers": {}
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_azure_functions",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_enheter_foretakregister_json_http')]",
-				"[concat(variables('factoryId'), '/datasets/ds_enheter_csv')]",
-				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]",
-				"[concat(variables('factoryId'), '/datasets/ds_underenheter_csv')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_azure_functions')]"
 			]
 		}
 	]

@@ -54,6 +54,10 @@
 		"tr_eikon_etl_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
+		},
+		"tr_eikon_stage1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
 		}
 	},
 	"variables": {
@@ -61,7 +65,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/etl_eikon')]",
+			"name": "[concat(parameters('factoryName'), '/pl_etl_eikon')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -100,7 +104,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/getData foretaksregister')]",
+			"name": "[concat(parameters('factoryName'), '/pl_getData foretaksregister')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -483,7 +487,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/getData foretaksregister_parquet')]",
+			"name": "[concat(parameters('factoryName'), '/pl_getData foretaksregister_parquet')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -838,27 +842,120 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Parquet3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "mcrvpiraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "finish"
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "ds_parameters_eikon",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
 					},
-					"compressionCodec": "snappy"
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "df_append_eikon",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "df_append_eikon",
+											"type": "DataFlowReference",
+											"parameters": {},
+											"datasetParameters": {
+												"newparquet": {
+													"ds_filename_ny": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
+												},
+												"existingparquet": {
+													"ds_filename_original": {
+														"value": "@item().filename_original",
+														"type": "Expression"
+													}
+												},
+												"sink1": {
+													"ds_filename_original": {
+														"value": "@item().filename_original",
+														"type": "Expression"
+													}
+												}
+											}
+										},
+										"staging": {},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
 				},
-				"schema": []
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+				"[concat(variables('factoryId'), '/datasets/ds_parameters_eikon')]",
+				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
 			]
 		},
 		{
@@ -959,6 +1056,139 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_ny')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"ds_filename_ny": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().ds_filename_ny",
+							"type": "Expression"
+						},
+						"container": "stage1"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_original')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_mcrvpip",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"ds_filename_original": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().ds_filename_original",
+							"type": "Expression"
+						},
+						"fileSystem": "stage2"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Date",
+						"type": "INT96"
+					},
+					{
+						"name": "Policy_rate_daily",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "country_key",
+						"type": "INT64"
+					},
+					{
+						"name": "indicator_key",
+						"type": "INT64"
+					},
+					{
+						"name": "periodicity_key",
+						"type": "INT64"
+					},
+					{
+						"name": "source_key",
+						"type": "INT64"
+					},
+					{
+						"name": "unit_key",
+						"type": "INT64"
+					},
+					{
+						"name": "fingerprint",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mcrvpip')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_parameters_eikon')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "parameters_eikon_adf.json",
+						"container": "configs"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"filename_ny": {
+							"type": "string"
+						},
+						"filename_original": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_underenhenter_parquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1053,101 +1283,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_foretaksregister')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ny')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "mcrvpiraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "start-test"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "Dates",
-						"type": "TIMESTAMP_MICROS"
-					},
-					{
-						"name": "a",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "b",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "c",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "d",
-						"type": "DOUBLE"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/original')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "mcrvpiraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "original.parquet",
-						"container": "test"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "Date",
-						"type": "TIMESTAMP_MICROS"
-					},
-					{
-						"name": "USFOMC=ECIX",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "SERATE=ECIX",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "NOINTR=ECIX",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "DKLENR=ECIX",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "__index_level_0__",
-						"type": "INT64"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
 			]
 		},
 		{
@@ -1273,6 +1408,58 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/tr_eikon_etl')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_etl_eikon",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/eikon/blobs/",
+					"blobPathEndsWith": "CPI_mon.parquet",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('tr_eikon_etl_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_etl_eikon')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tr_eikon_stage1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/eikon/blobs/",
+					"blobPathEndsWith": "GDP_1.parqet",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('tr_eikon_stage1_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ekstra-krefter')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -1293,7 +1480,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"name": "[concat(parameters('factoryName'), '/df_append_eikon')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1302,14 +1489,14 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "ny",
+								"referenceName": "ds_ny",
 								"type": "DatasetReference"
 							},
 							"name": "newparquet"
 						},
 						{
 							"dataset": {
-								"referenceName": "original",
+								"referenceName": "ds_original",
 								"type": "DatasetReference"
 							},
 							"name": "existingparquet"
@@ -1318,7 +1505,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "Parquet3",
+								"referenceName": "ds_original",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -1331,7 +1518,7 @@
 						},
 						{
 							"name": "signatureexisting",
-							"description": "__index_level_0__, fingerprint'"
+							"description": "__"
 						},
 						{
 							"name": "exists1"
@@ -1341,23 +1528,19 @@
 						}
 					],
 					"scriptLines": [
-						"source(output(",
-						"          Dates as timestamp,",
-						"          a as double,",
-						"          b as double,",
-						"          c as double,",
-						"          d as double",
-						"     ),",
-						"     allowSchemaDrift: true,",
+						"source(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> newparquet",
 						"source(output(",
-						"          Dates as timestamp,",
-						"          a as double,",
-						"          b as double,",
-						"          c as double,",
-						"          d as double",
+						"          Date as timestamp,",
+						"          Policy_rate_daily as double,",
+						"          country_key as long,",
+						"          indicator_key as long,",
+						"          periodicity_key as long,",
+						"          source_key as long,",
+						"          unit_key as long,",
+						"          fingerprint as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
@@ -1371,54 +1554,31 @@
 						"exists1, existingparquet union(byName: true)~> samle",
 						"samle sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     input(",
+						"          Date as timestamp,",
+						"          Policy_rate_daily as double,",
+						"          country_key as long,",
+						"          indicator_key as long,",
+						"          periodicity_key as long,",
+						"          source_key as long,",
+						"          unit_key as long,",
+						"          fingerprint as string",
+						"     ),",
 						"     format: 'parquet',",
+						"     partitionFileNames:['CPI_mon_fact.parquet'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          Dates,",
-						"          a,",
-						"          b,",
-						"          c,",
-						"          d",
-						"     )) ~> sink1"
+						"     saveOrder: 1,",
+						"     partitionBy('hash', 1)) ~> sink1"
 					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ny')]",
-				"[concat(variables('factoryId'), '/datasets/original')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet3')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tr_eikon_etl')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "etl_eikon",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/eikon/blobs/",
-					"blobPathEndsWith": "CPI_mon.parquet",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('tr_eikon_etl_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/etl_eikon')]"
+				"[concat(variables('factoryId'), '/datasets/ds_ny')]",
+				"[concat(variables('factoryId'), '/datasets/ds_original')]"
 			]
 		}
 	]

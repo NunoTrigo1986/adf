@@ -17,7 +17,384 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/getData foretaksregister_parquet')]",
+			"name": "[concat(parameters('factoryName'), '/pl_getData foretaksregister')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy enheter from foretaksregister",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['organisasjonsnummer']"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['navn']"
+										},
+										"sink": {
+											"name": "navn",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['organisasjonsform']['kode']"
+										},
+										"sink": {
+											"name": "organisasjonsform_kode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registreringsdatoEnhetsregisteret']"
+										},
+										"sink": {
+											"name": "registreringsdatoEnhetsregisteret",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registrertIMvaregisteret']"
+										},
+										"sink": {
+											"name": "registrertIMvaregisteret",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode1']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode1_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode2']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode2_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode3']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode3_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['antallAnsatte']"
+										},
+										"sink": {
+											"name": "antallAnsatte",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['forretningsadresse']['kommunenummer']"
+										},
+										"sink": {
+											"name": "kommunenummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['forretningsadresse']['adresse'][0]"
+										},
+										"sink": {
+											"name": "forretningsadresse_adresse'][",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['stiftelsesdato']"
+										},
+										"sink": {
+											"name": "stiftelsesdato",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sisteInnsendteAarsregnskap']"
+										},
+										"sink": {
+											"name": "sisteInnsendteAarsregnskap",
+											"type": "Int32"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_enheter_foretakregister_json_http",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_enheter_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy underenheter from fr",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['organisasjonsnummer']"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['navn']"
+										},
+										"sink": {
+											"name": "navn",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['organisasjonsform']['kode']"
+										},
+										"sink": {
+											"name": "organisasjonsform_kode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registreringsdatoEnhetsregisteret']"
+										},
+										"sink": {
+											"name": "registreringsdatoEnhetsregisteret",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registrertIMvaregisteret']"
+										},
+										"sink": {
+											"name": "registrertIMvaregisteret",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode1']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode1_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['antallAnsatte']"
+										},
+										"sink": {
+											"name": "antallAnsatte",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['overordnetEnhet']"
+										},
+										"sink": {
+											"name": "overordnetEnhet",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['oppstartsdato']"
+										},
+										"sink": {
+											"name": "oppstartsdato",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['beliggenhetsadresse']['kommunenummer']"
+										},
+										"sink": {
+											"name": "beliggenhetsadresse_kommunenummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['beliggenhetsadresse']['adresse'][0]"
+										},
+										"sink": {
+											"name": "beliggenhetsadresse_adresse'][",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode2']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode2_kode",
+											"type": "Double"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_underenheter_foretaksregister_json_http",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_underenheter_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "ssb",
+						"description": "hente data fra ssb",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": "HttpTrigger1",
+							"method": "GET",
+							"headers": {}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_azure_functions",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_getData foretaksregister_parquet')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -367,100 +744,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "ny",
-								"type": "DatasetReference"
-							},
-							"name": "newparquet"
-						},
-						{
-							"dataset": {
-								"referenceName": "original",
-								"type": "DatasetReference"
-							},
-							"name": "existingparquet"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "Parquet3",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "signaturenew",
-							"description": "__index_level_0__, fingerprint'"
-						},
-						{
-							"name": "signatureexisting",
-							"description": "__index_level_0__, fingerprint'"
-						},
-						{
-							"name": "exists1"
-						},
-						{
-							"name": "samle"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Dates as timestamp,",
-						"          a as double,",
-						"          b as double,",
-						"          c as double,",
-						"          d as double",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false,",
-						"     format: 'parquet') ~> newparquet",
-						"source(output(",
-						"          Dates as timestamp,",
-						"          a as double,",
-						"          b as double,",
-						"          c as double,",
-						"          d as double",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false,",
-						"     format: 'parquet') ~> existingparquet",
-						"newparquet derive(fingerprint = sha2(256,columns())) ~> signaturenew",
-						"existingparquet derive(fingerprint = sha2(256,columns())) ~> signatureexisting",
-						"signaturenew, signatureexisting exists(signaturenew@fingerprint == signatureexisting@fingerprint,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> exists1",
-						"exists1, existingparquet union(byName: true)~> samle",
-						"samle sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'parquet',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          Dates,",
-						"          a,",
-						"          b,",
-						"          c,",
-						"          d",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/tr_eikon_etl')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -470,7 +753,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "etl_eikon",
+							"referenceName": "pl_etl_eikon",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -488,6 +771,221 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_append_eikon')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_ny",
+								"type": "DatasetReference"
+							},
+							"name": "newparquet"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_original",
+								"type": "DatasetReference"
+							},
+							"name": "existingparquet"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_original",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "signaturenew",
+							"description": "__index_level_0__, fingerprint'"
+						},
+						{
+							"name": "signatureexisting",
+							"description": "__"
+						},
+						{
+							"name": "exists1"
+						},
+						{
+							"name": "samle"
+						}
+					],
+					"scriptLines": [
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> newparquet",
+						"source(output(",
+						"          Date as timestamp,",
+						"          Policy_rate_daily as double,",
+						"          country_key as long,",
+						"          indicator_key as long,",
+						"          periodicity_key as long,",
+						"          source_key as long,",
+						"          unit_key as long,",
+						"          fingerprint as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> existingparquet",
+						"newparquet derive(fingerprint = sha2(256,columns())) ~> signaturenew",
+						"existingparquet derive(fingerprint = sha2(256,columns())) ~> signatureexisting",
+						"signaturenew, signatureexisting exists(signaturenew@fingerprint == signatureexisting@fingerprint,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> exists1",
+						"exists1, existingparquet union(byName: true)~> samle",
+						"samle sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Date as timestamp,",
+						"          Policy_rate_daily as double,",
+						"          country_key as long,",
+						"          indicator_key as long,",
+						"          periodicity_key as long,",
+						"          source_key as long,",
+						"          unit_key as long,",
+						"          fingerprint as string",
+						"     ),",
+						"     format: 'parquet',",
+						"     partitionFileNames:['CPI_mon_fact.parquet'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "ds_parameters_eikon",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "df_append_eikon",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "df_append_eikon",
+											"type": "DataFlowReference",
+											"parameters": {},
+											"datasetParameters": {
+												"newparquet": {
+													"ds_filename_ny": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
+												},
+												"existingparquet": {
+													"ds_filename_original": {
+														"value": "@item().filename_original",
+														"type": "Expression"
+													}
+												},
+												"sink1": {
+													"ds_filename_original": {
+														"value": "@item().filename_original",
+														"type": "Expression"
+													}
+												}
+											}
+										},
+										"staging": {},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
+			]
 		}
 	]
 }
