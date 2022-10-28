@@ -75,6 +75,14 @@
 				}
 			}
 		],
+		"variables": {
+			"pip_filename_ny": {
+				"type": "String"
+			},
+			"pip_filename_original": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
