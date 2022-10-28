@@ -50,10 +50,11 @@
 						"value": "@activity('Lookup1').output.value",
 						"type": "Expression"
 					},
-					"isSequential": true,
+					"isSequential": false,
+					"batchCount": 10,
 					"activities": [
 						{
-							"name": "Set variable1",
+							"name": "filename_ny",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
@@ -64,6 +65,19 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "filename_original",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "filename_original",
+								"value": {
+									"value": "@item().filename_original",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -71,6 +85,9 @@
 		],
 		"variables": {
 			"filename_ny": {
+				"type": "String"
+			},
+			"filename_original": {
 				"type": "String"
 			}
 		},
