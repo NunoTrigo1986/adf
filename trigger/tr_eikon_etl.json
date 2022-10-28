@@ -14,7 +14,7 @@
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/eikon/blobs/",
-			"blobPathEndsWith": "*country.parquet",
+			"blobPathEndsWith": "CPI_mon.parquet",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw",
 			"events": [
