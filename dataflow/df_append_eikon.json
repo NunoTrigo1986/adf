@@ -5,10 +5,6 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_ny",
-						"type": "DatasetReference"
-					},
 					"name": "newparquet"
 				},
 				{
@@ -55,9 +51,7 @@
 				"          unit_key as long",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     format: 'parquet') ~> newparquet",
+				"     validateSchema: false) ~> newparquet",
 				"source(output(",
 				"          Date as timestamp,",
 				"          Policy_rate_daily as double,",

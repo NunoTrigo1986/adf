@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"filename_original": {
+			"ds_filename_original": {
 				"type": "string"
 			}
 		},
@@ -16,7 +16,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@dataset().filename_original",
+					"value": "@dataset().ds_filename_original",
 					"type": "Expression"
 				},
 				"fileSystem": "stage2"
