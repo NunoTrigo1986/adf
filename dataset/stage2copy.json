@@ -8,6 +8,9 @@
 		"parameters": {
 			"stage2": {
 				"type": "string"
+			},
+			"date": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -20,7 +23,7 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@dataset().stage2",
+					"value": "@dataset().date",
 					"type": "Expression"
 				},
 				"fileSystem": "stage2"
