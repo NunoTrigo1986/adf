@@ -112,12 +112,24 @@
 											"ds_filename_original": {
 												"value": "@item().filename_original",
 												"type": "Expression"
+											},
+											"folder": {
+												"value": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')",
+												"type": "Expression"
 											}
 										},
 										"sink1": {
 											"finish": {
 												"value": "@item().filename_original",
 												"type": "Expression"
+											}
+										}
+									},
+									"linkedServiceParameters": {
+										"existingparquet": {
+											"schemaLinkedService": {
+												"ds_filename_original": "@item().filename_original",
+												"folder": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
 											}
 										}
 									}
