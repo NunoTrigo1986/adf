@@ -1,5 +1,5 @@
 {
-	"name": "Parquet1",
+	"name": "stage2copy",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_mcrvpip",
@@ -19,7 +19,10 @@
 					"value": "@dataset().stage2",
 					"type": "Expression"
 				},
-				"folderPath": "{year}/{month}/{day}",
+				"folderPath": {
+					"value": "@dataset().stage2",
+					"type": "Expression"
+				},
 				"fileSystem": "stage2"
 			},
 			"compressionCodec": "snappy"
