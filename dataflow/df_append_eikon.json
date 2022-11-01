@@ -46,7 +46,7 @@
 			],
 			"scriptLines": [
 				"parameters{",
-				"     output as string ($output)",
+				"     Output as string",
 				"}",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -65,7 +65,7 @@
 				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
-				"     partitionFileNames:[($output)],",
+				"     partitionFileNames:[($Output)],",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
