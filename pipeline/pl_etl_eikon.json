@@ -80,31 +80,11 @@
 					},
 					"activities": [
 						{
-							"name": "df_append_eikon_ny",
-							"type": "ExecuteDataFlow",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"compute": {
-									"coreCount": 8,
-									"computeType": "General"
-								},
-								"traceLevel": "Fine"
-							}
-						},
-						{
 							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "df_append_eikon_ny",
+									"activity": "df_append_eikon",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -171,6 +151,44 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "df_append_eikon",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "df_append_eikon",
+									"type": "DataFlowReference",
+									"datasetParameters": {
+										"newparquet": {
+											"ds_filename_ny": {
+												"value": "@item().filename_ny",
+												"type": "Expression"
+											}
+										},
+										"existingparquet": {
+											"ds_filename_original": "@item().filename_original"
+										},
+										"sink1": {
+											"ds_filename_original": "@item().filename_ny"
+										}
+									}
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
 						}
 					]
 				}
