@@ -23,39 +23,6 @@
 			},
 			"compressionCodec": "snappy"
 		},
-		"schema": [
-			{
-				"name": "Date",
-				"type": "INT96"
-			},
-			{
-				"name": "Policy_rate_daily",
-				"type": "DOUBLE"
-			},
-			{
-				"name": "country_key",
-				"type": "INT64"
-			},
-			{
-				"name": "indicator_key",
-				"type": "INT64"
-			},
-			{
-				"name": "periodicity_key",
-				"type": "INT64"
-			},
-			{
-				"name": "source_key",
-				"type": "INT64"
-			},
-			{
-				"name": "unit_key",
-				"type": "INT64"
-			},
-			{
-				"name": "fingerprint",
-				"type": "UTF8"
-			}
-		]
+		"schema": []
 	}
 }
