@@ -190,11 +190,15 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "Parquet1",
+									"referenceName": "stage2copy",
 									"type": "DatasetReference",
 									"parameters": {
 										"stage2": {
 											"value": "@item().filename_original",
+											"type": "Expression"
+										},
+										"date": {
+											"value": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')",
 											"type": "Expression"
 										}
 									}
