@@ -97,7 +97,7 @@
 									"type": "DataFlowReference",
 									"parameters": {
 										"outputfile": {
-											"value": "'@{item().filename_ny}'",
+											"value": "'@{item().filename_original}'",
 											"type": "Expression"
 										}
 									},
