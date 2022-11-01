@@ -1,5 +1,5 @@
 {
-	"name": "historie",
+	"name": "ds_historie",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "mcrvpiraw",
@@ -12,6 +12,9 @@
 			"folder": {
 				"type": "string"
 			}
+		},
+		"folder": {
+			"name": "eikon"
 		},
 		"annotations": [],
 		"type": "Parquet",
