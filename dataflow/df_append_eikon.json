@@ -45,9 +45,6 @@
 				}
 			],
 			"scriptLines": [
-				"parameters{",
-				"     Output as string",
-				"}",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
@@ -65,7 +62,7 @@
 				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
-				"     partitionFileNames:[($Output)],",
+				"     partitionFileNames:[''],",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
