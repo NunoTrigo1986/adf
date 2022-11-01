@@ -46,7 +46,7 @@
 			],
 			"scriptLines": [
 				"parameters{",
-				"     output as string",
+				"     output as string ($output)",
 				"}",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
