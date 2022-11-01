@@ -1,0 +1,62 @@
+{
+	"name": "Parquet1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_mcrvpip",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"stage2": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().stage2",
+					"type": "Expression"
+				},
+				"folderPath": "{year}/{month}/{day}",
+				"fileSystem": "stage2"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "CPI_month",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "Date",
+				"type": "TIMESTAMP_MICROS"
+			},
+			{
+				"name": "country_key",
+				"type": "INT64"
+			},
+			{
+				"name": "indicator_key",
+				"type": "INT64"
+			},
+			{
+				"name": "periodicity_key",
+				"type": "INT64"
+			},
+			{
+				"name": "source_key",
+				"type": "INT64"
+			},
+			{
+				"name": "unit_key",
+				"type": "INT64"
+			},
+			{
+				"name": "day_key",
+				"type": "INT64"
+			}
+		]
+	}
+}
