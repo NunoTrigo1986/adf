@@ -1,0 +1,35 @@
+{
+	"name": "historie",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "mcrvpiraw",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			},
+			"folder": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": "stage2-history"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
