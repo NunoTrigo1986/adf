@@ -65,7 +65,7 @@
 				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
-				"     partitionFileNames:[''],",
+				"     partitionFileNames:[($output)],",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
