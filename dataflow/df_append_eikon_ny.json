@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_finish",
+						"referenceName": "ds_original",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -74,6 +74,16 @@
 				"exists1, existingparquet union(byName: true)~> samle",
 				"samle sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          Date as timestamp,",
+				"          Policy_rate_daily as double,",
+				"          country_key as long,",
+				"          indicator_key as long,",
+				"          periodicity_key as long,",
+				"          source_key as long,",
+				"          unit_key as long,",
+				"          fingerprint as string",
+				"     ),",
 				"     format: 'parquet',",
 				"     partitionFileNames:[($outputfile)],",
 				"     umask: 0022,",
