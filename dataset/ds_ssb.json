@@ -5,11 +5,6 @@
 			"referenceName": "mcrvpiraw",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"folder": {
-				"type": "string"
-			}
-		},
 		"folder": {
 			"name": "SSB"
 		},
