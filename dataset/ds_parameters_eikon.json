@@ -5,6 +5,9 @@
 			"referenceName": "mcrvpiraw",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "eikon"
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
