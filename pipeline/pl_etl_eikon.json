@@ -140,7 +140,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "historie",
+									"referenceName": "ds_historie",
 									"type": "DatasetReference",
 									"parameters": {
 										"filename": {
