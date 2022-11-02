@@ -1,0 +1,45 @@
+{
+	"name": "ds_ssb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "mcrvpiraw",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folder": {
+				"type": "string",
+				"defaultValue": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+			}
+		},
+		"folder": {
+			"name": "SSB"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": "ssb"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "Fødselsoverskot",
+				"type": "INT64"
+			},
+			{
+				"name": "Nettoinnflytting, inkl. inn- og utvandring",
+				"type": "INT64"
+			},
+			{
+				"name": "kvartal",
+				"type": "UTF8"
+			}
+		]
+	}
+}
