@@ -788,21 +788,14 @@
 						}
 					],
 					"scriptLines": [
+						"parameters{",
+						"     output as string",
+						"}",
 						"source(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> newparquet",
-						"source(output(",
-						"          Date as timestamp,",
-						"          Policy_rate_daily as double,",
-						"          country_key as long,",
-						"          indicator_key as long,",
-						"          periodicity_key as long,",
-						"          source_key as long,",
-						"          unit_key as long,",
-						"          fingerprint as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
+						"source(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> existingparquet",
@@ -814,18 +807,8 @@
 						"exists1, existingparquet union(byName: true)~> samle",
 						"samle sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     input(",
-						"          Date as timestamp,",
-						"          Policy_rate_daily as double,",
-						"          country_key as long,",
-						"          indicator_key as long,",
-						"          periodicity_key as long,",
-						"          source_key as long,",
-						"          unit_key as long,",
-						"          fingerprint as string",
-						"     ),",
 						"     format: 'parquet',",
-						"     partitionFileNames:['CPI_mon_fact.parquet'],",
+						"     partitionFileNames:[($output)],",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
@@ -924,6 +907,79 @@
 							},
 							"activities": [
 								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "df_append_eikon",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_original",
+											"type": "DatasetReference",
+											"parameters": {
+												"ds_filename_original": {
+													"value": "@item().filename_ny",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_historie",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item().filename_ny",
+													"type": "Expression"
+												},
+												"folder": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+											}
+										}
+									]
+								},
+								{
 									"name": "df_append_eikon",
 									"type": "ExecuteDataFlow",
 									"dependsOn": [],
@@ -939,7 +995,12 @@
 										"dataflow": {
 											"referenceName": "df_append_eikon",
 											"type": "DataFlowReference",
-											"parameters": {},
+											"parameters": {
+												"output": {
+													"value": "'@{item().filename_ny}'",
+													"type": "Expression"
+												}
+											},
 											"datasetParameters": {
 												"newparquet": {
 													"ds_filename_ny": {
@@ -948,16 +1009,10 @@
 													}
 												},
 												"existingparquet": {
-													"ds_filename_original": {
-														"value": "@item().filename_original",
-														"type": "Expression"
-													}
+													"ds_filename_original": "@item().filename_original"
 												},
 												"sink1": {
-													"ds_filename_original": {
-														"value": "@item().filename_original",
-														"type": "Expression"
-													}
+													"ds_filename_original": "@item().filename_ny"
 												}
 											}
 										},

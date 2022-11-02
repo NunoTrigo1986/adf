@@ -224,45 +224,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/test')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "etl_eikon",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "eikon-raw-etl-dm",
-							"method": "GET",
-							"headers": {}
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_eikon_func",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_eikon_func')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ds_enheter_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -360,6 +321,49 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_historie')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					},
+					"folder": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "eikon"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "stage2-history"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_ny')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -372,6 +376,9 @@
 					"ds_filename_ny": {
 						"type": "string"
 					}
+				},
+				"folder": {
+					"name": "eikon"
 				},
 				"annotations": [],
 				"type": "Parquet",
@@ -406,6 +413,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "eikon"
+				},
 				"annotations": [],
 				"type": "Parquet",
 				"typeProperties": {
@@ -419,40 +429,7 @@
 					},
 					"compressionCodec": "snappy"
 				},
-				"schema": [
-					{
-						"name": "Date",
-						"type": "INT96"
-					},
-					{
-						"name": "Policy_rate_daily",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "country_key",
-						"type": "INT64"
-					},
-					{
-						"name": "indicator_key",
-						"type": "INT64"
-					},
-					{
-						"name": "periodicity_key",
-						"type": "INT64"
-					},
-					{
-						"name": "source_key",
-						"type": "INT64"
-					},
-					{
-						"name": "unit_key",
-						"type": "INT64"
-					},
-					{
-						"name": "fingerprint",
-						"type": "UTF8"
-					}
-				]
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_mcrvpip')]"
@@ -466,6 +443,9 @@
 				"linkedServiceName": {
 					"referenceName": "mcrvpiraw",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "eikon"
 				},
 				"annotations": [],
 				"type": "Json",
