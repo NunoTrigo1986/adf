@@ -1,0 +1,43 @@
+{
+	"name": "df_ssb",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_ssb",
+						"type": "DatasetReference"
+					},
+					"name": "ssbSource"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "columnHeaders",
+					"description": "delete spaces on column headers"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {Fødselsoverskot} as long,",
+				"          {Nettoinnflytting, inkl. inn- og utvandring} as long,",
+				"          kvartal as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet',",
+				"     wildcardPaths:[($date_folder)]) ~> ssbSource",
+				"ssbSource select(mapColumn(",
+				"          {Fødselsoverskot},",
+				"          {Nettoinnflytting, inkl. inn- og utvandring},",
+				"          kvartal",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> columnHeaders"
+			]
+		}
+	}
+}
