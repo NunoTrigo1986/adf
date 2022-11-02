@@ -12,7 +12,11 @@
 					"name": "ssbSource"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "columnHeaders",
@@ -34,7 +38,11 @@
 				"               regexReplace($$,'[^a-zA-Z]','_') = $$)",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> columnHeaders"
+				"     skipDuplicateMapOutputs: true) ~> columnHeaders",
+				"columnHeaders sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
