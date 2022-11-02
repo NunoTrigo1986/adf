@@ -7,8 +7,7 @@
 		},
 		"parameters": {
 			"folder": {
-				"type": "string",
-				"defaultValue": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+				"type": "string"
 			}
 		},
 		"folder": {
