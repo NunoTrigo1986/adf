@@ -42,6 +42,9 @@
 				},
 				{
 					"name": "samle"
+				},
+				{
+					"name": "eliminatefingertrips"
 				}
 			],
 			"scriptLines": [
@@ -62,7 +65,12 @@
 				"     negate:true,",
 				"     broadcast: 'auto')~> exists1",
 				"exists1, existingparquet union(byName: true)~> samle",
-				"samle sink(allowSchemaDrift: true,",
+				"samle select(mapColumn(",
+				"          each(match(name!='fingerprint'))",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> eliminatefingertrips",
+				"eliminatefingertrips sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
 				"     partitionFileNames:[($output)],",
@@ -72,9 +80,6 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
-				"     mapColumn(",
-				"          each(match( name != 'fingerprint'))",
-				"     ),",
 				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
