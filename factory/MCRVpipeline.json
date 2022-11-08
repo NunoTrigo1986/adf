@@ -1,0 +1,9 @@
+{
+	"name": "MCRVpipeline",
+	"location": "norwayeast",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "31604b1c-1db2-4900-bf87-b9cdc92eb80e",
+		"tenantId": "fbb674cf-bbb6-4c6f-a80b-ffaea3582768"
+	}
+}
