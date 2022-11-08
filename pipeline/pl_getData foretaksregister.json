@@ -351,8 +351,12 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"functionName": "HttpTrigger1",
+					"functionName": "ssb-etl",
 					"method": "GET"
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_eikon_etl",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
