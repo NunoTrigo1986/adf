@@ -5,16 +5,16 @@
 		"factoryName": {
 			"value": "MCRVpipeline"
 		},
-		"ls_azure_functions_functionKey": {
-			"value": ""
-		},
 		"ls_blob_eikon_connectionString": {
 			"value": ""
 		},
 		"ls_blob_ssb_connectionString": {
 			"value": ""
 		},
-		"ls_eikon_func_functionKey": {
+		"ls_dl_enheter_accountKey": {
+			"value": ""
+		},
+		"ls_eikon_etl_functionKey": {
 			"value": ""
 		},
 		"ls_mcrvpip_accountKey": {
@@ -23,11 +23,11 @@
 		"mcrvpiraw_connectionString": {
 			"value": ""
 		},
-		"ls_azure_functions_properties_typeProperties_functionAppUrl": {
-			"value": "https://getssb.azurewebsites.net"
+		"ls_dl_enheter_properties_typeProperties_url": {
+			"value": "https://mcrvpip.dfs.core.windows.net/"
 		},
-		"ls_eikon_func_properties_typeProperties_functionAppUrl": {
-			"value": "https://mcrvdatabase.azurewebsites.net"
+		"ls_eikon_etl_properties_typeProperties_functionAppUrl": {
+			"value": "https://mcrv.azurewebsites.net"
 		},
 		"ls_foretaksregister_properties_typeProperties_url": {
 			"value": "https://data.brreg.no/enhetsregisteret/oppslag/"

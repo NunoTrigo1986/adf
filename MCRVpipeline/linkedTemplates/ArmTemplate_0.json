@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "MCRVpipeline"
 		},
-		"ls_azure_functions_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ls_azure_functions'"
-		},
 		"ls_blob_eikon_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_blob_eikon'"
@@ -19,9 +15,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_blob_ssb'"
 		},
-		"ls_eikon_func_functionKey": {
+		"ls_eikon_etl_functionKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ls_eikon_func'"
+			"metadata": "Secure string for 'functionKey' of 'ls_eikon_etl'"
 		},
 		"ls_mcrvpip_accountKey": {
 			"type": "secureString",
@@ -31,13 +27,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'mcrvpiraw'"
 		},
-		"ls_azure_functions_properties_typeProperties_functionAppUrl": {
+		"ls_eikon_etl_properties_typeProperties_functionAppUrl": {
 			"type": "string",
-			"defaultValue": "https://getssb.azurewebsites.net"
-		},
-		"ls_eikon_func_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://mcrvdatabase.azurewebsites.net"
+			"defaultValue": "https://mcrv.azurewebsites.net"
 		},
 		"ls_foretaksregister_properties_typeProperties_url": {
 			"type": "string",
@@ -60,24 +52,6 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_azure_functions')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('ls_azure_functions_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('ls_azure_functions_functionKey')]"
-					},
-					"authentication": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_blob_eikon')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -105,17 +79,17 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ls_eikon_func')]",
+			"name": "[concat(parameters('factoryName'), '/ls_eikon_etl')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "[parameters('ls_eikon_func_properties_typeProperties_functionAppUrl')]",
+					"functionAppUrl": "[parameters('ls_eikon_etl_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
-						"value": "[parameters('ls_eikon_func_functionKey')]"
+						"value": "[parameters('ls_eikon_etl_functionKey')]"
 					},
 					"authentication": "Anonymous"
 				}
@@ -222,6 +196,30 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_mcrvpip",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "stage2-ssb"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mcrvpip')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ds_enheter_csv')]",
@@ -473,6 +471,48 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_ssb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "table_01222.parquet",
+						"folderPath": {
+							"value": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')",
+							"type": "Expression"
+						},
+						"container": "ssb"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Fødselsoverskot",
+						"type": "INT64"
+					},
+					{
+						"name": "Nettoinnflytting, inkl. inn- og utvandring",
+						"type": "INT64"
+					},
+					{
+						"name": "kvartal",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_underenhenter_parquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -537,36 +577,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_underenheter_foretaksregister_json_http')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_foretaksregister",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Foretaksregister/underenheter"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "HttpServerLocation",
-						"relativeUrl": "underenheter/lastned"
-					},
-					"compression": {
-						"type": "gzip",
-						"level": "Optimal"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_foretaksregister')]"
 			]
 		}
 	]

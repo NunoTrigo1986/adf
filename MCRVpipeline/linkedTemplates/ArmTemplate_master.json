@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "MCRVpipeline"
 		},
-		"ls_azure_functions_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ls_azure_functions'"
-		},
 		"ls_blob_eikon_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_blob_eikon'"
@@ -19,9 +15,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_blob_ssb'"
 		},
-		"ls_eikon_func_functionKey": {
+		"ls_dl_enheter_accountKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'ls_eikon_func'"
+			"metadata": "Secure string for 'accountKey' of 'ls_dl_enheter'"
+		},
+		"ls_eikon_etl_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ls_eikon_etl'"
 		},
 		"ls_mcrvpip_accountKey": {
 			"type": "secureString",
@@ -31,13 +31,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'mcrvpiraw'"
 		},
-		"ls_azure_functions_properties_typeProperties_functionAppUrl": {
+		"ls_dl_enheter_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://getssb.azurewebsites.net"
+			"defaultValue": "https://mcrvpip.dfs.core.windows.net/"
 		},
-		"ls_eikon_func_properties_typeProperties_functionAppUrl": {
+		"ls_eikon_etl_properties_typeProperties_functionAppUrl": {
 			"type": "string",
-			"defaultValue": "https://mcrvdatabase.azurewebsites.net"
+			"defaultValue": "https://mcrv.azurewebsites.net"
 		},
 		"ls_foretaksregister_properties_typeProperties_url": {
 			"type": "string",
@@ -82,17 +82,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"ls_azure_functions_functionKey": {
-						"value": "[parameters('ls_azure_functions_functionKey')]"
-					},
 					"ls_blob_eikon_connectionString": {
 						"value": "[parameters('ls_blob_eikon_connectionString')]"
 					},
 					"ls_blob_ssb_connectionString": {
 						"value": "[parameters('ls_blob_ssb_connectionString')]"
 					},
-					"ls_eikon_func_functionKey": {
-						"value": "[parameters('ls_eikon_func_functionKey')]"
+					"ls_eikon_etl_functionKey": {
+						"value": "[parameters('ls_eikon_etl_functionKey')]"
 					},
 					"ls_mcrvpip_accountKey": {
 						"value": "[parameters('ls_mcrvpip_accountKey')]"
@@ -100,11 +97,8 @@
 					"mcrvpiraw_connectionString": {
 						"value": "[parameters('mcrvpiraw_connectionString')]"
 					},
-					"ls_azure_functions_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('ls_azure_functions_properties_typeProperties_functionAppUrl')]"
-					},
-					"ls_eikon_func_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('ls_eikon_func_properties_typeProperties_functionAppUrl')]"
+					"ls_eikon_etl_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ls_eikon_etl_properties_typeProperties_functionAppUrl')]"
 					},
 					"ls_foretaksregister_properties_typeProperties_url": {
 						"value": "[parameters('ls_foretaksregister_properties_typeProperties_url')]"
@@ -135,6 +129,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_dl_enheter_accountKey": {
+						"value": "[parameters('ls_dl_enheter_accountKey')]"
+					},
+					"ls_dl_enheter_properties_typeProperties_url": {
+						"value": "[parameters('ls_dl_enheter_properties_typeProperties_url')]"
 					}
 				}
 			},

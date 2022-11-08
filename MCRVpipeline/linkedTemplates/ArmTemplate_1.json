@@ -6,12 +6,69 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "MCRVpipeline"
+		},
+		"ls_dl_enheter_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_dl_enheter'"
+		},
+		"ls_dl_enheter_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://mcrvpip.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_underenheter_foretaksregister_json_http')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_foretaksregister",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/underenheter"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "underenheter/lastned"
+					},
+					"compression": {
+						"type": "gzip",
+						"level": "Optimal"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_dl_enheter')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_dl_enheter_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_dl_enheter_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "ekstra-krefter",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_getData foretaksregister')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -371,12 +428,12 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"functionName": "HttpTrigger1",
+							"functionName": "ssb-etl",
 							"method": "GET",
 							"headers": {}
 						},
 						"linkedServiceName": {
-							"referenceName": "ls_azure_functions",
+							"referenceName": "ls_eikon_etl",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -385,9 +442,12 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2022-10-28T11:53:46Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_getData foretaksregister_parquet')]",
@@ -735,9 +795,12 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2022-10-28T11:53:46Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/df_append_eikon')]",
@@ -815,6 +878,9 @@
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     saveOrder: 1,",
+						"     mapColumn(",
+						"          each(match(name!='fingerprint'))",
+						"     ),",
 						"     partitionBy('hash', 1)) ~> sink1"
 					]
 				}
@@ -840,12 +906,12 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"functionName": "eikon-raw-etl-dm",
+							"functionName": "eikon-etl",
 							"method": "GET",
 							"headers": {}
 						},
 						"linkedServiceName": {
-							"referenceName": "ls_eikon_func",
+							"referenceName": "ls_eikon_etl",
 							"type": "LinkedServiceReference"
 						}
 					},
@@ -1032,7 +1098,8 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2022-11-02T11:17:06Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
