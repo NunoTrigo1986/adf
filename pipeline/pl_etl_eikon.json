@@ -15,11 +15,11 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"functionName": "eikon-raw-etl-dm",
+					"functionName": "eikon-etl",
 					"method": "GET"
 				},
 				"linkedServiceName": {
-					"referenceName": "ls_eikon_func",
+					"referenceName": "ls_eikon_etl",
 					"type": "LinkedServiceReference"
 				}
 			},
