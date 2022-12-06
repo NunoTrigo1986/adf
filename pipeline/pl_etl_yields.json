@@ -101,13 +101,26 @@
 							"inputs": [
 								{
 									"referenceName": "ds_original_yields",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_filename_original": {
+											"value": "@item().filename_ny",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
 								{
 									"referenceName": "ds_historie_yields",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"filename": "@item().filename_ny",
+										"folder": {
+											"value": "@concat(formatDateTime(utcNow(),'yyyy'),'/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'),'/')",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						},
@@ -126,7 +139,13 @@
 							"typeProperties": {
 								"dataflow": {
 									"referenceName": "df_append_yields",
-									"type": "DataFlowReference"
+									"type": "DataFlowReference",
+									"parameters": {
+										"output": {
+											"value": "'@{item().filename_ny}'",
+											"type": "Expression"
+										}
+									}
 								},
 								"compute": {
 									"coreCount": 8,
