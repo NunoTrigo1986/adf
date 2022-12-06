@@ -343,7 +343,7 @@
 									"type": "Copy",
 									"dependsOn": [
 										{
-											"activity": "df_append_eikon",
+											"activity": "df_append_yields",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -387,7 +387,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "ds_original",
+											"referenceName": "ds_original_yields",
 											"type": "DatasetReference",
 											"parameters": {
 												"ds_filename_original": {
@@ -399,20 +399,20 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "ds_historie",
+											"referenceName": "ds_historie_yields",
 											"type": "DatasetReference",
 											"parameters": {
-												"filename": {
-													"value": "@item().filename_ny",
+												"filename": "@item().filename_ny",
+												"folder": {
+													"value": "@concat(formatDateTime(utcNow(),'yyyy'),'/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'),'/')",
 													"type": "Expression"
-												},
-												"folder": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+												}
 											}
 										}
 									]
 								},
 								{
-									"name": "df_append_eikon",
+									"name": "df_append_yields",
 									"type": "ExecuteDataFlow",
 									"dependsOn": [],
 									"policy": {
@@ -425,7 +425,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataflow": {
-											"referenceName": "df_append_eikon",
+											"referenceName": "df_append_yields",
 											"type": "DataFlowReference",
 											"parameters": {
 												"output": {
@@ -441,12 +441,19 @@
 													}
 												},
 												"existingparquet": {
-													"ds_filename_original": "@item().filename_original"
+													"ds_filename_original": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
 												},
 												"sink1": {
-													"ds_filename_original": "@item().filename_ny"
+													"ds_filename_original": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
 												}
-											}
+											},
+											"linkedServiceParameters": {}
 										},
 										"staging": {},
 										"compute": {
@@ -469,9 +476,9 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_parameters_yield')]",
-				"[concat(variables('factoryId'), '/datasets/ds_original')]",
-				"[concat(variables('factoryId'), '/datasets/ds_historie')]",
-				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
+				"[concat(variables('factoryId'), '/datasets/ds_original_yields')]",
+				"[concat(variables('factoryId'), '/datasets/ds_historie_yields')]",
+				"[concat(variables('factoryId'), '/dataflows/df_append_yields')]"
 			]
 		},
 		{
@@ -1411,7 +1418,7 @@
 							"value": "@dataset().folder",
 							"type": "Expression"
 						},
-						"container": "stage2-history"
+						"container": "yields-stage2-history"
 					},
 					"compressionCodec": "snappy"
 				},
@@ -1483,7 +1490,7 @@
 							"value": "@dataset().ds_filename_ny",
 							"type": "Expression"
 						},
-						"container": "stage1"
+						"container": "yields-stage1"
 					},
 					"compressionCodec": "snappy"
 				},
@@ -1555,7 +1562,7 @@
 							"value": "@dataset().ds_filename_original",
 							"type": "Expression"
 						},
-						"fileSystem": "stage2"
+						"fileSystem": "yields-stage2"
 					},
 					"compressionCodec": "snappy"
 				},
