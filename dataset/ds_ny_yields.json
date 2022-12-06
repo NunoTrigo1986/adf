@@ -1,0 +1,32 @@
+{
+	"name": "ds_ny_yields",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "mcrvpiraw",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ds_filename_ny": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Yields"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().ds_filename_ny",
+					"type": "Expression"
+				},
+				"container": "stage1"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
