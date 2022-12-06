@@ -56,7 +56,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "df_append_eikon",
+									"activity": "df_append_yields",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -100,32 +100,19 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_original",
-									"type": "DatasetReference",
-									"parameters": {
-										"ds_filename_original": {
-											"value": "@item().filename_ny",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "ds_original_yields",
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "ds_historie",
-									"type": "DatasetReference",
-									"parameters": {
-										"filename": {
-											"value": "@item().filename_ny",
-											"type": "Expression"
-										},
-										"folder": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
-									}
+									"referenceName": "ds_historie_yields",
+									"type": "DatasetReference"
 								}
 							]
 						},
 						{
-							"name": "df_append_eikon",
+							"name": "df_append_yields",
 							"type": "ExecuteDataFlow",
 							"dependsOn": [],
 							"policy": {
@@ -138,28 +125,8 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataflow": {
-									"referenceName": "df_append_eikon",
-									"type": "DataFlowReference",
-									"parameters": {
-										"output": {
-											"value": "'@{item().filename_ny}'",
-											"type": "Expression"
-										}
-									},
-									"datasetParameters": {
-										"newparquet": {
-											"ds_filename_ny": {
-												"value": "@item().filename_ny",
-												"type": "Expression"
-											}
-										},
-										"existingparquet": {
-											"ds_filename_original": "@item().filename_original"
-										},
-										"sink1": {
-											"ds_filename_original": "@item().filename_ny"
-										}
-									}
+									"referenceName": "df_append_yields",
+									"type": "DataFlowReference"
 								},
 								"compute": {
 									"coreCount": 8,
