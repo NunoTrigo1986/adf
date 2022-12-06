@@ -22,7 +22,7 @@
 					"value": "@dataset().ds_filename_original",
 					"type": "Expression"
 				},
-				"fileSystem": "stage2"
+				"fileSystem": "yields-stage2"
 			},
 			"compressionCodec": "snappy"
 		},
