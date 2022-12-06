@@ -2038,6 +2038,99 @@
 				"[concat(variables('factoryId'), '/datasets/ds_ny')]",
 				"[concat(variables('factoryId'), '/datasets/ds_original')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_append_yields')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_ny_yields",
+								"type": "DatasetReference"
+							},
+							"name": "newparquet"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_original_yields",
+								"type": "DatasetReference"
+							},
+							"name": "existingparquet"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_original_yields",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "signaturenew",
+							"description": "__index_level_0__, fingerprint'"
+						},
+						{
+							"name": "signatureexisting",
+							"description": "__"
+						},
+						{
+							"name": "exists1"
+						},
+						{
+							"name": "samle"
+						},
+						{
+							"name": "eliminatefingertrips"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     output as string",
+						"}",
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> newparquet",
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> existingparquet",
+						"newparquet derive(fingerprint = sha2(256,columns())) ~> signaturenew",
+						"existingparquet derive(fingerprint = sha2(256,columns())) ~> signatureexisting",
+						"signaturenew, signatureexisting exists(signaturenew@fingerprint == signatureexisting@fingerprint,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> exists1",
+						"exists1, existingparquet union(byName: true)~> samle",
+						"samle select(mapColumn(",
+						"          each(match(name!='fingerprint'))",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> eliminatefingertrips",
+						"eliminatefingertrips sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     partitionFileNames:[($output)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_ny_yields')]",
+				"[concat(variables('factoryId'), '/datasets/ds_original_yields')]"
+			]
 		}
 	]
 }
