@@ -145,6 +145,26 @@
 											"value": "'@{item().filename_ny}'",
 											"type": "Expression"
 										}
+									},
+									"datasetParameters": {
+										"newparquet": {
+											"ds_filename_ny": {
+												"value": "@item().filename_ny",
+												"type": "Expression"
+											}
+										},
+										"existingparquet": {
+											"ds_filename_original": {
+												"value": "@item().filename_ny",
+												"type": "Expression"
+											}
+										},
+										"sink1": {
+											"ds_filename_original": {
+												"value": "@item().filename_ny",
+												"type": "Expression"
+											}
+										}
 									}
 								},
 								"compute": {
