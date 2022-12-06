@@ -29,7 +29,7 @@
 					"value": "@dataset().folder",
 					"type": "Expression"
 				},
-				"container": "stage2-history"
+				"container": "yields-stage2-history"
 			},
 			"compressionCodec": "snappy"
 		},
