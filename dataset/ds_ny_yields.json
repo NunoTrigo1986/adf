@@ -22,7 +22,7 @@
 					"value": "@dataset().ds_filename_ny",
 					"type": "Expression"
 				},
-				"container": "stage1"
+				"container": "yields-stage1"
 			},
 			"compressionCodec": "snappy"
 		},
