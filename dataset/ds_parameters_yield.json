@@ -1,0 +1,33 @@
+{
+	"name": "ds_parameters_yield",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "mcrvpiraw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Yields"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "parameters_yields_adf.json",
+				"container": "configs"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"filename_ny": {
+					"type": "string"
+				},
+				"filename_original": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
