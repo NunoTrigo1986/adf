@@ -21,6 +21,144 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_parameters_yield')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Yields"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "parameters_yields_adf.json",
+						"container": "configs"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"filename_ny": {
+							"type": "string"
+						},
+						"filename_original": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_ssb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "table_01222.parquet",
+						"folderPath": {
+							"value": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')",
+							"type": "Expression"
+						},
+						"container": "ssb"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Fødselsoverskot",
+						"type": "INT64"
+					},
+					{
+						"name": "Nettoinnflytting, inkl. inn- og utvandring",
+						"type": "INT64"
+					},
+					{
+						"name": "kvartal",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_underenhenter_parquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blob_eikon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/underenheter"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.parquet')",
+							"type": "Expression"
+						},
+						"folderPath": "underenheter",
+						"container": "foretaksregister"
+					},
+					"compressionCodec": "none"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_underenheter_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blob_eikon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/underenheter"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "underenheter",
+						"container": "foretaksregister"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_underenheter_foretaksregister_json_http')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -446,7 +584,8 @@
 				"lastPublishTime": "2022-10-28T11:53:46Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]"
+				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]",
+				"[concat(variables('factoryId'), '/datasets/ds_underenheter_csv')]"
 			]
 		},
 		{
@@ -799,7 +938,8 @@
 				"lastPublishTime": "2022-10-28T11:53:46Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]"
+				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]",
+				"[concat(variables('factoryId'), '/datasets/ds_underenhenter_parquet')]"
 			]
 		},
 		{
@@ -848,6 +988,9 @@
 						},
 						{
 							"name": "samle"
+						},
+						{
+							"name": "eliminatefingertrips"
 						}
 					],
 					"scriptLines": [
@@ -868,7 +1011,12 @@
 						"     negate:true,",
 						"     broadcast: 'auto')~> exists1",
 						"exists1, existingparquet union(byName: true)~> samle",
-						"samle sink(allowSchemaDrift: true,",
+						"samle select(mapColumn(",
+						"          each(match(name!='fingerprint'))",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> eliminatefingertrips",
+						"eliminatefingertrips sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'parquet',",
 						"     partitionFileNames:[($output)],",
@@ -878,9 +1026,6 @@
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     saveOrder: 1,",
-						"     mapColumn(",
-						"          each(match(name!='fingerprint'))",
-						"     ),",
 						"     partitionBy('hash', 1)) ~> sink1"
 					]
 				}
@@ -1102,6 +1247,196 @@
 				"lastPublishTime": "2022-11-02T11:17:06Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_etl_yields')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "ds_parameters_yield",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "df_append_eikon",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_original",
+											"type": "DatasetReference",
+											"parameters": {
+												"ds_filename_original": {
+													"value": "@item().filename_ny",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_historie",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item().filename_ny",
+													"type": "Expression"
+												},
+												"folder": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+											}
+										}
+									]
+								},
+								{
+									"name": "df_append_eikon",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "df_append_eikon",
+											"type": "DataFlowReference",
+											"parameters": {
+												"output": {
+													"value": "'@{item().filename_ny}'",
+													"type": "Expression"
+												}
+											},
+											"datasetParameters": {
+												"newparquet": {
+													"ds_filename_ny": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
+												},
+												"existingparquet": {
+													"ds_filename_original": "@item().filename_original"
+												},
+												"sink1": {
+													"ds_filename_original": "@item().filename_ny"
+												}
+											}
+										},
+										"staging": {},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-11-02T11:17:06Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_parameters_yield')]",
 				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
 			]
 		}

@@ -362,6 +362,49 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_historie_yields')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					},
+					"folder": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Yields"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "stage2-history"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_ny')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -377,6 +420,42 @@
 				},
 				"folder": {
 					"name": "eikon"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().ds_filename_ny",
+							"type": "Expression"
+						},
+						"container": "stage1"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_ny_yields')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"ds_filename_ny": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Yields"
 				},
 				"annotations": [],
 				"type": "Parquet",
@@ -434,6 +513,42 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_original_yields')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_mcrvpip",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"ds_filename_original": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Yields"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().ds_filename_original",
+							"type": "Expression"
+						},
+						"fileSystem": "stage2"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_mcrvpip')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_parameters_eikon')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -468,115 +583,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_ssb')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "mcrvpiraw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "table_01222.parquet",
-						"folderPath": {
-							"value": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')",
-							"type": "Expression"
-						},
-						"container": "ssb"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "Fødselsoverskot",
-						"type": "INT64"
-					},
-					{
-						"name": "Nettoinnflytting, inkl. inn- og utvandring",
-						"type": "INT64"
-					},
-					{
-						"name": "kvartal",
-						"type": "UTF8"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_underenhenter_parquet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_blob_eikon",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Foretaksregister/underenheter"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.parquet')",
-							"type": "Expression"
-						},
-						"folderPath": "underenheter",
-						"container": "foretaksregister"
-					},
-					"compressionCodec": "none"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_underenheter_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_blob_eikon",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Foretaksregister/underenheter"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "underenheter",
-						"container": "foretaksregister"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
 			]
 		}
 	]
