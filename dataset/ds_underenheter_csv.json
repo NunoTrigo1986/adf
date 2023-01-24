@@ -2,7 +2,7 @@
 	"name": "ds_underenheter_csv",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_blob_eikon",
+			"referenceName": "Breg1",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
