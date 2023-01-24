@@ -1238,7 +1238,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('enheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
+							"value": "@concat('enheter-',formatDatetime(utcnow(),'dd-MM-yyyy'),'.csv')",
 							"type": "Expression"
 						},
 						"folderPath": "enheter",
@@ -1703,7 +1703,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('underenheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
+							"value": "@concat('underenheter-',formatDatetime(utcnow(),'dd-MM-yyyy'),'.csv')",
 							"type": "Expression"
 						},
 						"folderPath": "underenheter",

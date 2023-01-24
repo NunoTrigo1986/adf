@@ -239,7 +239,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
-							"value": "@concat('enheter-',formatDatetime(utcnow(),'MM-yyy'),'.csv')",
+							"value": "@concat('enheter-',formatDatetime(utcnow(),'dd-MM-yyyy'),'.csv')",
 							"type": "Expression"
 						},
 						"folderPath": "enheter",
