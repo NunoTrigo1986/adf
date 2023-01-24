@@ -452,8 +452,7 @@
 														"type": "Expression"
 													}
 												}
-											},
-											"linkedServiceParameters": {}
+											}
 										},
 										"staging": {},
 										"compute": {
@@ -825,29 +824,6 @@
 								"parameters": {}
 							}
 						]
-					},
-					{
-						"name": "ssb",
-						"description": "hente data fra ssb",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "ssb-etl",
-							"method": "GET",
-							"headers": {}
-						},
-						"linkedServiceName": {
-							"referenceName": "ls_eikon_etl",
-							"type": "LinkedServiceReference"
-						}
 					}
 				],
 				"policy": {
@@ -861,8 +837,7 @@
 				"[concat(variables('factoryId'), '/datasets/ds_enheter_foretakregister_json_http')]",
 				"[concat(variables('factoryId'), '/datasets/ds_enheter_csv')]",
 				"[concat(variables('factoryId'), '/datasets/ds_underenheter_foretaksregister_json_http')]",
-				"[concat(variables('factoryId'), '/datasets/ds_underenheter_csv')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_eikon_etl')]"
+				"[concat(variables('factoryId'), '/datasets/ds_underenheter_csv')]"
 			]
 		},
 		{
@@ -1630,17 +1605,7 @@
 						"container": "configs"
 					}
 				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"filename_ny": {
-							"type": "string"
-						},
-						"filename_original": {
-							"type": "string"
-						}
-					}
-				}
+				"schema": {}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/mcrvpiraw')]"
@@ -2137,6 +2102,47 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_ny_yields')]",
 				"[concat(variables('factoryId'), '/datasets/ds_original_yields')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/foretaksregister_monedlig')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_getData foretaksregister",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Month",
+						"interval": 1,
+						"startTime": "2023-01-25T09:40:00",
+						"timeZone": "Morocco Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								0
+							],
+							"monthDays": [
+								25
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_getData foretaksregister')]"
 			]
 		}
 	]
