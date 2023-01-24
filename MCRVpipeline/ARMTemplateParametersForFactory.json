@@ -23,6 +23,9 @@
 		"mcrvpiraw_connectionString": {
 			"value": ""
 		},
+		"Breg1_connectionString": {
+			"value": ""
+		},
 		"ls_dl_enheter_properties_typeProperties_url": {
 			"value": "https://mcrvpip.dfs.core.windows.net/"
 		},

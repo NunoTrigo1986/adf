@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'mcrvpiraw'"
 		},
+		"Breg1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Breg1'"
+		},
 		"ls_dl_enheter_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mcrvpip.dfs.core.windows.net/"
@@ -1226,7 +1230,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_blob_eikon",
+					"referenceName": "Breg1",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
@@ -1252,7 +1256,7 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
+				"[concat(variables('factoryId'), '/linkedServices/Breg1')]"
 			]
 		},
 		{
@@ -1691,7 +1695,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_blob_eikon",
+					"referenceName": "Breg1",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
@@ -1717,7 +1721,7 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blob_eikon')]"
+				"[concat(variables('factoryId'), '/linkedServices/Breg1')]"
 			]
 		},
 		{
@@ -2144,6 +2148,19 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/pl_getData foretaksregister')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Breg1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('Breg1_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }

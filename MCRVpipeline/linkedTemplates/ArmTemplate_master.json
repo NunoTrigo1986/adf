@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'mcrvpiraw'"
 		},
+		"Breg1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Breg1'"
+		},
 		"ls_dl_enheter_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mcrvpip.dfs.core.windows.net/"
@@ -96,6 +100,9 @@
 					},
 					"mcrvpiraw_connectionString": {
 						"value": "[parameters('mcrvpiraw_connectionString')]"
+					},
+					"Breg1_connectionString": {
+						"value": "[parameters('Breg1_connectionString')]"
 					},
 					"ls_eikon_etl_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ls_eikon_etl_properties_typeProperties_functionAppUrl')]"

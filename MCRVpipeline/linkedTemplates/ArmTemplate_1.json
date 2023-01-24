@@ -21,6 +21,41 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_parameters_eikon')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "eikon"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "parameters_eikon_adf.json",
+						"container": "configs"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"filename_ny": {
+							"type": "string"
+						},
+						"filename_original": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_parameters_yield')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -121,7 +156,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_blob_eikon",
+					"referenceName": "Breg1",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
@@ -1304,6 +1339,7 @@
 				"lastPublishTime": "2022-11-02T11:17:06Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_parameters_eikon')]",
 				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
 			]
 		},
