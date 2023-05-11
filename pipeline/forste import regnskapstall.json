@@ -1,0 +1,180 @@
+{
+	"name": "forste import regnskapstall",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_uln",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "regnskap/listeprodukter/csv filer/"
+					},
+					{
+						"name": "Destination",
+						"value": "brreg.regnskap"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "AzurePostgreSQLSink",
+						"writeBatchSize": 1000000,
+						"writeBatchTimeout": "00:30:00",
+						"writeMethod": "CopyCommand"
+					},
+					"enableStaging": false,
+					"parallelCopies": 32,
+					"validateDataConsistency": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AzureBlobStorage_brreg",
+								"type": "LinkedServiceReference"
+							}
+						}
+					},
+					"dataIntegrationUnits": 32,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Orgnr      ",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "organisasjonsnummer",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "kilde dato",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kilde_dato",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "regnskapsår",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "regnskapsaar",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "Valutakode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "valuta",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "sum inntekter",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "sum_inntekter",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "ordinært resultat før skatt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ordinaert_resultat_for_skatt",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "Årsresultat",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "aarsresutat",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false,
+							"dateTimeFormat": "dd.mm.yyyy"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_uln",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_uln",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "brreg"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-11-02T14:50:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

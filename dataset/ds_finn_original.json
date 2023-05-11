@@ -1,0 +1,82 @@
+{
+	"name": "ds_finn_original",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_finn_original",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Finn"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "oppdatert_ny.xlsx",
+				"container": "finn-start"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Fylke",
+				"type": "String"
+			},
+			{
+				"name": "Kommune",
+				"type": "String"
+			},
+			{
+				"name": "tittel",
+				"type": "String"
+			},
+			{
+				"name": "type_bolig",
+				"type": "String"
+			},
+			{
+				"name": "location",
+				"type": "String"
+			},
+			{
+				"name": "Antall_soverom",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "price",
+				"type": "String"
+			},
+			{
+				"name": "area",
+				"type": "String"
+			},
+			{
+				"name": "local_area_name",
+				"type": "String"
+			},
+			{
+				"name": "long",
+				"type": "String"
+			},
+			{
+				"name": "lat",
+				"type": "String"
+			},
+			{
+				"name": "DateFrom",
+				"type": "String"
+			},
+			{
+				"name": "DateTo",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

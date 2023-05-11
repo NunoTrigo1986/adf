@@ -1,0 +1,547 @@
+{
+	"name": "CopyBygg",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_cso",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Fjern alle rader - bygg",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "matrikkelfiler/Matrikkelrapport_2022_08/adresse.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "matrikkel.adresse"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "AzurePostgreSQLSink",
+						"writeBatchSize": 1000000,
+						"writeBatchTimeout": "00:30:00",
+						"writeMethod": "CopyCommand"
+					},
+					"enableStaging": false,
+					"parallelCopies": 32,
+					"enableSkipIncompatibleRow": true,
+					"validateDataConsistency": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AzureBlobStorage_Matrikkel",
+								"type": "LinkedServiceReference"
+							},
+							"path": "matrikkelfiler"
+						}
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "byggid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "byggid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "kommunenr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kommunenr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "bygningsnr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bygningsnr",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "lopenr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "lopenr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "bygningstatuskode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bygningstatuskode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "bygningstypekode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bygningstypekode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "naringsgruppekode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "naringsgruppekode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "opprinnelseskode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "opprinnelseskode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "antallboenheter",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "antallboenheter",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "antalletasjer",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "antalletasjer",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "vannforsyningskode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "vannforsyningskode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "vannforsyningskode_beskrivelse",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "vannforsyningskode_beskrivelse",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "avlopskode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "avlopskode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "harheis",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "harheis",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "harsefrakminne",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "harsefrakminne",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "harkulturminne",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "harkulturminne",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "bebygdareal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bebygdareal",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "bruttoarealtilbolig",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruttoarealtilbolig",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruttoarealtilannet",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruttoarealtilannet",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruttoarealtotalt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruttoarealtotalt",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksarealtilbolig",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksarealtilbolig",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksarealtilannet",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksarealtilannet",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksarealtotalt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksarealtotalt",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "ufullstendigareal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ufullstendigareal",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "utenbebygdareal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "utenbebygdareal",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "alternativtareal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "alternativtareal",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "alternativtareal2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "alternativtareal2",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "energikildekode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "energikildekode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "oppvarmingskode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "oppvarmingskode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "statusdato",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "statusdato",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "x",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "x",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "y",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "y",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "endringstidspunkt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "endringstidspunkt",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "bygningstypekode_beskrivelse",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bygningstypekode_beskrivelse",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_bygg",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_bygg",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Fjern alle rader - bygg",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": "Truncate table matrikkel.bygg",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DestinationDataset_bygg",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"folder": {
+			"name": "matrikkel"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-12T15:45:50Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

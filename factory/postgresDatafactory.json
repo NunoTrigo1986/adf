@@ -1,0 +1,9 @@
+{
+	"name": "postgresDatafactory",
+	"location": "norwayeast",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "1363f023-a3a3-49f3-a0c9-6409fe568c28",
+		"tenantId": "fbb674cf-bbb6-4c6f-a80b-ffaea3582768"
+	}
+}

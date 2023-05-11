@@ -1,0 +1,243 @@
+{
+	"name": "excel_original_sql",
+	"properties": {
+		"activities": [
+			{
+				"name": "excel-sql",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "finn-start//oppdatert_ny.xlsx"
+					},
+					{
+						"name": "Destination",
+						"value": "finn_annonser.Finn"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "AzurePostgreSQLSink",
+						"writeBatchSize": 1000000,
+						"writeBatchTimeout": "00:30:00",
+						"preCopyScript": "TRUNCATE TABLE finn_annonser.\"Finn\"",
+						"writeMethod": "CopyCommand"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Fylke",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fylke",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "Kommune",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kommune",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "tittel",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "tittel",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "type_bolig",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "type_bolig",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "location",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "adresse",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "Antall_soverom",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "antall_soverom",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "price",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "pris",
+									"type": "Int32",
+									"physicalType": "integer"
+								}
+							},
+							{
+								"source": {
+									"name": "area",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "area",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "local_area_name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "sted",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "long",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "long",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "lat",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "lat",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "DateFrom",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "datefrom",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "DateTo",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "dateto",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_finn_original",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_sql_original",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Finn"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-03-06T15:25:58Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

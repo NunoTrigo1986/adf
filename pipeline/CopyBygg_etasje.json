@@ -1,0 +1,295 @@
+{
+	"name": "CopyBygg_etasje",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_cso",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Fjern alle rader - etasje",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "matrikkelfiler/Matrikkelrapport_2022_08/adresse.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "matrikkel.adresse"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "AzurePostgreSQLSink",
+						"writeBatchSize": 1000000,
+						"writeBatchTimeout": "00:30:00",
+						"writeMethod": "CopyCommand"
+					},
+					"enableStaging": false,
+					"parallelCopies": 32,
+					"enableSkipIncompatibleRow": true,
+					"validateDataConsistency": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AzureBlobStorage_Matrikkel",
+								"type": "LinkedServiceReference"
+							},
+							"path": "matrikkelfiler"
+						}
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "byggid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "byggid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "etasjenr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "etasjenr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "etasjeplankode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "etasjeplankode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "antallboenheter",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "antallboenheter",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksarealtilbolig",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksarealtilbolig",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksarealtilannet",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksarealtilannet",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksarealtotalt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksarealtotalt",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruttoarealtilbolig",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruttoarealtilbolig",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruttoarealtilannet",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruttoarealtilannet",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "bruttoarealtotalt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruttoarealtotalt",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "alternativtareal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "alternativtareal",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "alternativtareal2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "alternativtareal2",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "kommunenr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kommunenr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "endringstidspunkt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "endringstidspunkt",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_etasje",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_etasje",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Fjern alle rader - etasje",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": "Truncate table matrikkel.etasje",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DestinationDataset_etasje",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"folder": {
+			"name": "matrikkel"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-12T13:39:02Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,262 @@
+{
+	"name": "SourceDataset_eierforhold",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_Matrikkel",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "matrikkel/Eierforhold"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "eierforhold.csv",
+				"folderPath": "Matrikkelrapport_2023_01",
+				"container": "matrikkelfiler"
+			},
+			"columnDelimiter": ";",
+			"rowDelimiter": "\n",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "matrikkelenhetid",
+				"type": "String"
+			},
+			{
+				"name": "personstatuskode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "personstatuskode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "spesifisertregtypekode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "spesifisertregtypekode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "orgnr_fdato",
+				"type": "String"
+			},
+			{
+				"name": "kjonn",
+				"type": "String"
+			},
+			{
+				"name": "fodselsar",
+				"type": "String"
+			},
+			{
+				"name": "navn",
+				"type": "String"
+			},
+			{
+				"name": "etternavn",
+				"type": "String"
+			},
+			{
+				"name": "fornavn",
+				"type": "String"
+			},
+			{
+				"name": "postadresselinje1",
+				"type": "String"
+			},
+			{
+				"name": "postadresselinje2",
+				"type": "String"
+			},
+			{
+				"name": "postadresselinje3",
+				"type": "String"
+			},
+			{
+				"name": "postadresselinje4",
+				"type": "String"
+			},
+			{
+				"name": "postadresse_postnummer",
+				"type": "String"
+			},
+			{
+				"name": "postadresse_poststed",
+				"type": "String"
+			},
+			{
+				"name": "postadresse_landkode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "postadresse_landkode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "hjemlandsadresselinje1",
+				"type": "String"
+			},
+			{
+				"name": "hjemlandsadresselinje2",
+				"type": "String"
+			},
+			{
+				"name": "hjemlandsadresselinje3",
+				"type": "String"
+			},
+			{
+				"name": "hjemlandsadresse_landkode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "hjemlandsadresse_landkode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "personidkode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "personidkode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "personkategorikode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "personkategorikode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "eierforholdkode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "eierforholdkode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "eierforhold_type",
+				"type": "String"
+			},
+			{
+				"name": "datofra",
+				"type": "String"
+			},
+			{
+				"name": "andelteller",
+				"type": "String"
+			},
+			{
+				"name": "andelnevner",
+				"type": "String"
+			},
+			{
+				"name": "andelsnr",
+				"type": "String"
+			},
+			{
+				"name": "person_type",
+				"type": "String"
+			},
+			{
+				"name": "kommunenr",
+				"type": "String"
+			},
+			{
+				"name": "adressekode",
+				"type": "String"
+			},
+			{
+				"name": "adressenavn",
+				"type": "String"
+			},
+			{
+				"name": "husnr",
+				"type": "String"
+			},
+			{
+				"name": "husbokstav",
+				"type": "String"
+			},
+			{
+				"name": "postnummer",
+				"type": "String"
+			},
+			{
+				"name": "gardsnr",
+				"type": "String"
+			},
+			{
+				"name": "bruksnr",
+				"type": "String"
+			},
+			{
+				"name": "festenr",
+				"type": "String"
+			},
+			{
+				"name": "undernr",
+				"type": "String"
+			},
+			{
+				"name": "bruksenhetsnr",
+				"type": "String"
+			},
+			{
+				"name": "orgformkode",
+				"type": "String"
+			},
+			{
+				"name": "orgformnavn",
+				"type": "String"
+			},
+			{
+				"name": "forretningsadresselinje1",
+				"type": "String"
+			},
+			{
+				"name": "forretningsadresselinje2",
+				"type": "String"
+			},
+			{
+				"name": "forretningsadresselinje3",
+				"type": "String"
+			},
+			{
+				"name": "forretningsadresselinje4",
+				"type": "String"
+			},
+			{
+				"name": "forretningsadresse_postnummer",
+				"type": "String"
+			},
+			{
+				"name": "forretningsadresse_poststed",
+				"type": "String"
+			},
+			{
+				"name": "forretningsadresse_landkode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "forretningsadresse_landkode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "endringstidspunkt",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

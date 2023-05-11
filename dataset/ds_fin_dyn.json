@@ -1,0 +1,85 @@
+{
+	"name": "ds_fin_dyn",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_finn_original",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Finn"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"container": "finn-no"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "Fylke",
+				"type": "UTF8"
+			},
+			{
+				"name": "Kommune",
+				"type": "UTF8"
+			},
+			{
+				"name": "Objeckt",
+				"type": "UTF8"
+			},
+			{
+				"name": "tittel",
+				"type": "UTF8"
+			},
+			{
+				"name": "type_bolig",
+				"type": "UTF8"
+			},
+			{
+				"name": "location",
+				"type": "UTF8"
+			},
+			{
+				"name": "Antall_soverom",
+				"type": "INT64"
+			},
+			{
+				"name": "id",
+				"type": "INT64"
+			},
+			{
+				"name": "price",
+				"type": "INT64"
+			},
+			{
+				"name": "area",
+				"type": "UTF8"
+			},
+			{
+				"name": "local_area_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "long",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "lat",
+				"type": "DOUBLE"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

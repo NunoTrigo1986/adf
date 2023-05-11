@@ -1,0 +1,367 @@
+{
+	"name": "CopyEierforhold",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_cso",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Fjern alle rader - eierforhold",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "matrikkelfiler/Matrikkelrapport_2022_08/adresse.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "matrikkel.adresse"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "AzurePostgreSQLSink",
+						"writeBatchSize": 1000000,
+						"writeBatchTimeout": "00:30:00",
+						"writeMethod": "CopyCommand"
+					},
+					"enableStaging": false,
+					"parallelCopies": 32,
+					"enableSkipIncompatibleRow": true,
+					"validateDataConsistency": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AzureBlobStorage_Matrikkel",
+								"type": "LinkedServiceReference"
+							},
+							"path": "matrikkelfiler"
+						}
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "matrikkelenhetid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "matrikkelenhetid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "personstatuskode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "personstatuskode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "personstatuskode_beskrivelse",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "personstatuskode_beskrivelse",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "orgnr_fdato",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "orgnr_fdato",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "kjonn",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kjonn",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "fodselsar",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fodselsar",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "navn",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "navn",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "etternavn",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "etternavn",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "fornavn",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "fornavn",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "personidkode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "personidkode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "personidkode_beskrivelse",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "personidkode_beskrivelse",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "personkategorikode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "personkategorikode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "personkategorikode_beskrivelse",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "personkategorikode_beskrivelse",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "eierforholdkode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "eierforholdkode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "eierforholdkode_beskrivelse",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "eierforholdkode_beskrivelse",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "datofra",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "datofra",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "andelteller",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "andelteller",
+									"type": "Int32",
+									"physicalType": "integer"
+								}
+							},
+							{
+								"source": {
+									"name": "andelnevner",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "andelnevner",
+									"type": "Int32",
+									"physicalType": "integer"
+								}
+							},
+							{
+								"source": {
+									"name": "andelsnr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "andelsnr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "person_type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "person_type",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_eierforhold",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_eierforhold",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Fjern alle rader - eierforhold",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": "Truncate table matrikkel.eierforhold",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DestinationDataset_eierforhold",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"folder": {
+			"name": "matrikkel"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-12T13:37:22Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

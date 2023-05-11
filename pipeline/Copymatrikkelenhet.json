@@ -1,0 +1,355 @@
+{
+	"name": "Copymatrikkelenhet",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_cso",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Fjern alle rader - matrikkelenhet",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "matrikkelfiler/Matrikkelrapport_2022_08/adresse.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "matrikkel.adresse"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "AzurePostgreSQLSink",
+						"writeBatchSize": 1000000,
+						"writeBatchTimeout": "00:30:00",
+						"writeMethod": "CopyCommand"
+					},
+					"enableStaging": false,
+					"parallelCopies": 32,
+					"enableSkipIncompatibleRow": true,
+					"validateDataConsistency": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AzureBlobStorage_Matrikkel",
+								"type": "LinkedServiceReference"
+							},
+							"path": "matrikkelfiler"
+						}
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "matrikkelenhetid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "matrikkelenhetid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "kommunenr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kommunenr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "gardsnr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "gardsnr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksnr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksnr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "festenr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "festenr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "seksjonsnr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "seksjonsnr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "beregnetareal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "beregnetareal",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "utgatt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "utgatt",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "erseksjonert",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "erseksjonert",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "hovedteig_areal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "hovedteig_areal",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "hovedteig_arealmerknadkode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "hovedteig_arealmerknadkode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksnavn",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksnavn",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "oppgittareal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "oppgittareal",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "skyld",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "skyld",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "teller",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "teller",
+									"type": "Int32",
+									"physicalType": "integer"
+								}
+							},
+							{
+								"source": {
+									"name": "nevner",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "nevner",
+									"type": "Int32",
+									"physicalType": "integer"
+								}
+							},
+							{
+								"source": {
+									"name": "x",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "x",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "y",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "y",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_matrikkelenhet",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_matrikkelenhet",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Fjern alle rader - matrikkelenhet",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": "Truncate table matrikkel.matrikkelenhet",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DestinationDataset_matrikkelenhet",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"folder": {
+			"name": "matrikkel"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-12T14:24:52Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

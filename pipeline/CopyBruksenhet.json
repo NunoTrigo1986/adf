@@ -1,0 +1,296 @@
+{
+	"name": "CopyBruksenhet",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_cso",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Fjern alle rader - bruksenhet",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "matrikkelfiler/Matrikkelrapport_2022_08/adresse.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "matrikkel.adresse"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "AzurePostgreSQLSink",
+						"writeBatchSize": 1000000,
+						"writeBatchTimeout": "00:30:00",
+						"writeMethod": "CopyCommand"
+					},
+					"enableStaging": false,
+					"parallelCopies": 32,
+					"enableSkipIncompatibleRow": true,
+					"validateDataConsistency": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AzureBlobStorage_Matrikkel",
+								"type": "LinkedServiceReference"
+							},
+							"path": "matrikkelfiler"
+						}
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "bruksenhetid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksenhetid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "byggid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "byggid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "matrikkelenhetid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "matrikkelenhetid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "adresseid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "adresseid",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksenhetsnr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksenhetsnr",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksenhetstypekode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksenhetstypekode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "antallrom",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "antallrom",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "antallbad",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "antallbad",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "antallwc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "antallwc",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "bruksareal",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bruksareal",
+									"type": "Double",
+									"physicalType": "double precision"
+								}
+							},
+							{
+								"source": {
+									"name": "kjokkentilgangkode_verdi",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kjokkentilgangkode_verdi",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "skalutga",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "skalutga",
+									"type": "String",
+									"physicalType": "character varying"
+								}
+							},
+							{
+								"source": {
+									"name": "kommunenr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kommunenr",
+									"type": "Int16",
+									"physicalType": "smallint"
+								}
+							},
+							{
+								"source": {
+									"name": "endringstidspunkt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "endringstidspunkt",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_bruksenhet",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_bruksenhet",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Fjern alle rader - bruksenhet",
+				"description": "",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": "Truncate table matrikkel.bruksenhet",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DestinationDataset_bruksenhet",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"folder": {
+			"name": "matrikkel"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-12T15:21:48Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

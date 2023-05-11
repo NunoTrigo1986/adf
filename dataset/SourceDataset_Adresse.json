@@ -1,0 +1,154 @@
+{
+	"name": "SourceDataset_Adresse",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_Matrikkel",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "matrikkel/Adresse"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "adresse.csv",
+				"folderPath": "Matrikkelrapport_2023_01",
+				"container": "matrikkelfiler"
+			},
+			"columnDelimiter": ";",
+			"rowDelimiter": "\n",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "adresseid",
+				"type": "String"
+			},
+			{
+				"name": "type",
+				"type": "String"
+			},
+			{
+				"name": "kommunenr",
+				"type": "String"
+			},
+			{
+				"name": "adressekode",
+				"type": "String"
+			},
+			{
+				"name": "adressenavn",
+				"type": "String"
+			},
+			{
+				"name": "kortadressenavn",
+				"type": "String"
+			},
+			{
+				"name": "nr",
+				"type": "String"
+			},
+			{
+				"name": "bokstav",
+				"type": "String"
+			},
+			{
+				"name": "gardsnr",
+				"type": "String"
+			},
+			{
+				"name": "bruksnr",
+				"type": "String"
+			},
+			{
+				"name": "festenr",
+				"type": "String"
+			},
+			{
+				"name": "undernr",
+				"type": "String"
+			},
+			{
+				"name": "adressetilleggsnavn",
+				"type": "String"
+			},
+			{
+				"name": "tilleggsnavnkildekode_verdi",
+				"type": "String"
+			},
+			{
+				"name": "tilleggsnavnkildekode_beskrivelse",
+				"type": "String"
+			},
+			{
+				"name": "koordinatsystemkode_epsgkode",
+				"type": "String"
+			},
+			{
+				"name": "x",
+				"type": "String"
+			},
+			{
+				"name": "y",
+				"type": "String"
+			},
+			{
+				"name": "z",
+				"type": "String"
+			},
+			{
+				"name": "grunnkretsnr",
+				"type": "String"
+			},
+			{
+				"name": "grunnkretsnavn",
+				"type": "String"
+			},
+			{
+				"name": "kirkesognnr",
+				"type": "String"
+			},
+			{
+				"name": "kirkesognnavn",
+				"type": "String"
+			},
+			{
+				"name": "tettstednr",
+				"type": "String"
+			},
+			{
+				"name": "tettstednavn",
+				"type": "String"
+			},
+			{
+				"name": "valgkretsnr",
+				"type": "String"
+			},
+			{
+				"name": "valgkretsnavn",
+				"type": "String"
+			},
+			{
+				"name": "postnummer",
+				"type": "String"
+			},
+			{
+				"name": "postnummeromrade",
+				"type": "String"
+			},
+			{
+				"name": "kommunenavn",
+				"type": "String"
+			},
+			{
+				"name": "endringstidspunkt",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

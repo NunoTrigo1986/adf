@@ -1,0 +1,111 @@
+{
+	"name": "DestinationDataset_etasje",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "matrikkel/etasje"
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "adresseid",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "type",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "kommunenr",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "adressekode",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "adressenavn",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "nr",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "bokstav",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "gardsnr",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "bruksnr",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "festenr",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "undernr",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "x",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "y",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "postnummer",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "kommunenavn",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "matrikkel",
+			"table": "etasje"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,57 @@
+{
+	"name": "SourceDataset_uln",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_brreg",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "brreg"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "listeprodukter/csv filer",
+				"container": "regnskap"
+			},
+			"columnDelimiter": ";",
+			"encodingName": "UTF-7",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Orgnr      ",
+				"type": "String"
+			},
+			{
+				"name": "kilde dato",
+				"type": "String"
+			},
+			{
+				"name": "Valutakode",
+				"type": "String"
+			},
+			{
+				"name": "regnskapsår",
+				"type": "String"
+			},
+			{
+				"name": "sum inntekter",
+				"type": "String"
+			},
+			{
+				"name": "ordinært resultat før skatt",
+				"type": "String"
+			},
+			{
+				"name": "Årsresultat",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

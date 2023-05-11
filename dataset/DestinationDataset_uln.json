@@ -1,0 +1,75 @@
+{
+	"name": "DestinationDataset_uln",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "brreg"
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "organisasjonsnummer",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "kilde",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "kilde_dato",
+				"type": "date",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "regnskapsaar",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "valuta",
+				"type": "character varying",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "sum_inntekter",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ordinaert_resultat_for_skatt",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "aarsresutat",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "brreg",
+			"table": "regnskap"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
