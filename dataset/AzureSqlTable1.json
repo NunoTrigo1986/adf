@@ -10,6 +10,9 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"table": "finn_sql"
+		}
 	}
 }
