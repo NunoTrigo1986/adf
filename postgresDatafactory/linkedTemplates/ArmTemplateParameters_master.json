@@ -1,0 +1,72 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "postgresDatafactory"
+		},
+		"AzureBlobStorage_Matrikkel_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorage_brreg_connectionString": {
+			"value": ""
+		},
+		"AzurePostgreSql1_connectionString": {
+			"value": ""
+		},
+		"Breg1_connectionString": {
+			"value": ""
+		},
+		"ls_azure_sql_connectionString": {
+			"value": ""
+		},
+		"ls_blob_eikon_connectionString": {
+			"value": ""
+		},
+		"ls_blob_ssb_connectionString": {
+			"value": ""
+		},
+		"ls_dl_enheter_accountKey": {
+			"value": ""
+		},
+		"ls_eikon_etl_functionKey": {
+			"value": ""
+		},
+		"ls_finn_original_connectionString": {
+			"value": ""
+		},
+		"ls_mcrvpip_accountKey": {
+			"value": ""
+		},
+		"mcrvpiraw_connectionString": {
+			"value": ""
+		},
+		"ls_dl_enheter_properties_typeProperties_url": {
+			"value": "https://mcrvpip.dfs.core.windows.net/"
+		},
+		"ls_eikon_etl_properties_typeProperties_functionAppUrl": {
+			"value": "https://mcrv.azurewebsites.net"
+		},
+		"ls_foretaksregister_properties_typeProperties_url": {
+			"value": "https://data.brreg.no/enhetsregisteret/oppslag/"
+		},
+		"ls_mcrvpip_properties_typeProperties_url": {
+			"value": "https://mcrvpip.dfs.core.windows.net/"
+		},
+		"ls_ssb_properties_typeProperties_url": {
+			"value": "https://data.ssb.no/api/v0/"
+		},
+		"tr_eikon_etl_properties_typeProperties_scope": {
+			"value": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
+		},
+		"tr_finn_update_properties_typeProperties_scope": {
+			"value": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

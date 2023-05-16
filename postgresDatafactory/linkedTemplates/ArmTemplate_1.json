@@ -1,0 +1,2020 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "postgresDatafactory"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_eierforhold')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzurePostgreSql1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/Eierforhold"
+				},
+				"annotations": [],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "adresseid",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "type",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "kommunenr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "adressekode",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "adressenavn",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "nr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "bokstav",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gardsnr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "bruksnr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "festenr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "undernr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "x",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "y",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "postnummer",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "kommunenavn",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "matrikkel",
+					"table": "eierforhold"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_etasje')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzurePostgreSql1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/etasje"
+				},
+				"annotations": [],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "adresseid",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "type",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "kommunenr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "adressekode",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "adressenavn",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "nr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "bokstav",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gardsnr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "bruksnr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "festenr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "undernr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "x",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "y",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "postnummer",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "kommunenavn",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "matrikkel",
+					"table": "etasje"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_matrikkelenhet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzurePostgreSql1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/Matrikkelenhet"
+				},
+				"annotations": [],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "adresseid",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "type",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "kommunenr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "adressekode",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "adressenavn",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "nr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "bokstav",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "gardsnr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "bruksnr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "festenr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "undernr",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "x",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "y",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "postnummer",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "kommunenavn",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "matrikkel",
+					"table": "matrikkelenhet"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_uln')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzurePostgreSql1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "brreg"
+				},
+				"annotations": [],
+				"type": "AzurePostgreSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "integer",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "organisasjonsnummer",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "kilde",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "kilde_dato",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "regnskapsaar",
+						"type": "smallint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "valuta",
+						"type": "character varying",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sum_inntekter",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ordinaert_resultat_for_skatt",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "aarsresutat",
+						"type": "bigint",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "brreg",
+					"table": "regnskap"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_mcrvpip",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "stage2-ssb"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_Adresse')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Matrikkel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/Adresse"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "adresse.csv",
+						"folderPath": "Matrikkelrapport_2023_01",
+						"container": "matrikkelfiler"
+					},
+					"columnDelimiter": ";",
+					"rowDelimiter": "\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "adresseid",
+						"type": "String"
+					},
+					{
+						"name": "type",
+						"type": "String"
+					},
+					{
+						"name": "kommunenr",
+						"type": "String"
+					},
+					{
+						"name": "adressekode",
+						"type": "String"
+					},
+					{
+						"name": "adressenavn",
+						"type": "String"
+					},
+					{
+						"name": "kortadressenavn",
+						"type": "String"
+					},
+					{
+						"name": "nr",
+						"type": "String"
+					},
+					{
+						"name": "bokstav",
+						"type": "String"
+					},
+					{
+						"name": "gardsnr",
+						"type": "String"
+					},
+					{
+						"name": "bruksnr",
+						"type": "String"
+					},
+					{
+						"name": "festenr",
+						"type": "String"
+					},
+					{
+						"name": "undernr",
+						"type": "String"
+					},
+					{
+						"name": "adressetilleggsnavn",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "koordinatsystemkode_epsgkode",
+						"type": "String"
+					},
+					{
+						"name": "x",
+						"type": "String"
+					},
+					{
+						"name": "y",
+						"type": "String"
+					},
+					{
+						"name": "z",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnr",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnavn",
+						"type": "String"
+					},
+					{
+						"name": "tettstednr",
+						"type": "String"
+					},
+					{
+						"name": "tettstednavn",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "postnummer",
+						"type": "String"
+					},
+					{
+						"name": "postnummeromrade",
+						"type": "String"
+					},
+					{
+						"name": "kommunenavn",
+						"type": "String"
+					},
+					{
+						"name": "endringstidspunkt",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_bruksenhet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Matrikkel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/Bruksenhet"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "bruksenhet.csv",
+						"folderPath": "Matrikkelrapport_2023_01",
+						"container": "matrikkelfiler"
+					},
+					"columnDelimiter": ";",
+					"rowDelimiter": "\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "adresseid",
+						"type": "String"
+					},
+					{
+						"name": "type",
+						"type": "String"
+					},
+					{
+						"name": "kommunenr",
+						"type": "String"
+					},
+					{
+						"name": "adressekode",
+						"type": "String"
+					},
+					{
+						"name": "adressenavn",
+						"type": "String"
+					},
+					{
+						"name": "kortadressenavn",
+						"type": "String"
+					},
+					{
+						"name": "nr",
+						"type": "String"
+					},
+					{
+						"name": "bokstav",
+						"type": "String"
+					},
+					{
+						"name": "gardsnr",
+						"type": "String"
+					},
+					{
+						"name": "bruksnr",
+						"type": "String"
+					},
+					{
+						"name": "festenr",
+						"type": "String"
+					},
+					{
+						"name": "undernr",
+						"type": "String"
+					},
+					{
+						"name": "adressetilleggsnavn",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "koordinatsystemkode_epsgkode",
+						"type": "String"
+					},
+					{
+						"name": "x",
+						"type": "String"
+					},
+					{
+						"name": "y",
+						"type": "String"
+					},
+					{
+						"name": "z",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnr",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnavn",
+						"type": "String"
+					},
+					{
+						"name": "tettstednr",
+						"type": "String"
+					},
+					{
+						"name": "tettstednavn",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "postnummer",
+						"type": "String"
+					},
+					{
+						"name": "postnummeromrade",
+						"type": "String"
+					},
+					{
+						"name": "kommunenavn",
+						"type": "String"
+					},
+					{
+						"name": "endringstidspunkt",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_bygg')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Matrikkel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/bygg"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "bygg.csv",
+						"folderPath": "Matrikkelrapport_2023_01",
+						"container": "matrikkelfiler"
+					},
+					"columnDelimiter": ";",
+					"rowDelimiter": "\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "adresseid",
+						"type": "String"
+					},
+					{
+						"name": "type",
+						"type": "String"
+					},
+					{
+						"name": "kommunenr",
+						"type": "String"
+					},
+					{
+						"name": "adressekode",
+						"type": "String"
+					},
+					{
+						"name": "adressenavn",
+						"type": "String"
+					},
+					{
+						"name": "kortadressenavn",
+						"type": "String"
+					},
+					{
+						"name": "nr",
+						"type": "String"
+					},
+					{
+						"name": "bokstav",
+						"type": "String"
+					},
+					{
+						"name": "gardsnr",
+						"type": "String"
+					},
+					{
+						"name": "bruksnr",
+						"type": "String"
+					},
+					{
+						"name": "festenr",
+						"type": "String"
+					},
+					{
+						"name": "undernr",
+						"type": "String"
+					},
+					{
+						"name": "adressetilleggsnavn",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "koordinatsystemkode_epsgkode",
+						"type": "String"
+					},
+					{
+						"name": "x",
+						"type": "String"
+					},
+					{
+						"name": "y",
+						"type": "String"
+					},
+					{
+						"name": "z",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnr",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnavn",
+						"type": "String"
+					},
+					{
+						"name": "tettstednr",
+						"type": "String"
+					},
+					{
+						"name": "tettstednavn",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "postnummer",
+						"type": "String"
+					},
+					{
+						"name": "postnummeromrade",
+						"type": "String"
+					},
+					{
+						"name": "kommunenavn",
+						"type": "String"
+					},
+					{
+						"name": "endringstidspunkt",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_eierforhold')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Matrikkel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/Eierforhold"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "eierforhold.csv",
+						"folderPath": "Matrikkelrapport_2023_01",
+						"container": "matrikkelfiler"
+					},
+					"columnDelimiter": ";",
+					"rowDelimiter": "\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "matrikkelenhetid",
+						"type": "String"
+					},
+					{
+						"name": "personstatuskode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "personstatuskode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "spesifisertregtypekode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "spesifisertregtypekode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "orgnr_fdato",
+						"type": "String"
+					},
+					{
+						"name": "kjonn",
+						"type": "String"
+					},
+					{
+						"name": "fodselsar",
+						"type": "String"
+					},
+					{
+						"name": "navn",
+						"type": "String"
+					},
+					{
+						"name": "etternavn",
+						"type": "String"
+					},
+					{
+						"name": "fornavn",
+						"type": "String"
+					},
+					{
+						"name": "postadresselinje1",
+						"type": "String"
+					},
+					{
+						"name": "postadresselinje2",
+						"type": "String"
+					},
+					{
+						"name": "postadresselinje3",
+						"type": "String"
+					},
+					{
+						"name": "postadresselinje4",
+						"type": "String"
+					},
+					{
+						"name": "postadresse_postnummer",
+						"type": "String"
+					},
+					{
+						"name": "postadresse_poststed",
+						"type": "String"
+					},
+					{
+						"name": "postadresse_landkode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "postadresse_landkode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "hjemlandsadresselinje1",
+						"type": "String"
+					},
+					{
+						"name": "hjemlandsadresselinje2",
+						"type": "String"
+					},
+					{
+						"name": "hjemlandsadresselinje3",
+						"type": "String"
+					},
+					{
+						"name": "hjemlandsadresse_landkode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "hjemlandsadresse_landkode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "personidkode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "personidkode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "personkategorikode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "personkategorikode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "eierforholdkode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "eierforholdkode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "eierforhold_type",
+						"type": "String"
+					},
+					{
+						"name": "datofra",
+						"type": "String"
+					},
+					{
+						"name": "andelteller",
+						"type": "String"
+					},
+					{
+						"name": "andelnevner",
+						"type": "String"
+					},
+					{
+						"name": "andelsnr",
+						"type": "String"
+					},
+					{
+						"name": "person_type",
+						"type": "String"
+					},
+					{
+						"name": "kommunenr",
+						"type": "String"
+					},
+					{
+						"name": "adressekode",
+						"type": "String"
+					},
+					{
+						"name": "adressenavn",
+						"type": "String"
+					},
+					{
+						"name": "husnr",
+						"type": "String"
+					},
+					{
+						"name": "husbokstav",
+						"type": "String"
+					},
+					{
+						"name": "postnummer",
+						"type": "String"
+					},
+					{
+						"name": "gardsnr",
+						"type": "String"
+					},
+					{
+						"name": "bruksnr",
+						"type": "String"
+					},
+					{
+						"name": "festenr",
+						"type": "String"
+					},
+					{
+						"name": "undernr",
+						"type": "String"
+					},
+					{
+						"name": "bruksenhetsnr",
+						"type": "String"
+					},
+					{
+						"name": "orgformkode",
+						"type": "String"
+					},
+					{
+						"name": "orgformnavn",
+						"type": "String"
+					},
+					{
+						"name": "forretningsadresselinje1",
+						"type": "String"
+					},
+					{
+						"name": "forretningsadresselinje2",
+						"type": "String"
+					},
+					{
+						"name": "forretningsadresselinje3",
+						"type": "String"
+					},
+					{
+						"name": "forretningsadresselinje4",
+						"type": "String"
+					},
+					{
+						"name": "forretningsadresse_postnummer",
+						"type": "String"
+					},
+					{
+						"name": "forretningsadresse_poststed",
+						"type": "String"
+					},
+					{
+						"name": "forretningsadresse_landkode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "forretningsadresse_landkode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "endringstidspunkt",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_etasje')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Matrikkel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/etasje"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "etasje.csv",
+						"folderPath": "Matrikkelrapport_2023_01",
+						"container": "matrikkelfiler"
+					},
+					"columnDelimiter": ";",
+					"rowDelimiter": "\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "adresseid",
+						"type": "String"
+					},
+					{
+						"name": "type",
+						"type": "String"
+					},
+					{
+						"name": "kommunenr",
+						"type": "String"
+					},
+					{
+						"name": "adressekode",
+						"type": "String"
+					},
+					{
+						"name": "adressenavn",
+						"type": "String"
+					},
+					{
+						"name": "kortadressenavn",
+						"type": "String"
+					},
+					{
+						"name": "nr",
+						"type": "String"
+					},
+					{
+						"name": "bokstav",
+						"type": "String"
+					},
+					{
+						"name": "gardsnr",
+						"type": "String"
+					},
+					{
+						"name": "bruksnr",
+						"type": "String"
+					},
+					{
+						"name": "festenr",
+						"type": "String"
+					},
+					{
+						"name": "undernr",
+						"type": "String"
+					},
+					{
+						"name": "adressetilleggsnavn",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "koordinatsystemkode_epsgkode",
+						"type": "String"
+					},
+					{
+						"name": "x",
+						"type": "String"
+					},
+					{
+						"name": "y",
+						"type": "String"
+					},
+					{
+						"name": "z",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnr",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnavn",
+						"type": "String"
+					},
+					{
+						"name": "tettstednr",
+						"type": "String"
+					},
+					{
+						"name": "tettstednavn",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "postnummer",
+						"type": "String"
+					},
+					{
+						"name": "postnummeromrade",
+						"type": "String"
+					},
+					{
+						"name": "kommunenavn",
+						"type": "String"
+					},
+					{
+						"name": "endringstidspunkt",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_matrikkelenhet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Matrikkel",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "matrikkel/Matrikkelenhet"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "matrikkelenhet.csv",
+						"folderPath": "Matrikkelrapport_2023_01",
+						"container": "matrikkelfiler"
+					},
+					"columnDelimiter": ";",
+					"rowDelimiter": "\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "adresseid",
+						"type": "String"
+					},
+					{
+						"name": "type",
+						"type": "String"
+					},
+					{
+						"name": "kommunenr",
+						"type": "String"
+					},
+					{
+						"name": "adressekode",
+						"type": "String"
+					},
+					{
+						"name": "adressenavn",
+						"type": "String"
+					},
+					{
+						"name": "kortadressenavn",
+						"type": "String"
+					},
+					{
+						"name": "nr",
+						"type": "String"
+					},
+					{
+						"name": "bokstav",
+						"type": "String"
+					},
+					{
+						"name": "gardsnr",
+						"type": "String"
+					},
+					{
+						"name": "bruksnr",
+						"type": "String"
+					},
+					{
+						"name": "festenr",
+						"type": "String"
+					},
+					{
+						"name": "undernr",
+						"type": "String"
+					},
+					{
+						"name": "adressetilleggsnavn",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_verdi",
+						"type": "String"
+					},
+					{
+						"name": "tilleggsnavnkildekode_beskrivelse",
+						"type": "String"
+					},
+					{
+						"name": "koordinatsystemkode_epsgkode",
+						"type": "String"
+					},
+					{
+						"name": "x",
+						"type": "String"
+					},
+					{
+						"name": "y",
+						"type": "String"
+					},
+					{
+						"name": "z",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "grunnkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnr",
+						"type": "String"
+					},
+					{
+						"name": "kirkesognnavn",
+						"type": "String"
+					},
+					{
+						"name": "tettstednr",
+						"type": "String"
+					},
+					{
+						"name": "tettstednavn",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnr",
+						"type": "String"
+					},
+					{
+						"name": "valgkretsnavn",
+						"type": "String"
+					},
+					{
+						"name": "postnummer",
+						"type": "String"
+					},
+					{
+						"name": "postnummeromrade",
+						"type": "String"
+					},
+					{
+						"name": "kommunenavn",
+						"type": "String"
+					},
+					{
+						"name": "endringstidspunkt",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_uln')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_brreg",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "brreg"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "listeprodukter/csv filer",
+						"container": "regnskap"
+					},
+					"columnDelimiter": ";",
+					"encodingName": "UTF-7",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Orgnr      ",
+						"type": "String"
+					},
+					{
+						"name": "kilde dato",
+						"type": "String"
+					},
+					{
+						"name": "Valutakode",
+						"type": "String"
+					},
+					{
+						"name": "regnskapsår",
+						"type": "String"
+					},
+					{
+						"name": "sum inntekter",
+						"type": "String"
+					},
+					{
+						"name": "ordinært resultat før skatt",
+						"type": "String"
+					},
+					{
+						"name": "Årsresultat",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_archive')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_finn_original",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Finn"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "finn-archive"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Fylke",
+						"type": "UTF8"
+					},
+					{
+						"name": "Kommune",
+						"type": "UTF8"
+					},
+					{
+						"name": "Objeckt",
+						"type": "UTF8"
+					},
+					{
+						"name": "tittel",
+						"type": "UTF8"
+					},
+					{
+						"name": "type_bolig",
+						"type": "UTF8"
+					},
+					{
+						"name": "location",
+						"type": "UTF8"
+					},
+					{
+						"name": "Antall_soverom",
+						"type": "INT64"
+					},
+					{
+						"name": "id",
+						"type": "INT64"
+					},
+					{
+						"name": "price",
+						"type": "INT64"
+					},
+					{
+						"name": "area",
+						"type": "UTF8"
+					},
+					{
+						"name": "local_area_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "long",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "lat",
+						"type": "DOUBLE"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_enheter_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Breg1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/enheter"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('enheter-',formatDatetime(utcnow(),'dd-MM-yyyy'),'.csv')",
+							"type": "Expression"
+						},
+						"folderPath": "enheter",
+						"container": "foretaksregister"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_enheter_foretakregister_json_http')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_foretaksregister",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/enheter"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "enheter/lastned"
+					},
+					"compression": {
+						"type": "gzip",
+						"level": "Optimal"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_enheter_parquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blob_eikon",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Foretaksregister/enheter"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('enheter-',formatDatetime(utcnow(),'MM-yyy'),'.parquet')",
+							"type": "Expression"
+						},
+						"folderPath": "enheter",
+						"container": "foretaksregister"
+					},
+					"compressionCodec": "none"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_fin_dyn')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_finn_original",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Finn"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
+						"container": "finn-no"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Fylke",
+						"type": "UTF8"
+					},
+					{
+						"name": "Kommune",
+						"type": "UTF8"
+					},
+					{
+						"name": "Objeckt",
+						"type": "UTF8"
+					},
+					{
+						"name": "tittel",
+						"type": "UTF8"
+					},
+					{
+						"name": "type_bolig",
+						"type": "UTF8"
+					},
+					{
+						"name": "location",
+						"type": "UTF8"
+					},
+					{
+						"name": "Antall_soverom",
+						"type": "INT64"
+					},
+					{
+						"name": "id",
+						"type": "INT64"
+					},
+					{
+						"name": "price",
+						"type": "INT64"
+					},
+					{
+						"name": "area",
+						"type": "UTF8"
+					},
+					{
+						"name": "local_area_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "long",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "lat",
+						"type": "DOUBLE"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_finn_ny')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_finn_original",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Finn"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "finn"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Fylke",
+						"type": "UTF8"
+					},
+					{
+						"name": "Kommune",
+						"type": "UTF8"
+					},
+					{
+						"name": "Objeckt",
+						"type": "UTF8"
+					},
+					{
+						"name": "tittel",
+						"type": "UTF8"
+					},
+					{
+						"name": "type_bolig",
+						"type": "UTF8"
+					},
+					{
+						"name": "location",
+						"type": "UTF8"
+					},
+					{
+						"name": "Antall_soverom",
+						"type": "INT64"
+					},
+					{
+						"name": "id",
+						"type": "INT64"
+					},
+					{
+						"name": "price",
+						"type": "INT64"
+					},
+					{
+						"name": "area",
+						"type": "UTF8"
+					},
+					{
+						"name": "local_area_name",
+						"type": "UTF8"
+					},
+					{
+						"name": "long",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "lat",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "furnished_state",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_finn_original')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_finn_original",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Finn"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Sheet1",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "oppdatert_ny.xlsx",
+						"container": "finn-start"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "Fylke",
+						"type": "String"
+					},
+					{
+						"name": "Kommune",
+						"type": "String"
+					},
+					{
+						"name": "tittel",
+						"type": "String"
+					},
+					{
+						"name": "type_bolig",
+						"type": "String"
+					},
+					{
+						"name": "location",
+						"type": "String"
+					},
+					{
+						"name": "Antall_soverom",
+						"type": "String"
+					},
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "price",
+						"type": "String"
+					},
+					{
+						"name": "area",
+						"type": "String"
+					},
+					{
+						"name": "local_area_name",
+						"type": "String"
+					},
+					{
+						"name": "long",
+						"type": "String"
+					},
+					{
+						"name": "lat",
+						"type": "String"
+					},
+					{
+						"name": "DateFrom",
+						"type": "String"
+					},
+					{
+						"name": "DateTo",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_historie')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mcrvpiraw",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					},
+					"folder": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "eikon"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "stage2-history"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		}
+	]
+}

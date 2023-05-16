@@ -1,0 +1,2601 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "postgresDatafactory"
+		},
+		"tr_finn_update_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ee00b926-8929-4c7e-8f13-6a2f6ac9223c/resourceGroups/PostgrSQL-database/providers/Microsoft.Storage/storageAccounts/mcrvpipraw"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/excel_original_sql')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "excel-sql",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "finn-start//oppdatert_ny.xlsx"
+							},
+							{
+								"name": "Destination",
+								"value": "finn_annonser.Finn"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "ExcelSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzurePostgreSQLSink",
+								"writeBatchSize": 1000000,
+								"writeBatchTimeout": "00:30:00",
+								"preCopyScript": "TRUNCATE TABLE finn_annonser.\"Finn\"",
+								"writeMethod": "CopyCommand"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Fylke",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fylke",
+											"type": "String",
+											"physicalType": "character varying"
+										}
+									},
+									{
+										"source": {
+											"name": "Kommune",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "kommune",
+											"type": "String",
+											"physicalType": "character varying"
+										}
+									},
+									{
+										"source": {
+											"name": "tittel",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tittel",
+											"type": "String",
+											"physicalType": "character varying"
+										}
+									},
+									{
+										"source": {
+											"name": "type_bolig",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "type_bolig",
+											"type": "String",
+											"physicalType": "character varying"
+										}
+									},
+									{
+										"source": {
+											"name": "location",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "adresse",
+											"type": "String",
+											"physicalType": "character varying"
+										}
+									},
+									{
+										"source": {
+											"name": "Antall_soverom",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "antall_soverom",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "price",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "pris",
+											"type": "Int32",
+											"physicalType": "integer"
+										}
+									},
+									{
+										"source": {
+											"name": "area",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "area",
+											"type": "String",
+											"physicalType": "character varying"
+										}
+									},
+									{
+										"source": {
+											"name": "local_area_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "sted",
+											"type": "String",
+											"physicalType": "character varying"
+										}
+									},
+									{
+										"source": {
+											"name": "long",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "long",
+											"type": "Double",
+											"physicalType": "double precision"
+										}
+									},
+									{
+										"source": {
+											"name": "lat",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "lat",
+											"type": "Double",
+											"physicalType": "double precision"
+										}
+									},
+									{
+										"source": {
+											"name": "DateFrom",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "datefrom",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "DateTo",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "dateto",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_finn_original",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_sql_original",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Finn"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-03-06T15:25:58Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/finn_postgres_to_azure')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzurePostgreSqlSource",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE finn_sql;",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AzurePostgreSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/forste import regnskapstall')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_uln",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "regnskap/listeprodukter/csv filer/"
+							},
+							{
+								"name": "Destination",
+								"value": "brreg.regnskap"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings",
+									"skipLineCount": 0
+								}
+							},
+							"sink": {
+								"type": "AzurePostgreSQLSink",
+								"writeBatchSize": 1000000,
+								"writeBatchTimeout": "00:30:00",
+								"writeMethod": "CopyCommand"
+							},
+							"enableStaging": false,
+							"parallelCopies": 32,
+							"validateDataConsistency": false,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureBlobStorage_brreg",
+										"type": "LinkedServiceReference"
+									}
+								}
+							},
+							"dataIntegrationUnits": 32,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Orgnr      ",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "kilde dato",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "kilde_dato",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "regnskapsår",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "regnskapsaar",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "Valutakode",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "valuta",
+											"type": "String",
+											"physicalType": "character varying"
+										}
+									},
+									{
+										"source": {
+											"name": "sum inntekter",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "sum_inntekter",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "ordinært resultat før skatt",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ordinaert_resultat_for_skatt",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "Årsresultat",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "aarsresutat",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false,
+									"dateTimeFormat": "dd.mm.yyyy"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SourceDataset_uln",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DestinationDataset_uln",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "brreg"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-11-02T14:50:13Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_getData foretaksregister')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy enheter from foretaksregister",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['organisasjonsnummer']"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['navn']"
+										},
+										"sink": {
+											"name": "navn",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['organisasjonsform']['kode']"
+										},
+										"sink": {
+											"name": "organisasjonsform_kode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registreringsdatoEnhetsregisteret']"
+										},
+										"sink": {
+											"name": "registreringsdatoEnhetsregisteret",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registrertIMvaregisteret']"
+										},
+										"sink": {
+											"name": "registrertIMvaregisteret",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode1']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode1_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode2']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode2_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode3']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode3_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['antallAnsatte']"
+										},
+										"sink": {
+											"name": "antallAnsatte",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['forretningsadresse']['kommunenummer']"
+										},
+										"sink": {
+											"name": "kommunenummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['forretningsadresse']['adresse'][0]"
+										},
+										"sink": {
+											"name": "forretningsadresse_adresse'][",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['stiftelsesdato']"
+										},
+										"sink": {
+											"name": "stiftelsesdato",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sisteInnsendteAarsregnskap']"
+										},
+										"sink": {
+											"name": "sisteInnsendteAarsregnskap",
+											"type": "Int32"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_enheter_foretakregister_json_http",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_enheter_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy underenheter from fr",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['organisasjonsnummer']"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['navn']"
+										},
+										"sink": {
+											"name": "navn",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['organisasjonsform']['kode']"
+										},
+										"sink": {
+											"name": "organisasjonsform_kode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registreringsdatoEnhetsregisteret']"
+										},
+										"sink": {
+											"name": "registreringsdatoEnhetsregisteret",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registrertIMvaregisteret']"
+										},
+										"sink": {
+											"name": "registrertIMvaregisteret",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode1']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode1_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['antallAnsatte']"
+										},
+										"sink": {
+											"name": "antallAnsatte",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['overordnetEnhet']"
+										},
+										"sink": {
+											"name": "overordnetEnhet",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['oppstartsdato']"
+										},
+										"sink": {
+											"name": "oppstartsdato",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['beliggenhetsadresse']['kommunenummer']"
+										},
+										"sink": {
+											"name": "beliggenhetsadresse_kommunenummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['beliggenhetsadresse']['adresse'][0]"
+										},
+										"sink": {
+											"name": "beliggenhetsadresse_adresse'][",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode2']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode2_kode",
+											"type": "Double"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_underenheter_foretaksregister_json_http",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_underenheter_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-10-28T11:53:46Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_getData foretaksregister_parquet')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy enheter from foretaksregister",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['organisasjonsnummer']"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['navn']"
+										},
+										"sink": {
+											"name": "navn",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['organisasjonsform']['kode']"
+										},
+										"sink": {
+											"name": "organisasjonsform_kode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registreringsdatoEnhetsregisteret']"
+										},
+										"sink": {
+											"name": "registreringsdatoEnhetsregisteret",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registrertIMvaregisteret']"
+										},
+										"sink": {
+											"name": "registrertIMvaregisteret",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode1']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode1_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode2']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode2_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode3']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode3_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['antallAnsatte']"
+										},
+										"sink": {
+											"name": "antallAnsatte",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['forretningsadresse']['kommunenummer']"
+										},
+										"sink": {
+											"name": "kommunenummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['forretningsadresse']['adresse'][0]"
+										},
+										"sink": {
+											"name": "forretningsadresse_adresse'][",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['stiftelsesdato']"
+										},
+										"sink": {
+											"name": "stiftelsesdato",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['sisteInnsendteAarsregnskap']"
+										},
+										"sink": {
+											"name": "sisteInnsendteAarsregnskap",
+											"type": "Int32"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_enheter_foretakregister_json_http",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_enheter_parquet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy underenheter from fr",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['organisasjonsnummer']"
+										},
+										"sink": {
+											"name": "organisasjonsnummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['navn']"
+										},
+										"sink": {
+											"name": "navn",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['organisasjonsform']['kode']"
+										},
+										"sink": {
+											"name": "organisasjonsform_kode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registreringsdatoEnhetsregisteret']"
+										},
+										"sink": {
+											"name": "registreringsdatoEnhetsregisteret",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['registrertIMvaregisteret']"
+										},
+										"sink": {
+											"name": "registrertIMvaregisteret",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode1']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode1_kode",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"path": "$['antallAnsatte']"
+										},
+										"sink": {
+											"name": "antallAnsatte",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['overordnetEnhet']"
+										},
+										"sink": {
+											"name": "overordnetEnhet",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['oppstartsdato']"
+										},
+										"sink": {
+											"name": "oppstartsdato",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['beliggenhetsadresse']['kommunenummer']"
+										},
+										"sink": {
+											"name": "beliggenhetsadresse_kommunenummer",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['beliggenhetsadresse']['adresse'][0]"
+										},
+										"sink": {
+											"name": "beliggenhetsadresse_adresse'][",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['naeringskode2']['kode']"
+										},
+										"sink": {
+											"name": "naeringskode2_kode",
+											"type": "Double"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_underenheter_foretaksregister_json_http",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_underenhenter_parquet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-10-28T11:53:46Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Update_finn_sql')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_finn_ny",
+								"type": "DatasetReference"
+							},
+							"name": "nyfinn",
+							"description": " Source employees file, changes every day"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_sql_original",
+								"type": "DatasetReference"
+							},
+							"name": "finnSQL",
+							"description": "Current rows in DimEmployees DW table"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_sql_original",
+								"type": "DatasetReference"
+							},
+							"name": "sinkNew",
+							"description": " "
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_sql_original",
+								"type": "DatasetReference"
+							},
+							"name": "update"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_sql_original",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "LookupIDs"
+						},
+						{
+							"name": "ConditionalSplit1"
+						},
+						{
+							"name": "SetAttrsForNew"
+						},
+						{
+							"name": "NormNames"
+						},
+						{
+							"name": "delObjekt"
+						},
+						{
+							"name": "lookup1"
+						},
+						{
+							"name": "normnames1"
+						},
+						{
+							"name": "split1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "alterRow11"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "select2"
+						},
+						{
+							"name": "lookup2"
+						},
+						{
+							"name": "select3"
+						},
+						{
+							"name": "aggregate2"
+						},
+						{
+							"name": "split2"
+						},
+						{
+							"name": "select4"
+						},
+						{
+							"name": "derivedColumn2"
+						},
+						{
+							"name": "aggregate3"
+						},
+						{
+							"name": "select5"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Fylke as string,",
+						"          Kommune as string,",
+						"          Objeckt as string,",
+						"          tittel as string,",
+						"          type_bolig as string,",
+						"          location as string,",
+						"          Antall_soverom as long,",
+						"          id as long,",
+						"          price as long,",
+						"          area as string,",
+						"          local_area_name as string,",
+						"          long as double,",
+						"          lat as double,",
+						"          furnished_state as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet',",
+						"     wildcardPaths:['*.parquet']) ~> nyfinn",
+						"source(output(",
+						"          fylke as string,",
+						"          kommune as string,",
+						"          tittel as string,",
+						"          type_bolig as string,",
+						"          fursnihed_satus as string,",
+						"          adresse as string,",
+						"          antall_soverom as short,",
+						"          id as long,",
+						"          pris as integer,",
+						"          area as string,",
+						"          sted as string,",
+						"          long as double,",
+						"          lat as double,",
+						"          datefrom as date,",
+						"          dateto as date,",
+						"          iscurrent as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> finnSQL",
+						"delObjekt, finnSQL lookup(delObjekt@id == finnSQL@id",
+						"     && price == pris,",
+						"     multiple: true,",
+						"     broadcast: 'auto')~> LookupIDs",
+						"NormNames split(isNull(iscurrent),",
+						"     iscurrent == 0,",
+						"     disjoint: true) ~> ConditionalSplit1@(NewRow, commingagain)",
+						"select2 derive(datefrom = currentDate(),",
+						"          dateto = toDate(null()),",
+						"          iscurrent = 1) ~> SetAttrsForNew",
+						"LookupIDs select(mapColumn(",
+						"          Fylke = delObjekt@Fylke,",
+						"          Kommune = delObjekt@Kommune,",
+						"          tittel = delObjekt@tittel,",
+						"          type_bolig = delObjekt@type_bolig,",
+						"          location,",
+						"          Antall_soverom = delObjekt@Antall_soverom,",
+						"          id = delObjekt@id,",
+						"          price,",
+						"          area = delObjekt@area,",
+						"          local_area_name,",
+						"          long = delObjekt@long,",
+						"          lat = delObjekt@lat,",
+						"          furnished_state,",
+						"          datefrom,",
+						"          dateto,",
+						"          iscurrent",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> NormNames",
+						"nyfinn select(mapColumn(",
+						"          Fylke,",
+						"          Kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          location,",
+						"          Antall_soverom,",
+						"          id,",
+						"          price,",
+						"          area,",
+						"          local_area_name,",
+						"          long,",
+						"          lat,",
+						"          furnished_state",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> delObjekt",
+						"finnSQL, delObjekt lookup(finnSQL@id == delObjekt@id",
+						"     && pris == price,",
+						"     multiple: true,",
+						"     broadcast: 'auto')~> lookup1",
+						"lookup1 select(mapColumn(",
+						"          fylke = finnSQL@fylke,",
+						"          kommune = finnSQL@kommune,",
+						"          tittel = finnSQL@tittel,",
+						"          type_bolig = finnSQL@type_bolig,",
+						"          furnished_state = fursnihed_satus,",
+						"          adresse,",
+						"          antall_soverom = finnSQL@antall_soverom,",
+						"          id = finnSQL@id,",
+						"          pris,",
+						"          area = finnSQL@area,",
+						"          sted,",
+						"          long = finnSQL@long,",
+						"          lat = finnSQL@lat,",
+						"          datefrom,",
+						"          dateto,",
+						"          iscurrent,",
+						"          tittelny = delObjekt@tittel,",
+						"          idny = delObjekt@id",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> normnames1",
+						"normnames1 split(isNull(idny)  && isNull(dateto) && isNull(tittelny),",
+						"     disjoint: false) ~> split1@(deaktivated)",
+						"select1 derive(dateto = currentDate()-1,",
+						"          iscurrent = 0) ~> derivedColumn1",
+						"split1@deaktivated select(mapColumn(",
+						"          fylke,",
+						"          kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          adresse,",
+						"          antall_soverom,",
+						"          id,",
+						"          pris,",
+						"          furnished_state,",
+						"          area,",
+						"          sted,",
+						"          long,",
+						"          lat,",
+						"          datefrom,",
+						"          dateto,",
+						"          iscurrent",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> select1",
+						"derivedColumn1 alterRow(updateIf(true())) ~> alterRow11",
+						"ConditionalSplit1@NewRow aggregate(groupBy(Fylke,",
+						"          Kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          location,",
+						"          Antall_soverom,",
+						"          id,",
+						"          price,",
+						"          area,",
+						"          local_area_name,",
+						"          long,",
+						"          lat,",
+						"          furnished_state),",
+						"     count = count('1')) ~> aggregate1",
+						"aggregate1 select(mapColumn(",
+						"          Fylke,",
+						"          Kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          location,",
+						"          Antall_soverom,",
+						"          id,",
+						"          price,",
+						"          area,",
+						"          local_area_name,",
+						"          long,",
+						"          lat,",
+						"          furnished_state",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select5, finnSQL lookup(select5@id == finnSQL@id",
+						"     && price == pris,",
+						"     multiple: true,",
+						"     broadcast: 'auto',",
+						"     pickup: 'any')~> lookup2",
+						"lookup2 select(mapColumn(",
+						"          fylke = select5@fylke,",
+						"          kommune = select5@kommune,",
+						"          tittel = select5@tittel,",
+						"          type_bolig = select5@type_bolig,",
+						"          adresse = location,",
+						"          antall_soverom = select5@Antall_soverom,",
+						"          id = select5@id,",
+						"          pris = price,",
+						"          area = select5@area,",
+						"          sted = local_area_name,",
+						"          long = select5@long,",
+						"          lat = select5@lat,",
+						"          furnished_state,",
+						"          iscurrent",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> select3",
+						"select3 aggregate(groupBy(fylke,",
+						"          kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          adresse,",
+						"          antall_soverom,",
+						"          id,",
+						"          pris,",
+						"          area,",
+						"          sted,",
+						"          long,",
+						"          lat,",
+						"          furnished_state),",
+						"     havenulls = sum(iscurrent)) ~> aggregate2",
+						"aggregate2 split(havenulls ==0,",
+						"     disjoint: true) ~> split2@(inactive)",
+						"split2@inactive select(mapColumn(",
+						"          fylke,",
+						"          kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          adresse,",
+						"          antall_soverom,",
+						"          id,",
+						"          pris,",
+						"          area,",
+						"          sted,",
+						"          long,",
+						"          lat,",
+						"          furnished_state",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select4",
+						"select4 derive(datefrom = currentDate(),",
+						"          dateto = toDate(null()),",
+						"          iscurrent = 1) ~> derivedColumn2",
+						"ConditionalSplit1@commingagain aggregate(groupBy(Fylke,",
+						"          Kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          location,",
+						"          Antall_soverom,",
+						"          id,",
+						"          price,",
+						"          area,",
+						"          local_area_name,",
+						"          long,",
+						"          lat,",
+						"          furnished_state),",
+						"     count = count('1')) ~> aggregate3",
+						"aggregate3 select(mapColumn(",
+						"          fylke = Fylke,",
+						"          kommune = Kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          location,",
+						"          Antall_soverom,",
+						"          id,",
+						"          price,",
+						"          area,",
+						"          local_area_name,",
+						"          long,",
+						"          lat,",
+						"          furnished_state",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> select5",
+						"SetAttrsForNew sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          fylke as string,",
+						"          kommune as string,",
+						"          tittel as string,",
+						"          type_bolig as string,",
+						"          fursnihed_satus as string,",
+						"          adresse as string,",
+						"          antall_soverom as short,",
+						"          id as long,",
+						"          pris as integer,",
+						"          area as string,",
+						"          sted as string,",
+						"          long as double,",
+						"          lat as double,",
+						"          datefrom as date,",
+						"          dateto as date,",
+						"          iscurrent as integer",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     batchSize: 50,",
+						"     mapColumn(",
+						"          id,",
+						"          fylke = Fylke,",
+						"          kommune = Kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          adresse = location,",
+						"          antall_soverom = Antall_soverom,",
+						"          fursnihed_satus = furnished_state,",
+						"          pris = price,",
+						"          area,",
+						"          sted = local_area_name,",
+						"          long,",
+						"          lat,",
+						"          datefrom,",
+						"          dateto,",
+						"          iscurrent",
+						"     ),",
+						"     partitionBy('roundRobin', 4)) ~> sinkNew",
+						"alterRow11 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          fylke as string,",
+						"          kommune as string,",
+						"          tittel as string,",
+						"          type_bolig as string,",
+						"          fursnihed_satus as string,",
+						"          adresse as string,",
+						"          antall_soverom as short,",
+						"          id as long,",
+						"          pris as integer,",
+						"          area as string,",
+						"          sted as string,",
+						"          long as double,",
+						"          lat as double,",
+						"          datefrom as date,",
+						"          dateto as date,",
+						"          iscurrent as integer",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:true,",
+						"     upsertable:false,",
+						"     keys:['id','pris','datefrom'],",
+						"     format: 'table',",
+						"     batchSize: 50,",
+						"     mapColumn(",
+						"          fylke,",
+						"          kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          adresse,",
+						"          antall_soverom,",
+						"          id,",
+						"          pris,",
+						"          area,",
+						"          sted,",
+						"          long,",
+						"          lat,",
+						"          dateto,",
+						"          datefrom,",
+						"          fursnihed_satus = furnished_state,",
+						"          iscurrent",
+						"     )) ~> update",
+						"derivedColumn2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          fylke as string,",
+						"          kommune as string,",
+						"          tittel as string,",
+						"          type_bolig as string,",
+						"          fursnihed_satus as string,",
+						"          adresse as string,",
+						"          antall_soverom as short,",
+						"          id as long,",
+						"          pris as integer,",
+						"          area as string,",
+						"          sted as string,",
+						"          long as double,",
+						"          lat as double,",
+						"          datefrom as date,",
+						"          dateto as date,",
+						"          iscurrent as integer",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     batchSize: 50,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          fylke,",
+						"          kommune,",
+						"          tittel,",
+						"          type_bolig,",
+						"          adresse,",
+						"          antall_soverom,",
+						"          id,",
+						"          pris,",
+						"          area,",
+						"          sted,",
+						"          long,",
+						"          lat,",
+						"          datefrom,",
+						"          dateto,",
+						"          iscurrent,",
+						"          fursnihed_satus = furnished_state",
+						"     ),",
+						"     partitionBy('roundRobin', 4)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_append_eikon')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_ny",
+								"type": "DatasetReference"
+							},
+							"name": "newparquet"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_original",
+								"type": "DatasetReference"
+							},
+							"name": "existingparquet"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_original",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "signaturenew",
+							"description": "__index_level_0__, fingerprint'"
+						},
+						{
+							"name": "signatureexisting",
+							"description": "__"
+						},
+						{
+							"name": "exists1"
+						},
+						{
+							"name": "samle"
+						},
+						{
+							"name": "eliminatefingertrips"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     output as string",
+						"}",
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> newparquet",
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> existingparquet",
+						"newparquet derive(fingerprint = sha2(256,columns())) ~> signaturenew",
+						"existingparquet derive(fingerprint = sha2(256,columns())) ~> signatureexisting",
+						"signaturenew, signatureexisting exists(signaturenew@fingerprint == signatureexisting@fingerprint,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> exists1",
+						"exists1, existingparquet union(byName: true)~> samle",
+						"samle select(mapColumn(",
+						"          each(match(name!='fingerprint'))",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> eliminatefingertrips",
+						"eliminatefingertrips sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     partitionFileNames:[($output)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_append_yields')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_ny_yields",
+								"type": "DatasetReference"
+							},
+							"name": "newparquet"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_original_yields",
+								"type": "DatasetReference"
+							},
+							"name": "existingparquet"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_original_yields",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "signaturenew",
+							"description": "__index_level_0__, fingerprint'"
+						},
+						{
+							"name": "signatureexisting",
+							"description": "__"
+						},
+						{
+							"name": "exists1"
+						},
+						{
+							"name": "samle"
+						},
+						{
+							"name": "eliminatefingertrips"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     output as string",
+						"}",
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> newparquet",
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> existingparquet",
+						"newparquet derive(fingerprint = sha2(256,columns())) ~> signaturenew",
+						"existingparquet derive(fingerprint = sha2(256,columns())) ~> signatureexisting",
+						"signaturenew, signatureexisting exists(signaturenew@fingerprint == signatureexisting@fingerprint,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> exists1",
+						"exists1, existingparquet union(byName: true)~> samle",
+						"samle select(mapColumn(",
+						"          each(match(name!='fingerprint'))",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> eliminatefingertrips",
+						"eliminatefingertrips sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     partitionFileNames:[($output)],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_etl_eikon')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "etl_eikon",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": "eikon-etl",
+							"method": "GET",
+							"headers": {}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_eikon_etl",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "etl_eikon",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "ds_parameters_eikon",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "df_append_eikon",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_original",
+											"type": "DatasetReference",
+											"parameters": {
+												"ds_filename_original": {
+													"value": "@item().filename_ny",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_historie",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item().filename_ny",
+													"type": "Expression"
+												},
+												"folder": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd'),'/')"
+											}
+										}
+									]
+								},
+								{
+									"name": "df_append_eikon",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "df_append_eikon",
+											"type": "DataFlowReference",
+											"parameters": {
+												"output": {
+													"value": "'@{item().filename_ny}'",
+													"type": "Expression"
+												}
+											},
+											"datasetParameters": {
+												"newparquet": {
+													"ds_filename_ny": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
+												},
+												"existingparquet": {
+													"ds_filename_original": "@item().filename_original"
+												},
+												"sink1": {
+													"ds_filename_original": "@item().filename_ny"
+												}
+											}
+										},
+										"staging": {},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-11-02T11:17:06Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_append_eikon')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_etl_yields')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "ds_parameters_yield",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "df_append_yields",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_original_yields",
+											"type": "DatasetReference",
+											"parameters": {
+												"ds_filename_original": {
+													"value": "@item().filename_ny",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_historie_yields",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": "@item().filename_ny",
+												"folder": {
+													"value": "@concat(formatDateTime(utcNow(),'yyyy'),'/',formatDateTime(utcNow(),'MM'),'/',formatDateTime(utcNow(),'dd'),'/')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "df_append_yields",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "df_append_yields",
+											"type": "DataFlowReference",
+											"parameters": {
+												"output": {
+													"value": "'@{item().filename_ny}'",
+													"type": "Expression"
+												}
+											},
+											"datasetParameters": {
+												"newparquet": {
+													"ds_filename_ny": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
+												},
+												"existingparquet": {
+													"ds_filename_original": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
+												},
+												"sink1": {
+													"ds_filename_original": {
+														"value": "@item().filename_ny",
+														"type": "Expression"
+													}
+												}
+											}
+										},
+										"staging": {},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-11-02T11:17:06Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_append_yields')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/update_sql')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Update_finn_sql",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Update_finn_sql",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"nyfinn": {},
+									"finnSQL": {},
+									"sinkNew": {},
+									"update": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Update_finn_sql",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*.parquet",
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_finn_ny",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_archive",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Delete1",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_finn_ny",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Finn"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-03-06T15:25:58Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Update_finn_sql')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/foretaksregister_monedlig')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pl_getData foretaksregister",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Month",
+						"interval": 1,
+						"startTime": "2023-01-25T09:40:00",
+						"timeZone": "Morocco Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								0
+							],
+							"monthDays": [
+								25
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_getData foretaksregister')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tr_finn_postgres_sql')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "finn_postgres_to_azure",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2023-05-16T10:30:00",
+						"timeZone": "W. Europe Standard Time",
+						"schedule": {
+							"minutes": [
+								31
+							],
+							"hours": [
+								10
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/finn_postgres_to_azure')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tr_finn_update')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "update_sql",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/finn/blobs/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('tr_finn_update_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/update_sql')]"
+			]
+		}
+	]
+}
