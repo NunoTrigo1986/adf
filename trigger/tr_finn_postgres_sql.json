@@ -16,14 +16,14 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2023-05-12T11:00:00",
+				"startTime": "2023-05-16T10:30:00",
 				"timeZone": "W. Europe Standard Time",
 				"schedule": {
 					"minutes": [
-						0
+						31
 					],
 					"hours": [
-						11
+						10
 					]
 				}
 			}
